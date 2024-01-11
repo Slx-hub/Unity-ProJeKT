@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
@@ -7,10 +8,12 @@ using UnityEngine;
 public class D20EmissionCtrl : MonoBehaviour
 {
     [SerializeField] Gradient EmissiveGradient;
-    public float TopSpeed = 6.0f;
+    public float TopSpeed = 5.0f;
 
     MeshRenderer LinkedMR;
     Rigidbody LinkedRB;
+
+    private List<float> angularVelocities = new();
 
     // Start is called before the first frame update
     void Start()
@@ -20,9 +23,13 @@ public class D20EmissionCtrl : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        var color = EmissiveGradient.Evaluate(LinkedRB.angularVelocity.magnitude / TopSpeed);
+        angularVelocities.Add(LinkedRB.angularVelocity.magnitude);
+        if (angularVelocities.Count > 50)
+            angularVelocities.RemoveAt(0);
+
+        var color = EmissiveGradient.Evaluate(angularVelocities.Average() / TopSpeed);
         LinkedMR.material.SetColor("_EmissionColor", color);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +38,7 @@ public class D20Controller : MonoBehaviour
         { new Vector3(-0.15f, 0.46f, -0.63f) , 10 },
     };
 
+    private List<float> angularVelocities = new();
 
     void Awake()
     {
@@ -51,6 +53,10 @@ public class D20Controller : MonoBehaviour
     {
         Vector2 moveVector = m_actions.WASD.Move.ReadValue<Vector2>() * m_RollingPower;
         m_Rigidbody.AddForce(moveVector.x, 0, moveVector.y);
+
+        angularVelocities.Add(m_Rigidbody.angularVelocity.magnitude);
+        if (angularVelocities.Count > 25)
+            angularVelocities.RemoveAt(0);
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -76,7 +82,7 @@ public class D20Controller : MonoBehaviour
         if (Application.isEditor)
         {
             var debugText = m_Rigidbody.angularVelocity.ToString()
-                + "\n" + m_Rigidbody.angularVelocity.magnitude
+                + "\n" + angularVelocities.Average()
                 + "\n\n" + m_actions.WASD.Move.ReadValue<Vector2>().ToString()
                 + "\n" + m_Rigidbody.velocity.magnitude
                 + "\n\n" + CurrentValue;
