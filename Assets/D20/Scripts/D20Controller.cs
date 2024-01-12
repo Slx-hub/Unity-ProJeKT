@@ -13,6 +13,8 @@ public class D20Controller : MonoBehaviour
     public float m_JumpForce = 1f;
     bool isGrounded = true;
 
+    public GUIStyle style;
+
     private int CurrentFaceValue;
     private readonly Dictionary<Vector3, int> FaceValueLUT = new()
     {
@@ -57,22 +59,23 @@ public class D20Controller : MonoBehaviour
         angularVelocities.Add(m_Rigidbody.angularVelocity.magnitude);
         if (angularVelocities.Count > 25)
             angularVelocities.RemoveAt(0);
+
+        float maxDot = 0.0f;
+        Vector3 localUp = transform.InverseTransformVector(Vector3.up);
+        foreach (var entry in FaceValueLUT)
+        {
+            if (Vector3.Dot(entry.Key, localUp) > maxDot)
+            {
+                maxDot = Vector3.Dot(entry.Key, localUp);
+                CurrentFaceValue = entry.Value;
+            }
+        }
     }
 
     private void OnJump(InputAction.CallbackContext context)
     {
         if (isGrounded && angularVelocities.Average() > 3)
         {
-            float maxDot = 0.0f;
-            Vector3 localUp = transform.InverseTransformVector(Vector3.up);
-            foreach (var entry in FaceValueLUT)
-            {
-                if (Vector3.Dot(entry.Key, localUp) > maxDot)
-                {
-                    maxDot = Vector3.Dot(entry.Key, localUp);
-                    CurrentFaceValue = entry.Value;
-                }
-            }
             m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
         }
     }
@@ -85,10 +88,13 @@ public class D20Controller : MonoBehaviour
                 + "\n" + angularVelocities.Average()
                 + "\n\n" + m_actions.WASD.Move.ReadValue<Vector2>().ToString()
                 + "\n" + m_Rigidbody.velocity.magnitude
-                + "\n\n" + CurrentFaceValue
-                + "\n" + isGrounded.ToString();
+                + "\n\n" + isGrounded.ToString();
 
             GUI.Box(new Rect(5, 5, 200, 200), debugText);
+
+
+            
+            GUI.Box(new Rect(Screen.width / 2, Screen.height -150, 150, 150), CurrentFaceValue.ToString(), style);
         }
     }
 

@@ -173,7 +173,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 289301614986012343, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+  m_Mesh: {fileID: 289301614986012343, guid: 3e600d942e9bc9344b60cd8e243c2e45, type: 3}
 --- !u!4 &404170285 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
@@ -193,6 +193,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RollingPower: 25
   m_JumpForce: 7
+  style:
+    m_Name: yay
+    m_Normal:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_Hover:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_Active:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_Focused:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_OnNormal:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_OnHover:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_OnActive:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_OnFocused:
+      m_Background: {fileID: 0}
+      m_ScaledBackgrounds: []
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
+    m_Border:
+      m_Left: 0
+      m_Right: 0
+      m_Top: 0
+      m_Bottom: 0
+    m_Margin:
+      m_Left: 0
+      m_Right: 0
+      m_Top: 0
+      m_Bottom: 0
+    m_Padding:
+      m_Left: 0
+      m_Right: 0
+      m_Top: 0
+      m_Bottom: 0
+    m_Overflow:
+      m_Left: 0
+      m_Right: 0
+      m_Top: 0
+      m_Bottom: 0
+    m_Font: {fileID: 0}
+    m_FontSize: 99
+    m_FontStyle: 0
+    m_Alignment: 0
+    m_WordWrap: 0
+    m_RichText: 1
+    m_TextClipping: 0
+    m_ImagePosition: 0
+    m_ContentOffset: {x: 0, y: 0}
+    m_FixedWidth: 0
+    m_FixedHeight: 0
+    m_StretchWidth: 1
+    m_StretchHeight: 0
 --- !u!135 &404170289
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -587,13 +654,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15100199, y: 0, z: 0, w: 0.9885335}
-  m_LocalPosition: {x: 0, y: 3.222257, z: -4.5944505}
+  m_LocalRotation: {x: 0.20705797, y: 0, z: 0, w: 0.97832876}
+  m_LocalPosition: {x: 0, y: 4.06393, z: -4.182982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 111.92999, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.43, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +789,7 @@ MonoBehaviour:
   m_ZDamping: 1
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
-  m_ScreenY: 0.603
+  m_ScreenY: 0.666
   m_CameraDistance: 5
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
@@ -914,14 +981,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1812189503}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15100199, y: 0, z: 0, w: 0.9885335}
-  m_LocalPosition: {x: 0, y: 3.222257, z: -4.5944505}
+  m_LocalRotation: {x: 0.20705797, y: 0, z: 0, w: 0.97832876}
+  m_LocalPosition: {x: 0, y: 4.06393, z: -4.182982}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1227128564}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 17.37, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 23.9, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
