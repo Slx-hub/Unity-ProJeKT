@@ -8,6 +8,7 @@ using UnityEngine;
 public class D20EmissionCtrl : MonoBehaviour
 {
     [SerializeField] Gradient EmissiveGradient;
+    [SerializeField] Light PowerLight;
     public float TopSpeed = 5.0f;
 
     MeshRenderer LinkedMR;
@@ -31,5 +32,7 @@ public class D20EmissionCtrl : MonoBehaviour
 
         var color = EmissiveGradient.Evaluate(angularVelocities.Average() / TopSpeed);
         LinkedMR.material.SetColor("_EmissionColor", color);
+
+        PowerLight.enabled = angularVelocities.Average() > 3;
     }
 }

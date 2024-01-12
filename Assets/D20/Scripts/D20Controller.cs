@@ -13,7 +13,7 @@ public class D20Controller : MonoBehaviour
     public float m_JumpForce = 1f;
     bool isGrounded = true;
 
-    private int CurrentValue;
+    private int CurrentFaceValue;
     private readonly Dictionary<Vector3, int> FaceValueLUT = new()
     {
         { new Vector3(0.15f, -0.46f, 0.63f)  , 11 },
@@ -61,7 +61,7 @@ public class D20Controller : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (isGrounded)
+        if (isGrounded && angularVelocities.Average() > 3)
         {
             float maxDot = 0.0f;
             Vector3 localUp = transform.InverseTransformVector(Vector3.up);
@@ -70,10 +70,10 @@ public class D20Controller : MonoBehaviour
                 if (Vector3.Dot(entry.Key, localUp) > maxDot)
                 {
                     maxDot = Vector3.Dot(entry.Key, localUp);
-                    CurrentValue = entry.Value;
+                    CurrentFaceValue = entry.Value;
                 }
             }
-            m_Rigidbody.velocity += Vector3.up * CurrentValue;
+            m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
         }
     }
 
@@ -85,7 +85,8 @@ public class D20Controller : MonoBehaviour
                 + "\n" + angularVelocities.Average()
                 + "\n\n" + m_actions.WASD.Move.ReadValue<Vector2>().ToString()
                 + "\n" + m_Rigidbody.velocity.magnitude
-                + "\n\n" + CurrentValue;
+                + "\n\n" + CurrentFaceValue
+                + "\n" + isGrounded.ToString();
 
             GUI.Box(new Rect(5, 5, 200, 200), debugText);
         }
@@ -100,13 +101,13 @@ public class D20Controller : MonoBehaviour
         m_actions.WASD.Disable();
     }
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
         isGrounded = true;
     }
 
 
-    void OnCollisionExit(Collision collision)
+    void OnTriggerExit(Collider other)
     {
         isGrounded = false;
     }
