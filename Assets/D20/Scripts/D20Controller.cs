@@ -14,6 +14,7 @@ public class D20Controller : MonoBehaviour
     bool isGrounded = true;
 
     public GUIStyle style;
+    public ValueShelf valueShelf;
 
     private int CurrentFaceValue;
     private readonly Dictionary<Vector3, int> FaceValueLUT = new()
@@ -77,6 +78,7 @@ public class D20Controller : MonoBehaviour
         if (isGrounded && angularVelocities.Average() > 3)
         {
             m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
+            valueShelf.AddValueToShelf(CurrentFaceValue);
         }
     }
 

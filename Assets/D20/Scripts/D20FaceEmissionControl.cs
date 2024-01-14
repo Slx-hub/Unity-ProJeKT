@@ -10,7 +10,7 @@ using UnityEngine.Rendering.Universal;
 public class D20FaceEmissionControl : MonoBehaviour
 {
     private Mesh m_mesh;
-    private int[] valueToFaceLUT = new int[] { 10, 6, 1, 15, 18, 13, 9, 3, 12, 4, 15, 5, 14, 19, 8, 2, 0, 17, 11, 7 };
+    private int[] valueToFaceLUT = new int[] { 10, 6, 1, 16, 18, 13, 9, 3, 12, 4, 15, 5, 19, 14, 8, 2, 0, 17, 11, 7 };
 
 // Start is called before the first frame update
 void Start()
@@ -55,19 +55,20 @@ void Start()
     // Update is called once per frame
     public float maxTime = 0.5f;
     private float accumulatedTime = 0.0f;
+    public int tface;
     void Update()
     {
-        if (accumulatedTime > maxTime) { accumulatedTime = 0.0f; HighlightRandomValues(); }
+        if (accumulatedTime > maxTime) { accumulatedTime = 0.0f; HighlightEvenValues(); }
 
         accumulatedTime+= Time.deltaTime;
     }
 
-    public void HighlightOddValues()
+    public void HighlightEvenValues()
     {
-        var selectedValues = Enumerable.Range(0, 10).Select(x => x * 2).ToArray();
+        var selectedValues = Enumerable.Range(1, 10).Select(x => x * 2).ToArray();
         HighlightValues(selectedValues);
     }
-    public void HighlightEvenValues()
+    public void HighlightOddValues()
     {
         var selectedValues = Enumerable.Range(0, 10).Select(x => x * 2 + 1).ToArray();
         HighlightValues(selectedValues);
@@ -89,9 +90,9 @@ void Start()
         
         foreach (var value in values)
         {
-            uvs[triangles[valueToFaceLUT[value] * 3]] = Vector2.one;
-            uvs[triangles[valueToFaceLUT[value] * 3 + 1]] = Vector2.one;
-            uvs[triangles[valueToFaceLUT[value] * 3 + 2]] = Vector2.one;
+            uvs[triangles[valueToFaceLUT[value - 1] * 3]] = Vector2.one;
+            uvs[triangles[valueToFaceLUT[value - 1] * 3 + 1]] = Vector2.one;
+            uvs[triangles[valueToFaceLUT[value - 1] * 3 + 2]] = Vector2.one;
         }
         m_mesh.uv2 = uvs;
     }
