@@ -7,14 +7,29 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(Rigidbody))]
 public class D20FaceEmissionControl : MonoBehaviour
 {
     private Mesh m_mesh;
     private int[] valueToFaceLUT = new int[] { 10, 6, 1, 16, 18, 13, 9, 3, 12, 4, 15, 5, 19, 14, 8, 2, 0, 17, 11, 7 };
 
-// Start is called before the first frame update
-void Start()
+    public AnimationCurve IntensityCurve;
+    public Light PowerLight;
+    public float TopSpeed = 5.0f;
+
+    MeshRenderer LinkedMR;
+    Rigidbody LinkedRB;
+
+    private List<float> angularVelocities = new();
+
+    // Start is called before the first frame update
+    void Start()
     {
+        LinkedMR = GetComponent<MeshRenderer>();
+        LinkedRB = GetComponent<Rigidbody>();
+
+
         m_mesh = GetComponent<MeshFilter>().mesh;
         /*var uvList = new List<Vector2>();
         m_mesh.GetUVs(0, uvList);
@@ -61,6 +76,18 @@ void Start()
         if (accumulatedTime > maxTime) { accumulatedTime = 0.0f; HighlightEvenValues(); }
 
         accumulatedTime+= Time.deltaTime;
+    }
+
+    void FixedUpdate()
+    {
+        angularVelocities.Add(LinkedRB.angularVelocity.magnitude);
+        if (angularVelocities.Count > 50)
+            angularVelocities.RemoveAt(0);
+
+        var intensity = IntensityCurve.Evaluate(angularVelocities.Average() / TopSpeed);
+        LinkedMR.material.SetFloat("_BorderEmissionIntensity", intensity);
+
+        PowerLight.enabled = angularVelocities.Average() > 3;
     }
 
     public void HighlightEvenValues()

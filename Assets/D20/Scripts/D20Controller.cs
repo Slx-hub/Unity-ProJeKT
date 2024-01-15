@@ -10,6 +10,7 @@ public class D20Controller : MonoBehaviour
     Rigidbody m_Rigidbody;
     Collider m_jumpBoundary;
     public float m_RollingPower = 1f;
+    public float m_DashPower = 1f;
     public float m_JumpForce = 1f;
     bool isGrounded = true;
 
@@ -50,6 +51,7 @@ public class D20Controller : MonoBehaviour
         m_jumpBoundary = GetComponent<Collider>();
 
         m_actions.WASD.Jump.performed += OnJump;
+        m_actions.WASD.Dash.performed += OnDash;
     }
 
     void FixedUpdate()
@@ -75,9 +77,18 @@ public class D20Controller : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (isGrounded && angularVelocities.Average() > 3)
+        if (isGrounded)
         {
             m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
+            valueShelf.AddValueToShelf(CurrentFaceValue);
+        }
+    }
+    private void OnDash(InputAction.CallbackContext context)
+    {
+        if (isGrounded)
+        {
+            Vector2 dashVector = m_actions.WASD.Move.ReadValue<Vector2>() * m_DashPower * (CurrentFaceValue / 2);
+            m_Rigidbody.AddForce(dashVector.x, 0, dashVector.y);
             valueShelf.AddValueToShelf(CurrentFaceValue);
         }
     }

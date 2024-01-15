@@ -7,8 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class D20EmissionCtrl : MonoBehaviour
 {
-    /*[SerializeField]*/public Gradient EmissiveGradient;
-    /*[SerializeField]*/public Light PowerLight;
+    public Gradient EmissiveGradient;
+    public Light PowerLight;
     public float TopSpeed = 5.0f;
 
     MeshRenderer LinkedMR;

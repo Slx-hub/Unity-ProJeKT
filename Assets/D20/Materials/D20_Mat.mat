@@ -65,6 +65,14 @@ Material:
         m_Texture: {fileID: 2800000, guid: f6622612e29c7f44881073afee933b6b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Emissive_Borders:
+        m_Texture: {fileID: 2800000, guid: 96a9a93e8eef4274a9d392a3c0b10b6a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emissive_Numbers:
+        m_Texture: {fileID: 2800000, guid: 73e8a69df0fb1db4990ed34b28a36ac7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 21780f8ee099eb644884b2944c040e61, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -82,6 +90,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Test:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -103,6 +115,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _BorderEmissionIntensity: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -113,7 +126,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FaceEmissionIntensity: 0.2
+    - _FaceEmissionIntensity: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -137,6 +150,8 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor_Border: {r: 0.75109744, g: 1.9999999, b: 0, a: 0}
+    - _EmissionColor_Numbers: {r: 0.75109744, g: 1.9999999, b: 0, a: 0}
     - _FaceEmissionColor: {r: 12.01756, g: 32, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
