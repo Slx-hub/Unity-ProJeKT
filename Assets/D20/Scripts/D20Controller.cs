@@ -10,6 +10,7 @@ public class D20Controller : MonoBehaviour
     Rigidbody m_Rigidbody;
     Collider m_jumpBoundary;
     public float m_RollingPower = 1f;
+    public float m_Torque = 1f;
     public float m_DashPower = 1f;
     public float m_JumpForce = 1f;
     bool isGrounded = true;
@@ -56,8 +57,12 @@ public class D20Controller : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 moveVector = m_actions.WASD.Move.ReadValue<Vector2>() * m_RollingPower;
-        m_Rigidbody.AddForce(moveVector.x, 0, moveVector.y);
+        Vector2 moveVector = m_actions.WASD.Move.ReadValue<Vector2>();
+        Vector3 forceVector = new Vector3(moveVector.x, 0, moveVector.y);
+        Vector3 torqueVector = new Vector3(moveVector.y, 0f, -moveVector.x);
+
+        m_Rigidbody.AddForce(forceVector * m_RollingPower);
+        m_Rigidbody.AddTorque(torqueVector * m_Torque);
 
         angularVelocities.Add(m_Rigidbody.angularVelocity.magnitude);
         if (angularVelocities.Count > 25)
