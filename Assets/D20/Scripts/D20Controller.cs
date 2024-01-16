@@ -14,8 +14,8 @@ public class D20Controller : MonoBehaviour
     public float m_JumpForce = 1f;
     bool isGrounded = true;
 
-    public GUIStyle style;
     public ValueShelf valueShelf;
+    public D20FaceEmissionControl emissionController;
 
     private int CurrentFaceValue;
     private readonly Dictionary<Vector3, int> FaceValueLUT = new()
@@ -79,17 +79,33 @@ public class D20Controller : MonoBehaviour
     {
         if (isGrounded)
         {
+            if (!emissionController.IsValueActive(CurrentFaceValue))
+            {
+                valueShelf.AddValueToShelf("<color=red>" + CurrentFaceValue.ToString() + "</color>");
+                emissionController.NextPattern();
+                return;
+            }
             m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
-            valueShelf.AddValueToShelf(CurrentFaceValue);
+            valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
+            emissionController.NextPattern();
         }
     }
     private void OnDash(InputAction.CallbackContext context)
     {
-        if (isGrounded)
+        Vector2 dashVector = m_actions.WASD.Move.ReadValue<Vector2>() * m_DashPower * (CurrentFaceValue / 2);
+
+        if (!dashVector.Equals(Vector2.zero))
         {
-            Vector2 dashVector = m_actions.WASD.Move.ReadValue<Vector2>() * m_DashPower * (CurrentFaceValue / 2);
+            if (!emissionController.IsValueActive(CurrentFaceValue))
+            {
+                valueShelf.AddValueToShelf("<color=red>" + CurrentFaceValue.ToString() + "</color>");
+                emissionController.NextPattern();
+                return;
+            }
+
             m_Rigidbody.AddForce(dashVector.x, 0, dashVector.y);
-            valueShelf.AddValueToShelf(CurrentFaceValue);
+            valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
+            emissionController.NextPattern();
         }
     }
 
@@ -101,13 +117,10 @@ public class D20Controller : MonoBehaviour
                 + "\n" + angularVelocities.Average()
                 + "\n\n" + m_actions.WASD.Move.ReadValue<Vector2>().ToString()
                 + "\n" + m_Rigidbody.velocity.magnitude
-                + "\n\n" + isGrounded.ToString();
+                + "\n\n" + isGrounded.ToString()
+                + "\n\n" + CurrentFaceValue.ToString();
 
             GUI.Box(new Rect(5, 5, 200, 200), debugText);
-
-
-            
-            GUI.Box(new Rect(Screen.width / 2, Screen.height -150, 150, 150), CurrentFaceValue.ToString(), style);
         }
     }
 

@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
@@ -13,6 +14,7 @@ public class D20FaceEmissionControl : MonoBehaviour
 {
     private Mesh m_mesh;
     private int[] valueToFaceLUT = new int[] { 10, 6, 1, 16, 18, 13, 9, 3, 12, 4, 15, 5, 19, 14, 8, 2, 0, 17, 11, 7 };
+    private List<int> highlightedValues = new();
 
     public AnimationCurve IntensityCurve;
     public Light PowerLight;
@@ -23,12 +25,15 @@ public class D20FaceEmissionControl : MonoBehaviour
 
     private List<float> angularVelocities = new();
 
+    private Action FaceHighlighter;
+
     // Start is called before the first frame update
     void Start()
     {
+        FaceHighlighter = HighlightFiveRandomValues;
+
         LinkedMR = GetComponent<MeshRenderer>();
         LinkedRB = GetComponent<Rigidbody>();
-
 
         m_mesh = GetComponent<MeshFilter>().mesh;
         /*var uvList = new List<Vector2>();
@@ -65,6 +70,7 @@ public class D20FaceEmissionControl : MonoBehaviour
         m_mesh.triangles = newTriangles;
 
         m_mesh.RecalculateNormals();
+        NextPattern();
     }
 
     // Update is called once per frame
@@ -73,9 +79,8 @@ public class D20FaceEmissionControl : MonoBehaviour
     public int tface;
     void Update()
     {
-        if (accumulatedTime > maxTime) { accumulatedTime = 0.0f; HighlightEvenValues(); }
-
-        accumulatedTime+= Time.deltaTime;
+        //if (accumulatedTime > maxTime) { accumulatedTime = 0.0f; HighlightRandomValues(); }
+        //accumulatedTime+= Time.deltaTime;
     }
 
     void FixedUpdate()
@@ -90,6 +95,16 @@ public class D20FaceEmissionControl : MonoBehaviour
         PowerLight.enabled = angularVelocities.Average() > 3;
     }
 
+    public void NextPattern()
+    {
+        FaceHighlighter();
+    }
+
+    public bool IsValueActive(int val)
+    {
+        return highlightedValues.Contains(val);
+    }
+
     public void HighlightEvenValues()
     {
         var selectedValues = Enumerable.Range(1, 10).Select(x => x * 2).ToArray();
@@ -101,11 +116,18 @@ public class D20FaceEmissionControl : MonoBehaviour
         HighlightValues(selectedValues);
     }
 
-    public void HighlightRandomValues(int maxValues = 10)
+    public void HighlightRandomValues()
     {
-        int numberFaces = UnityEngine.Random.Range(0, maxValues);
+        int numberFaces = UnityEngine.Random.Range(1, 20);
         var rnd = new System.Random();
-        var selectedValues = Enumerable.Range(0, 20).OrderBy(x => rnd.Next()).Take(numberFaces).ToArray();
+        var selectedValues = Enumerable.Range(1, 20).OrderBy(x => rnd.Next()).Take(numberFaces).ToArray();
+        HighlightValues(selectedValues);
+    }
+
+    public void HighlightFiveRandomValues()
+    {
+        var rnd = new System.Random();
+        var selectedValues = Enumerable.Range(1, 20).OrderBy(x => rnd.Next()).Take(5).ToArray();
         HighlightValues(selectedValues);
     }
 
@@ -115,6 +137,8 @@ public class D20FaceEmissionControl : MonoBehaviour
         var triangles = m_mesh.triangles;
         Array.Fill(uvs, Vector2.zero);
         
+        highlightedValues.Clear();
+        highlightedValues.AddRange(values);
         foreach (var value in values)
         {
             uvs[triangles[valueToFaceLUT[value - 1] * 3]] = Vector2.one;

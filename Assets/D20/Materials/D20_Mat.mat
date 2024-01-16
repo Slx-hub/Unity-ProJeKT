@@ -150,9 +150,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor_Border: {r: 0.75109744, g: 1.9999999, b: 0, a: 0}
-    - _EmissionColor_Numbers: {r: 0.75109744, g: 1.9999999, b: 0, a: 0}
+    - _EmissionColor_Border: {r: 1.3579633, g: 2, b: 0, a: 0}
+    - _EmissionColor_Numbers: {r: 1.3579633, g: 2, b: 0, a: 0}
     - _FaceEmissionColor: {r: 12.01756, g: 32, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Tint: {r: 0.15205589, g: 0.4811321, b: 0.38781336, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
