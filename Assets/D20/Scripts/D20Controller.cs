@@ -1,19 +1,15 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class D20Controller : MonoBehaviour
 {
-    DefaultActionsWrapper m_actions;
-    Rigidbody m_Rigidbody;
-    Collider m_jumpBoundary;
-    public float m_RollingPower = 1f;
-    public float m_Torque = 1f;
-    public float m_DashPower = 1f;
-    public float m_JumpForce = 1f;
-    bool isGrounded = true;
+    public bool IsGrounded { get; private set; }
+    public int CurrentFaceValue { get; private set; }
 
     public ValueShelf valueShelf;
     public D20FaceEmissionControl emissionController;
@@ -44,34 +40,22 @@ public class D20Controller : MonoBehaviour
         { new Vector3(-0.15f, 0.46f, -0.63f) , 10 },
     };
 
-    private List<float> angularVelocities = new();
+    private List<float> AngularVelocities = new();
 
-    void Awake()
+    void Start()
     {
-        m_actions = new DefaultActionsWrapper();
-        m_Rigidbody = GetComponent<Rigidbody>();
-        m_jumpBoundary = GetComponent<Collider>();
-
-        m_actions.WASD.Jump.performed += OnJump;
-        m_actions.WASD.Dash.performed += OnDash;
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
     {
-        Vector2 moveVector = m_actions.WASD.Move.ReadValue<Vector2>();
-        Vector3 forceVector = new Vector3(moveVector.x, 0, moveVector.y);
-        Vector3 torqueVector = new Vector3(moveVector.y, 0f, -moveVector.x);
-
-        m_Rigidbody.AddForce(forceVector * m_RollingPower);
-        m_Rigidbody.AddTorque(torqueVector * m_Torque);
-
-        angularVelocities.Add(m_Rigidbody.angularVelocity.magnitude);
-        if (angularVelocities.Count > 25)
-            angularVelocities.RemoveAt(0);
+        AngularVelocities.Add(Rigidbody.angularVelocity.magnitude);
+        if (AngularVelocities.Count > 25)
+            AngularVelocities.RemoveAt(0);
 
         float maxDot = 0.0f;
         Vector3 localUp = transform.InverseTransformVector(Vector3.up);
-        foreach (var entry in FaceValueLUT)
+        foreach (var entry in FaceToValueLUT)
         {
             if (Vector3.Dot(entry.Key, localUp) > maxDot)
             {
@@ -143,12 +127,21 @@ public class D20Controller : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        isGrounded = true;
+        IsGrounded = true;
     }
 
 
     void OnTriggerExit(Collider other)
     {
-        isGrounded = false;
+        IsGrounded = false;
+    }
+
+    public override string ToString()
+    {
+        return "> D20Controller:" + 
+            "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
+            "\n  Is on ground:\t\t" + IsGrounded.ToString() + 
+            "\n  Smooth angular V:\t" + AngularVelocities.Average() +
+            "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
     }
 }
