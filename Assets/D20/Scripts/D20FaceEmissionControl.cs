@@ -25,12 +25,9 @@ public class D20FaceEmissionControl : MonoBehaviour
 
     private List<float> angularVelocities = new();
 
-    private Action FaceHighlighter;
-
     // Start is called before the first frame update
     void Start()
     {
-        FaceHighlighter = HighlightFiveRandomValues;
 
         LinkedMR = GetComponent<MeshRenderer>();
         LinkedRB = GetComponent<Rigidbody>();
@@ -70,7 +67,6 @@ public class D20FaceEmissionControl : MonoBehaviour
         m_mesh.triangles = newTriangles;
 
         m_mesh.RecalculateNormals();
-        NextPattern();
     }
 
     // Update is called once per frame
@@ -93,11 +89,6 @@ public class D20FaceEmissionControl : MonoBehaviour
         LinkedMR.material.SetFloat("_BorderEmissionIntensity", intensity);
 
         PowerLight.enabled = angularVelocities.Average() > 3;
-    }
-
-    public void NextPattern()
-    {
-        FaceHighlighter();
     }
 
     public bool IsValueActive(int val)
@@ -124,14 +115,12 @@ public class D20FaceEmissionControl : MonoBehaviour
         HighlightValues(selectedValues);
     }
 
-    public void HighlightFiveRandomValues()
+    public void ClearHighlight()
     {
-        var rnd = new System.Random();
-        var selectedValues = Enumerable.Range(1, 20).OrderBy(x => rnd.Next()).Take(5).ToArray();
-        HighlightValues(selectedValues);
+        HighlightValues(new int[0]);
     }
 
-    private void HighlightValues(int[] values)
+    public void HighlightValues(int[] values)
     {
         var uvs = m_mesh.uv2;
         var triangles = m_mesh.triangles;

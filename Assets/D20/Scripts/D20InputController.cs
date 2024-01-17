@@ -14,6 +14,7 @@ public class D20InputController : MonoBehaviour
     private DefaultActionsWrapper Actions;
     private Rigidbody Rigidbody;
     private D20Controller Controller;
+    private ComboController ComboController;
 
     private Vector3 ForceVector;
     private Vector3 TorqueVector;
@@ -22,6 +23,7 @@ public class D20InputController : MonoBehaviour
     {
         Rigidbody = GetComponent<Rigidbody>();
         Controller = GetComponent<D20Controller>();
+        ComboController = GetComponent<ComboController>();
     }
 
     void Awake()
@@ -30,6 +32,11 @@ public class D20InputController : MonoBehaviour
 
         Actions.WASD.Jump.performed += OnJump;
         Actions.WASD.Dash.performed += OnDash;
+        Actions.WASD.Fire.performed += OnFire;
+
+        Actions.WASD.Ability1.performed += OnAbility1;
+        Actions.WASD.Ability2.performed += OnAbility2;
+        Actions.WASD.Ability3.performed += OnAbility3;
     }
 
     void FixedUpdate()
@@ -59,27 +66,24 @@ public class D20InputController : MonoBehaviour
         }
     }
 
-    private void OnFire()
+    private void OnFire(InputAction.CallbackContext context)
     {
-
+        ComboController.ValidateRoll(Controller.CurrentFaceValue);
     }
 
-    private void OnComboEvent()
+    private void OnAbility1(InputAction.CallbackContext context)
     {
-        /*
-        if (isGrounded)
-        {
-            if (!emissionController.IsValueActive(CurrentFaceValue))
-            {
-                valueShelf.AddValueToShelf("<color=red>" + CurrentFaceValue.ToString() + "</color>");
-                emissionController.NextPattern();
-                return;
-            }
-            Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
-            valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
-            emissionController.NextPattern();
-        }
-        */
+        ComboController.StartCombo("TestCombo1");
+    }
+
+    private void OnAbility2(InputAction.CallbackContext context)
+    {
+        ComboController.StartCombo("TestCombo2");
+    }
+
+    private void OnAbility3(InputAction.CallbackContext context)
+    {
+        ComboController.StartCombo("TestCombo3");
     }
 
     void OnEnable()
