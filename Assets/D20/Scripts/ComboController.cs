@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class ComboController : MonoBehaviour
 {
     private D20FaceEmissionControl FaceEmissionControl;
+    private UIValueHitControl uivhc;
 
     private ComboDefinition ActiveCombo;
 
@@ -16,11 +18,12 @@ public class ComboController : MonoBehaviour
     void Start()
     {
         FaceEmissionControl = GetComponent<D20FaceEmissionControl>();
+        uivhc = GetComponent<UIValueHitControl>();
     }
 
     public void StartCombo(string name)
     {
-        FailCombo();
+        FailCombo(-1);
         ActiveCombo = ComboConfig.GetComboDefinitionByName(name);
         FaceEmissionControl.HighlightValues(GetCurrentStageValues().ToArray());
 
@@ -34,17 +37,18 @@ public class ComboController : MonoBehaviour
         if (GetCurrentStageValues().Contains(roll))
             AdvanceStage(roll);
         else
-            FailCombo();
+            FailCombo(roll);
     }
 
     private void AdvanceStage(int roll)
     {
         RolledValues.Add(roll);
-
+        uivhc.HitValue("<color=green>" + roll + "</color>");
         debugState = "Cleared Stage " + ComboStage;
 
         if (++ComboStage == ActiveCombo.GetStageCount())
         {
+            uivhc.HitValue("<color=#FFD400>Total: " + RolledValues.Sum() + "</color>");
             debugState = "Done!";
             ClearState();
             return;
@@ -52,9 +56,11 @@ public class ComboController : MonoBehaviour
         FaceEmissionControl.HighlightValues(GetCurrentStageValues().ToArray());
     }
 
-    private void FailCombo()
+    private void FailCombo(int roll)
     {
         ClearState();
+        if (roll > 0)
+            uivhc.HitValue("<color=red>" + roll + "</color>");
         debugState = "Failed";
     }
 

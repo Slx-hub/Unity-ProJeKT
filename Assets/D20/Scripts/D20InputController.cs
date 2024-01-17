@@ -15,6 +15,7 @@ public class D20InputController : MonoBehaviour
     private Rigidbody Rigidbody;
     private D20Controller Controller;
     private ComboController ComboController;
+    private UIValueHitControl uivhc;
 
     private Vector3 ForceVector;
     private Vector3 TorqueVector;
@@ -24,6 +25,7 @@ public class D20InputController : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
         Controller = GetComponent<D20Controller>();
         ComboController = GetComponent<ComboController>();
+        uivhc = GetComponent<UIValueHitControl>();
     }
 
     void Awake()
@@ -54,6 +56,7 @@ public class D20InputController : MonoBehaviour
         if (Controller.IsGrounded)
         {
             Rigidbody.velocity += Vector3.up * (5 + Controller.CurrentFaceValue / 3);
+            uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
         }
     }
 
@@ -63,6 +66,7 @@ public class D20InputController : MonoBehaviour
         {
             Vector2 dashVector = Actions.WASD.Move.ReadValue<Vector2>() * DashPower * (Controller.CurrentFaceValue / 2);
             Rigidbody.AddForce(dashVector.x, 0, dashVector.y);
+            uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
         }
     }
 

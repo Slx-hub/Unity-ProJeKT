@@ -11,12 +11,8 @@ public class D20Controller : MonoBehaviour
     public bool IsGrounded { get; private set; }
     public int CurrentFaceValue { get; private set; }
 
-    public ValueShelf valueShelf;
-    public D20FaceEmissionControl emissionController;
-    public UIValueHitControl uivhc;
-
-    private int CurrentFaceValue;
-    private readonly Dictionary<Vector3, int> FaceValueLUT = new()
+    private Rigidbody Rigidbody;
+    private readonly Dictionary<Vector3, int> FaceToValueLUT = new()
     {
         { new Vector3(0.15f, -0.46f, 0.63f)  , 11 },
         { new Vector3(-0.63f, -0.46f, 0.15f) , 1 },
@@ -65,66 +61,6 @@ public class D20Controller : MonoBehaviour
         }
     }
 
-    private void OnJump(InputAction.CallbackContext context)
-    {
-        if (isGrounded)
-        {
-            if (!emissionController.IsValueActive(CurrentFaceValue))
-            {
-                valueShelf.AddValueToShelf("<color=red>" + CurrentFaceValue.ToString() + "</color>");
-                emissionController.NextPattern();
-                return;
-            }
-            m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
-            valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
-            uivhc.HitValue("<color=green>" + CurrentFaceValue.ToString() + "</color>");
-            emissionController.NextPattern();
-        }
-    }
-    private void OnDash(InputAction.CallbackContext context)
-    {
-        Vector2 dashVector = m_actions.WASD.Move.ReadValue<Vector2>() * m_DashPower * (CurrentFaceValue / 2);
-
-        if (!dashVector.Equals(Vector2.zero))
-        {
-            if (!emissionController.IsValueActive(CurrentFaceValue))
-            {
-                valueShelf.AddValueToShelf("<color=red>" + CurrentFaceValue.ToString() + "</color>");
-                emissionController.NextPattern();
-                return;
-            }
-
-            m_Rigidbody.AddForce(dashVector.x, 0, dashVector.y);
-            valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
-            uivhc.HitValue("<color=green>" + CurrentFaceValue.ToString() + "</color>");
-            emissionController.NextPattern();
-        }
-    }
-
-    void OnGUI()
-    {
-        if (Application.isEditor)
-        {
-            var debugText = m_Rigidbody.angularVelocity.ToString()
-                + "\n" + angularVelocities.Average()
-                + "\n\n" + m_actions.WASD.Move.ReadValue<Vector2>().ToString()
-                + "\n" + m_Rigidbody.velocity.magnitude
-                + "\n\n" + isGrounded.ToString()
-                + "\n\n" + CurrentFaceValue.ToString();
-
-            GUI.Box(new Rect(5, 5, 200, 200), debugText);
-        }
-    }
-
-    void OnEnable()
-    {
-        m_actions.WASD.Enable();
-    }
-    void OnDisable()
-    {
-        m_actions.WASD.Disable();
-    }
-
     void OnTriggerEnter(Collider other)
     {
         IsGrounded = true;
@@ -138,9 +74,9 @@ public class D20Controller : MonoBehaviour
 
     public override string ToString()
     {
-        return "> D20Controller:" + 
+        return "> D20Controller:" +
             "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
-            "\n  Is on ground:\t\t" + IsGrounded.ToString() + 
+            "\n  Is on ground:\t\t" + IsGrounded.ToString() +
             "\n  Smooth angular V:\t" + AngularVelocities.Average() +
             "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
     }
