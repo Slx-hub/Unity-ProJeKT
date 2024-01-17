@@ -17,6 +17,7 @@ public class D20Controller : MonoBehaviour
 
     public ValueShelf valueShelf;
     public D20FaceEmissionControl emissionController;
+    public UIValueHitControl uivhc;
 
     private int CurrentFaceValue;
     private readonly Dictionary<Vector3, int> FaceValueLUT = new()
@@ -92,6 +93,7 @@ public class D20Controller : MonoBehaviour
             }
             m_Rigidbody.velocity += Vector3.up * (5 + CurrentFaceValue / 3);
             valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
+            uivhc.HitValue("<color=green>" + CurrentFaceValue.ToString() + "</color>");
             emissionController.NextPattern();
         }
     }
@@ -110,6 +112,7 @@ public class D20Controller : MonoBehaviour
 
             m_Rigidbody.AddForce(dashVector.x, 0, dashVector.y);
             valueShelf.AddValueToShelf(CurrentFaceValue.ToString());
+            uivhc.HitValue("<color=green>" + CurrentFaceValue.ToString() + "</color>");
             emissionController.NextPattern();
         }
     }
