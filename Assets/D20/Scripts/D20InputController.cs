@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.XR;
 
 public class D20InputController : MonoBehaviour
 {
+    public Transform AimDirection;
     public float RollingPower = 1f;
     public float Torque = 1f;
     public float DashPower = 1f;
@@ -44,8 +45,9 @@ public class D20InputController : MonoBehaviour
     void FixedUpdate()
     {
         Vector2 moveVector = Actions.WASD.Move.ReadValue<Vector2>();
-        ForceVector = new Vector3(moveVector.x, 0, moveVector.y) * RollingPower;
-        TorqueVector = new Vector3(moveVector.y, 0f, -moveVector.x) * Torque;
+        Quaternion quat = Quaternion.AngleAxis(AimDirection.eulerAngles.y, Vector3.up);
+        ForceVector = quat * new Vector3(moveVector.x, 0, moveVector.y) * RollingPower;
+        TorqueVector = quat * new Vector3(moveVector.y, 0f, -moveVector.x) * Torque;
 
         Rigidbody.AddForce(ForceVector);
         Rigidbody.AddTorque(TorqueVector);
@@ -64,8 +66,9 @@ public class D20InputController : MonoBehaviour
     {
         if (!Actions.WASD.Move.ReadValue<Vector2>().Equals(Vector2.zero))
         {
+            Quaternion quat = Quaternion.AngleAxis(AimDirection.eulerAngles.y, Vector3.up);
             Vector2 dashVector = Actions.WASD.Move.ReadValue<Vector2>() * DashPower * (Controller.CurrentFaceValue / 2);
-            Rigidbody.AddForce(dashVector.x, 0, dashVector.y);
+            Rigidbody.AddForce(quat * new Vector3(dashVector.x, 0, dashVector.y));
             uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
         }
     }
