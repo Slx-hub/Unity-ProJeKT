@@ -8,7 +8,11 @@ using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class D20Controller : MonoBehaviour
 {
-    public bool IsGrounded { get; private set; }
+    public bool IsGrounded
+    {
+        get { return WallsInContact > 0; }
+    }
+
     public int CurrentFaceValue { get; private set; }
 
     private Rigidbody Rigidbody;
@@ -37,6 +41,7 @@ public class D20Controller : MonoBehaviour
     };
 
     private List<float> AngularVelocities = new();
+    private int WallsInContact = 0;
 
     void Start()
     {
@@ -63,20 +68,20 @@ public class D20Controller : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        IsGrounded = true;
+        WallsInContact++;
     }
 
 
     void OnTriggerExit(Collider other)
     {
-        IsGrounded = false;
+        WallsInContact--;
     }
 
     public override string ToString()
     {
         return "> D20Controller:" +
             "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
-            "\n  Is on ground:\t\t" + IsGrounded.ToString() +
+            "\n  Is on ground:\t\t" + IsGrounded.ToString() + "(" + WallsInContact + ")"+
             "\n  Smooth angular V:\t" + AngularVelocities.Average() +
             "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
     }
