@@ -64,6 +64,7 @@ public class DroneControl : MonoBehaviour
         {
             m_lineRenderer.enabled = false;
             m_lockOnTimer = 0f;
+            m_spawnedProjectiles = 0;
         }
 
         if (m_coolDownTimer > 0f)
