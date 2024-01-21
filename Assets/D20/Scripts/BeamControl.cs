@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BeamControl : MonoBehaviour
@@ -20,7 +21,7 @@ public class BeamControl : MonoBehaviour
     {
         if(Vector3.Distance(transform.position, m_targetPosition) < 0.1f) { gameObject.SetActive(false); return; }
 
-        transform.Translate((m_targetPosition - transform.position).normalized * speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, m_targetPosition, speed * Time.deltaTime);
     }
 
     public void Activate(Vector3 startPosition, Vector3 targetPosition)
