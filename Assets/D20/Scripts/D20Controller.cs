@@ -16,6 +16,7 @@ public class D20Controller : MonoBehaviour
     public int CurrentFaceValue { get; private set; }
 
     private Rigidbody Rigidbody;
+    private Entity entity;
     private readonly Dictionary<Vector3, int> FaceToValueLUT = new()
     {
         { new Vector3(0.15f, -0.46f, 0.63f)  , 11 },
@@ -46,10 +47,14 @@ public class D20Controller : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        entity = GetComponent<Entity>();
     }
 
     void FixedUpdate()
     {
+        if (!entity.IsAlive())
+            return;
+
         AngularVelocities.Add(Rigidbody.angularVelocity.magnitude);
         if (AngularVelocities.Count > 25)
             AngularVelocities.RemoveAt(0);
