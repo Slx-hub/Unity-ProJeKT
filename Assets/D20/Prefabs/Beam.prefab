@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 4267526568905244325}
   - component: {fileID: 5055445248266055591}
   - component: {fileID: 7889136412026428056}
+  - component: {fileID: -1461953258480702431}
   m_Layer: 2
   m_Name: Beam
   m_TagString: Untagged
@@ -234,3 +235,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   yOffset: 49
+--- !u!114 &-1461953258480702431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6137710852717611340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b6a07456080d3b46988a22b0abf3bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
+  collidingTransforms: []
+  interval: 0.2

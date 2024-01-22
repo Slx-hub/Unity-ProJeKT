@@ -94,6 +94,7 @@ public class D20Controller : MonoBehaviour
             "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
             "\n  Is on ground:\t\t" + IsGrounded.ToString() + "(" + WallsInContact + ")"+
             "\n  Smooth angular V:\t" + AngularVelocities.Average() +
-            "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
+            "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude +
+            "\n  Health:\t\t" + entity.Health.ToString();
     }
 }

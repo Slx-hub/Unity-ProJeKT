@@ -6,6 +6,7 @@ public class ProjectileControl : MonoBehaviour
 {
     public Transform target;
     public int speed;
+    public int damage;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +23,13 @@ public class ProjectileControl : MonoBehaviour
     public void SetTarget(Transform t)
     {
         target = t;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.TryGetComponent<Entity>(out var e))
+            e.Hurt(damage);
+
+        GameObject.Destroy(gameObject);
     }
 }

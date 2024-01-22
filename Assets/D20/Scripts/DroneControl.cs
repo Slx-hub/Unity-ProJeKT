@@ -91,7 +91,6 @@ public class DroneControl : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, (target.transform.position - transform.position).normalized, out var raycastHit, float.PositiveInfinity))
         {
-            Debug.Log(raycastHit.collider.gameObject.name);
             if (raycastHit.collider.gameObject.name.Equals("D20"))
                 m_losTimer += Time.deltaTime;
             else
