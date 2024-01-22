@@ -7,8 +7,10 @@ public class JumpController : MonoBehaviour
 {
     public Slider JumpSlider;
     public Slider DashSlider;
+    public AudioSource AudioSource;
     public float CooldownTime = 1f;
     public int ValueThreshold = 5;
+
 
     private float JumpCooldown = 0;
     private float DashCooldown = 0;
@@ -40,6 +42,7 @@ public class JumpController : MonoBehaviour
         if (JumpCooldown >= 1 && ValidatePreconditions())
         {
             JumpCooldown = 0;
+            PlaySound(SoundManager.GetSoundByName("boing"));
             return true;
         }
         return false;
@@ -49,6 +52,7 @@ public class JumpController : MonoBehaviour
         if (DashCooldown >= 1 && ValidatePreconditions())
         {
             DashCooldown = 0;
+            PlaySound(SoundManager.GetSoundByName("woosh"));
             return true;
         }
         return false;
@@ -59,6 +63,14 @@ public class JumpController : MonoBehaviour
         IsEnergized = true;
     }
 
+    private void PlaySound(AudioClip clip)
+    {
+        AudioSource.pitch = Random.Range(0.9f, 1.1f);
+        AudioSource.volume = Random.Range(0.8f, 1f);
+
+        AudioSource.PlayOneShot(clip);
+    }
+
     private bool ValidatePreconditions()
     {
         var result = D20Controller.IsGrounded || IsEnergized && D20Controller.IsPowered;
@@ -66,6 +78,7 @@ public class JumpController : MonoBehaviour
 
         if (result && !D20Controller.IsGrounded && D20Controller.CurrentFaceValue <= ValueThreshold)
         {
+            PlaySound(SoundManager.GetSoundByName("poop"));
             IsEnergized = false;
             JumpCooldown = 0;
             DashCooldown = 0;
