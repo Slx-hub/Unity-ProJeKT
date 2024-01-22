@@ -32,6 +32,10 @@ public class ShowNearestEntity : MonoBehaviour
         {
             var dist = Vector3.Distance(transform.position, entry.transform.position);
             var ent = entry.GetComponent<Entity>();
+
+            if (ent == null)
+                continue;
+
             if (dist < minDist && ent.enabled)
             {
                 minDist = dist;

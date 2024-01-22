@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(LineRenderer))]
 public class DroneControl : MonoBehaviour
 {
-    public Transform target;
+    public GameObject target;
     public float speed;
     public float minLOSTime = 2f;
     public float minLockOnTime = 3f;
@@ -31,7 +31,7 @@ public class DroneControl : MonoBehaviour
         m_fpc.speed= speed;
 
         m_lac= GetComponent<LookAt>();
-        m_lac.target= target;
+        m_lac.target= target.transform;
 
         m_lineRenderer= GetComponent<LineRenderer>();
         m_lineRenderer.enabled = false;
@@ -79,7 +79,7 @@ public class DroneControl : MonoBehaviour
             m_coolDownTimer = timeBetweenProjectiles;
 
             var go = GameObject.Instantiate(projectile, transform.position, Quaternion.identity);
-            go.GetComponent<ProjectileControl>().SetTarget(target);
+            go.GetComponent<ProjectileControl>().SetTarget(target.transform);
         }else
         {
             m_coolDownTimer = coolDown;
@@ -98,5 +98,13 @@ public class DroneControl : MonoBehaviour
         }
         else
             m_losTimer = 0f;
+    }
+
+    public void SetTarget(Transform t)
+    {
+        target = t.gameObject;
+
+        if(m_lac != null)
+            m_lac.target = target.transform;
     }
 }

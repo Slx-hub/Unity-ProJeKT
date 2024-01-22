@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   speed: 50
+  damage: 5
 --- !u!114 &6658102040142958284
 MonoBehaviour:
   m_ObjectHideFlags: 0
