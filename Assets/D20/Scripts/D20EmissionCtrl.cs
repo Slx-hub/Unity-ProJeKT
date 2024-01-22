@@ -14,25 +14,22 @@ public class D20EmissionCtrl : MonoBehaviour
     MeshRenderer LinkedMR;
     Rigidbody LinkedRB;
 
-    private List<float> angularVelocities = new();
+    private D20Controller D20Controller;
 
     // Start is called before the first frame update
     void Start()
     {
         LinkedMR = GetComponent<MeshRenderer>();
         LinkedRB = GetComponent<Rigidbody>();
+        D20Controller = GetComponent<D20Controller>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        angularVelocities.Add(LinkedRB.angularVelocity.magnitude);
-        if (angularVelocities.Count > 50)
-            angularVelocities.RemoveAt(0);
-
-        var color = EmissiveGradient.Evaluate(angularVelocities.Average() / TopSpeed);
+        var color = EmissiveGradient.Evaluate(D20Controller.AngularVelocity / TopSpeed);
         LinkedMR.material.SetColor("_EmissionColor", color);
 
-        PowerLight.enabled = angularVelocities.Average() > 3;
+        PowerLight.enabled = D20Controller.IsPowered;
     }
 }

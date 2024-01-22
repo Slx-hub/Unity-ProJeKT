@@ -16,6 +16,7 @@ public class D20InputController : MonoBehaviour
     private Rigidbody Rigidbody;
     private D20Controller Controller;
     private ComboController ComboController;
+    private JumpController JumpController;
     private UIValueHitControl uivhc;
 
     private Vector3 ForceVector;
@@ -27,6 +28,7 @@ public class D20InputController : MonoBehaviour
         Controller = GetComponent<D20Controller>();
         ComboController = GetComponent<ComboController>();
         uivhc = GetComponent<UIValueHitControl>();
+        JumpController = GetComponent<JumpController>();
     }
 
     void Awake()
@@ -55,7 +57,7 @@ public class D20InputController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (Controller.IsGrounded)
+        if (JumpController.OnJump())
         {
             Rigidbody.velocity += Vector3.up * (5 + Controller.CurrentFaceValue / 3);
             uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
@@ -64,7 +66,7 @@ public class D20InputController : MonoBehaviour
 
     private void OnDash(InputAction.CallbackContext context)
     {
-        if (!Actions.WASD.Move.ReadValue<Vector2>().Equals(Vector2.zero))
+        if (!Actions.WASD.Move.ReadValue<Vector2>().Equals(Vector2.zero) && JumpController.OnDash())
         {
             Quaternion quat = Quaternion.AngleAxis(AimDirection.eulerAngles.y, Vector3.up);
             Vector2 dashVector = Actions.WASD.Move.ReadValue<Vector2>() * DashPower * (Controller.CurrentFaceValue / 2);
