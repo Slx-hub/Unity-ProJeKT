@@ -698,6 +698,20 @@ MonoBehaviour:
   AudioSource: {fileID: 1175874843}
   CooldownTime: 0.5
   ValueThreshold: 9
+--- !u!114 &404170312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404170280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b893c07b622bfbc40bbfd5761bb19b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 2
+  invulernalbe: 0
 --- !u!1 &449827669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -616425000567321769, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}
@@ -948,6 +962,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 404170311}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 404170312}
   m_SourcePrefab: {fileID: 100100000, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
 --- !u!1 &705507993
 GameObject:
@@ -1819,6 +1836,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e22c53d1dd4d784fb453558d1c2f7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sounds:
+  - {fileID: 8300000, guid: ae4892b6234588041b5bcb60d480a7a7, type: 3}
+  - {fileID: 8300000, guid: 78065983417692f479aaaa02dd93115d, type: 3}
+  - {fileID: 8300000, guid: 4a01c8d9f13d670428c2e911bf2babb7, type: 3}
 --- !u!1 &1550189105
 GameObject:
   m_ObjectHideFlags: 0
