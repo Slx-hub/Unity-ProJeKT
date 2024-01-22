@@ -92,6 +92,9 @@ public class D20Controller : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
+            return;
+
         WallsInContact++;
         CollisionListeners.ForEach(a => a.Invoke());
     }
@@ -99,6 +102,9 @@ public class D20Controller : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
+            return;
+
         WallsInContact--;
     }
 
