@@ -94,6 +94,7 @@ public class D20Controller : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
             return;
 

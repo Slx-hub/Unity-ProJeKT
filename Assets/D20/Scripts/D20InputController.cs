@@ -77,7 +77,8 @@ public class D20InputController : MonoBehaviour
 
     private void OnFire(InputAction.CallbackContext context)
     {
-        ComboController.ValidateRoll(Controller.CurrentFaceValue);
+        if (Controller.IsPowered)
+            ComboController.ValidateRoll(Controller.CurrentFaceValue);
     }
 
     private void OnAbility1(InputAction.CallbackContext context)

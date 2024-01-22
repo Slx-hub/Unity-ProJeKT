@@ -65,8 +65,9 @@ public class JumpController : MonoBehaviour
 
     private void PlaySound(AudioClip clip)
     {
-        AudioSource.pitch = Random.Range(0.9f, 1.1f);
-        AudioSource.volume = Random.Range(0.8f, 1f);
+
+        AudioSource.pitch = 0.5f + (1 - D20Controller.CurrentFaceValue / 20f);
+        AudioSource.volume = 0.25f + D20Controller.CurrentFaceValue / 30f;
 
         AudioSource.PlayOneShot(clip);
     }
