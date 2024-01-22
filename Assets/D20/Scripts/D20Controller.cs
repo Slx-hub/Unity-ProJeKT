@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,31 @@ using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class D20Controller : MonoBehaviour
 {
+    public float PoweredThreshold = 3f;
+
     public bool IsGrounded
     {
         get { return WallsInContact > 0; }
+    }
+
+    public bool IsPowered
+    {
+        get { return AngularVelocity > PoweredThreshold; }
+    }
+
+    public float AngularVelocity
+    {
+        get; private set;
+    }
+
+    private List<Action> CollisionListeners = new();
+
+    public Action CollisionListener
+    {
+        set
+        {
+            CollisionListeners.Add(value);
+        }
     }
 
     public int CurrentFaceValue { get; private set; }
@@ -56,8 +79,9 @@ public class D20Controller : MonoBehaviour
             return;
 
         AngularVelocities.Add(Rigidbody.angularVelocity.magnitude);
-        if (AngularVelocities.Count > 25)
+        if (AngularVelocities.Count > 50)
             AngularVelocities.RemoveAt(0);
+        AngularVelocity = AngularVelocities.Average();
 
         float maxDot = 0.0f;
         Vector3 localUp = transform.InverseTransformVector(Vector3.up);
@@ -77,6 +101,7 @@ public class D20Controller : MonoBehaviour
             return;
 
         WallsInContact++;
+        CollisionListeners.ForEach(a => a.Invoke());
     }
 
 
@@ -93,8 +118,13 @@ public class D20Controller : MonoBehaviour
         return "> D20Controller:" +
             "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
             "\n  Is on ground:\t\t" + IsGrounded.ToString() + "(" + WallsInContact + ")"+
+<<<<<<< HEAD
             "\n  Smooth angular V:\t" + AngularVelocities.Average() +
             "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude +
             "\n  Health:\t\t" + entity.Health.ToString();
+=======
+            "\n  Smooth angular V:\t" + AngularVelocity +
+            "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
+>>>>>>> 1ab09c76138d97ab40c29368185616a38bc1a540
     }
 }
