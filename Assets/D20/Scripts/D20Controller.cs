@@ -39,6 +39,7 @@ public class D20Controller : MonoBehaviour
     public int CurrentFaceValue { get; private set; }
 
     private Rigidbody Rigidbody;
+    private Entity entity;
     private readonly Dictionary<Vector3, int> FaceToValueLUT = new()
     {
         { new Vector3(0.15f, -0.46f, 0.63f)  , 11 },
@@ -69,10 +70,14 @@ public class D20Controller : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        entity = GetComponent<Entity>();
     }
 
     void FixedUpdate()
     {
+        if (!entity.IsAlive())
+            return;
+
         AngularVelocities.Add(Rigidbody.angularVelocity.magnitude);
         if (AngularVelocities.Count > 50)
             AngularVelocities.RemoveAt(0);
@@ -113,7 +118,13 @@ public class D20Controller : MonoBehaviour
         return "> D20Controller:" +
             "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
             "\n  Is on ground:\t\t" + IsGrounded.ToString() + "(" + WallsInContact + ")"+
+<<<<<<< HEAD
+            "\n  Smooth angular V:\t" + AngularVelocities.Average() +
+            "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude +
+            "\n  Health:\t\t" + entity.Health.ToString();
+=======
             "\n  Smooth angular V:\t" + AngularVelocity +
             "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
+>>>>>>> 1ab09c76138d97ab40c29368185616a38bc1a540
     }
 }
