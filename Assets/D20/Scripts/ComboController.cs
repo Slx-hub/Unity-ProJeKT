@@ -8,6 +8,7 @@ public class ComboController : MonoBehaviour
 {
     private D20FaceEmissionControl FaceEmissionControl;
     private UIValueHitControl uivhc;
+    private ShowNearestEntity sne;
 
     private ComboDefinition ActiveCombo;
 
@@ -19,6 +20,7 @@ public class ComboController : MonoBehaviour
     {
         FaceEmissionControl = GetComponent<D20FaceEmissionControl>();
         uivhc = GetComponent<UIValueHitControl>();
+        sne = GetComponent<ShowNearestEntity>();
     }
 
     public void StartCombo(string name)
@@ -44,11 +46,13 @@ public class ComboController : MonoBehaviour
     {
         RolledValues.Add(roll);
         uivhc.HitValue("<color=green>" + roll + "</color>");
+        sne.currentTarget.Hurt(roll);
         debugState = "Cleared Stage " + ComboStage;
 
         if (++ComboStage == ActiveCombo.GetStageCount())
         {
             uivhc.HitValue("<color=#FFD400>Total: " + RolledValues.Sum() + "</color>");
+            sne.currentTarget.Hurt(RolledValues.Sum());
             debugState = "Done!";
             ClearState();
             return;
