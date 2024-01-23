@@ -61,6 +61,7 @@ public class Encounter : MonoBehaviour
             ec.AddEvent(1f, ActivateKnockback, true);
             finalKnockback = true;
             lava.yE += 1f;
+            lava.raised = false;
             lava.Raise();
         }
 
@@ -75,13 +76,8 @@ public class Encounter : MonoBehaviour
     private void PylonDestroyed()
     {
         bossShield.Hurt(100, true);
-        var drone = GameObject.Instantiate(dronePrefab);
-        var droneC = drone.GetComponent<DroneControl>();
-        var followPathC = drone.GetComponent<FollowPath>();
-        droneC.SetTarget(d20);
-        followPathC.pathMaker = pathMaker;
-
-        drones.Add(drone);
+        SpawnDrone();
+        ec.AddEvent(10f, SpawnDrone, true);
 
         if (!pylonAAlive && !pylonBAlive && !pylonCAlive)
         {
@@ -90,13 +86,24 @@ public class Encounter : MonoBehaviour
             ec.AddEvent(2f, RaiseLavaPermanently, true);
             beamSpawner.interval = 15f;
             ec.AddEvent(2f, ActivateBeamsPermamently, true);
-            boss.enabled= true;
+            boss.enabled = true;
         }
         else
         {
-            ec.AddEvent(2f, RaiseLava, true);
+            ec.AddEvent(3f, RaiseLava, true);
             ec.AddEvent(15f, ActivateBeams, true);
         }
+    }
+
+    private void SpawnDrone()
+    {
+        var drone = GameObject.Instantiate(dronePrefab);
+        var droneC = drone.GetComponent<DroneControl>();
+        var followPathC = drone.GetComponent<FollowPath>();
+        droneC.SetTarget(d20);
+        followPathC.pathMaker = pathMaker;
+
+        drones.Add(drone);
     }
 
     private void RaiseLava()

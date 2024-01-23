@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 [RequireComponent(typeof(FollowPath))]
 [RequireComponent(typeof(LookAt))]
 [RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(Entity))]
 public class DroneControl : MonoBehaviour
 {
     public GameObject target;
@@ -19,6 +20,7 @@ public class DroneControl : MonoBehaviour
 
     private FollowPath m_fpc;
     private LookAt m_lac;
+    private Entity m_ec;
     private LineRenderer m_lineRenderer;
     public float m_losTimer = 0f;
     public float m_lockOnTimer = 0f;
@@ -35,11 +37,14 @@ public class DroneControl : MonoBehaviour
 
         m_lineRenderer= GetComponent<LineRenderer>();
         m_lineRenderer.enabled = false;
+
+        m_ec=GetComponent<Entity>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(m_ec.Health < 0) enabled= false;
         if(target == null) return;
 
         if (!m_fpc.followPath) m_fpc.Follow();

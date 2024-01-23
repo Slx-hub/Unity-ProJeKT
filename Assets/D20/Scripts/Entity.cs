@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 public class Entity : MonoBehaviour
 {
@@ -40,6 +41,14 @@ public class Entity : MonoBehaviour
                 child.SetParent(null);
                 i--;
             }
+        }
+
+        if (!TryGetComponent<Rigidbody>(out _))
+        {
+            var r = transform.AddComponent<Rigidbody>();
+            r.mass = 1;
+            r.AddForce(new Vector3(Random.value, Random.value, Random.value) * 100f);
+            transform.SetParent(null);
         }
     }
 }
