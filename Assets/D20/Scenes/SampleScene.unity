@@ -330,8 +330,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0020e3e539680a74ea6b1c5ecf492c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositionOffset: {x: 0, y: 0}
   Height: 300
   Width: 300
+  MimimizedHeight: 20
   GUIStyle:
     m_Name: 
     m_Normal:
@@ -399,6 +401,8 @@ MonoBehaviour:
     m_FixedHeight: 0
     m_StretchWidth: 1
     m_StretchHeight: 0
+  Minimized: 0
+  priority: 0
 --- !u!114 &404170311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,6 +1099,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ae4892b6234588041b5bcb60d480a7a7, type: 3}
   - {fileID: 8300000, guid: 78065983417692f479aaaa02dd93115d, type: 3}
   - {fileID: 8300000, guid: 4a01c8d9f13d670428c2e911bf2babb7, type: 3}
+  - {fileID: 8300000, guid: 59059c3ce6b181e42ae92f883877bc47, type: 3}
 --- !u!1 &1550189105
 GameObject:
   m_ObjectHideFlags: 0
