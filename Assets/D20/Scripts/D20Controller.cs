@@ -5,16 +5,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class D20Controller : MonoBehaviour
 {
+    public GameObject ColliderPrefab;
     public float PoweredThreshold = 3f;
 
     public bool IsGrounded
     {
-        get { return WallsInContact > 0; }
+        get { return ObjsInContact > 0; }
     }
 
     public bool IsPowered
@@ -65,13 +67,18 @@ public class D20Controller : MonoBehaviour
     };
 
     private List<float> AngularVelocities = new();
-    private int WallsInContact = 0;
+    private int ObjsInContact = 0;
+    private List<Collider> WallsInContact = new List<Collider>();
 
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
         entity = GetComponent<Entity>();
         AudioSource = this.AddComponent<AudioSource>();
+
+        ColliderPrefab = Instantiate(ColliderPrefab);
+        ColliderPrefab.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomWallTrigger;
+        ColliderPrefab.transform.GetChild(0).GetComponent<CollisionBroadcaster>().onTrigger = OnCustomGroundTrigger;
     }
 
     void FixedUpdate()
@@ -91,33 +98,45 @@ public class D20Controller : MonoBehaviour
                 CurrentFaceValue = entry.Value;
             }
         }
+
     }
 
-    void OnTriggerEnter(Collider other)
+    private void LateUpdate()
+    {
+        ColliderPrefab.transform.position = transform.position;
+    }
+
+    void OnCustomWallTrigger(Collider other, bool entered)
     {
 
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast")
+            || other.gameObject.Equals(this.gameObject))
             return;
 
-        WallsInContact++;
+        if (entered)
+            WallsInContact.Add(other);
+        else
+            WallsInContact.Remove(other);
+    }
+
+
+    void OnCustomGroundTrigger(Collider other, bool entered)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast")
+            || other.gameObject.Equals(this.gameObject))
+            return;
+
+        ObjsInContact += entered ? 1 : -1;
         CollisionListeners.ForEach(a => a.Invoke());
-    }
-
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Ignore Raycast"))
-            return;
-
-        WallsInContact--;
     }
 
     public override string ToString()
     {
         return "> D20Controller:" +
             "\n  Current value:\t\t" + CurrentFaceValue.ToString() +
-            "\n  Is on ground:\t\t" + IsGrounded.ToString() + "(" + WallsInContact + ")"+
-            "\n  Health:\t\t\t" + entity.Health.ToString() +
+            "\n  Is on ground:\t\t" + IsGrounded.ToString() + "(" + ObjsInContact + ")"+
+            "\n  Walls in Contact:\t" + WallsInContact.Count.ToString() +
+            "\n  Health:\t\t\t" + entity?.Health.ToString() +
             "\n  Smooth angular V:\t" + AngularVelocity +
             "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
     }
