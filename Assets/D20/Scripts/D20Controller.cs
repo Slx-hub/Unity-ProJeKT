@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.DefaultInputActions;
@@ -21,10 +22,9 @@ public class D20Controller : MonoBehaviour
         get { return AngularVelocity > PoweredThreshold; }
     }
 
-    public float AngularVelocity
-    {
-        get; private set;
-    }
+    public float AngularVelocity { get; private set; }
+
+    public AudioSource AudioSource { get; private set; }
 
     private List<Action> CollisionListeners = new();
 
@@ -71,6 +71,7 @@ public class D20Controller : MonoBehaviour
     {
         Rigidbody = GetComponent<Rigidbody>();
         entity = GetComponent<Entity>();
+        AudioSource = this.AddComponent<AudioSource>();
     }
 
     void FixedUpdate()

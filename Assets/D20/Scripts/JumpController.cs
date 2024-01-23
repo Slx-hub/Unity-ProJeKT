@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,13 +8,12 @@ public class JumpController : MonoBehaviour
 {
     public Slider JumpSlider;
     public Slider DashSlider;
-    public AudioSource AudioSource;
+    public TextMeshProUGUI Label;
     public float CooldownTime = 1f;
-    public int ValueThreshold = 5;
-
 
     private float JumpCooldown = 0;
     private float DashCooldown = 0;
+    private int ValueThreshold = 0;
     private bool IsEnergized = true;
 
     private D20Controller D20Controller;
@@ -35,6 +35,7 @@ public class JumpController : MonoBehaviour
         }
         JumpSlider.value = JumpCooldown;
         DashSlider.value = DashCooldown;
+        Label.text = ValueThreshold > 0 ? ">" + ValueThreshold : "~";
     }
 
     public bool OnJump()
@@ -61,28 +62,35 @@ public class JumpController : MonoBehaviour
     private void OnCollision()
     {
         IsEnergized = true;
+        ValueThreshold = 0;
     }
 
     private void PlaySound(AudioClip clip)
     {
 
-        AudioSource.pitch = 0.5f + (1 - D20Controller.CurrentFaceValue / 20f);
-        AudioSource.volume = 0.25f + D20Controller.CurrentFaceValue / 30f;
+        D20Controller.AudioSource.pitch = 0.5f + (1 - D20Controller.CurrentFaceValue / 20f);
+        D20Controller.AudioSource.volume = 0.25f + D20Controller.CurrentFaceValue / 30f;
 
-        AudioSource.PlayOneShot(clip);
+        D20Controller.AudioSource.PlayOneShot(clip);
     }
 
     private bool ValidatePreconditions()
     {
         var result = D20Controller.IsGrounded || IsEnergized && D20Controller.IsPowered;
-        IsEnergized |= D20Controller.IsGrounded;
 
-        if (result && !D20Controller.IsGrounded && D20Controller.CurrentFaceValue <= ValueThreshold)
+        if (result && !D20Controller.IsGrounded)
         {
-            PlaySound(SoundManager.GetSoundByName("poop"));
-            IsEnergized = false;
-            JumpCooldown = 0;
-            DashCooldown = 0;
+            if (ValueThreshold < 15)
+            {
+                ValueThreshold += 5;
+            }
+            if (D20Controller.CurrentFaceValue <= ValueThreshold)
+            {
+                PlaySound(SoundManager.GetSoundByName("poop"));
+                IsEnergized = false;
+                JumpCooldown = 0;
+                DashCooldown = 0;
+            }
         }
         return result;
     }
