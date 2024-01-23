@@ -46,13 +46,13 @@ public class ComboController : MonoBehaviour
     {
         RolledValues.Add(roll);
         uivhc.HitValue("<color=green>" + roll + "</color>");
-        sne.currentTarget.Hurt(roll);
+        sne?.currentTarget?.Hurt(roll);
         debugState = "Cleared Stage " + ComboStage;
 
         if (++ComboStage == ActiveCombo.GetStageCount())
         {
             uivhc.HitValue("<color=#FFD400>Total: " + RolledValues.Sum() + "</color>");
-            sne.currentTarget.Hurt(RolledValues.Sum());
+            sne?.currentTarget?.Hurt(RolledValues.Sum());
             debugState = "Done!";
             ClearState();
             return;
