@@ -17,8 +17,10 @@ public class D20FaceEmissionControl : MonoBehaviour
     private List<int> highlightedValues = new();
 
     public AnimationCurve IntensityCurve;
-    public Light PowerLight;
     public float TopSpeed = 5.0f;
+    public Color LightColor;
+
+    private Light PowerLight;
 
     MeshRenderer LinkedMR;
     Rigidbody LinkedRB;
@@ -31,6 +33,8 @@ public class D20FaceEmissionControl : MonoBehaviour
 
         LinkedMR = GetComponent<MeshRenderer>();
         LinkedRB = GetComponent<Rigidbody>();
+        PowerLight = this.AddComponent<Light>();
+        PowerLight.color = LightColor;
 
         m_mesh = GetComponent<MeshFilter>().mesh;
         /*var uvList = new List<Vector2>();
