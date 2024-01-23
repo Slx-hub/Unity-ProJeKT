@@ -29,5 +29,20 @@ public class CameraControl : MonoBehaviour
         CurrentRotation.x = Mathf.Repeat(CurrentRotation.x, 360);
         CurrentRotation.y = Mathf.Clamp(CurrentRotation.y, LowerAngularLimit, UpperAngularLimit);
         transform.rotation = Quaternion.Euler(CurrentRotation.y, CurrentRotation.x, 0);
+
+        if (!Application.isEditor)
+            return;
+
+        if(Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftAlt))
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 }

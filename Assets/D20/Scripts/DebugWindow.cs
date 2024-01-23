@@ -6,22 +6,30 @@ using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class DebugWindow : MonoBehaviour
 {
+    public Vector2Int PositionOffset = Vector2Int.zero;
     public int Height = 400;
     public int Width = 200;
+    public int MimimizedHeight = 20;
     public GUIStyle GUIStyle;
+    public bool Minimized = false;
+    public int priority = 0;
 
     private MonoBehaviour[] allScripts;
 
     void Start()
     {
+        if (!Application.isEditor)
+            gameObject.SetActive(false);
+
         allScripts = gameObject.GetComponents<MonoBehaviour>();
     }
 
     void OnGUI()
     {
-        if (Application.isEditor)
+        var debugTextList = new List<string>();
+
+        if (!Minimized)
         {
-            var debugTextList = new List<string>();
 
             foreach (var script in allScripts)
             {
@@ -30,7 +38,15 @@ public class DebugWindow : MonoBehaviour
                     debugTextList.Add(scriptDump);
             }
 
-            GUI.Box(new Rect(5, 5, Width, Height), string.Join("\n\n", debugTextList), GUIStyle);
+            GUI.Box(new Rect(PositionOffset.x, PositionOffset.y, Width, Height), gameObject.name + ":\n\n" + string.Join("\n\n", debugTextList), GUIStyle);
+            if (GUI.Button(new Rect(PositionOffset.x + Width - 20, PositionOffset.y, 20, MimimizedHeight), "[-]", GUIStyle))
+                Minimized = true;
+        }
+        else
+        {
+            GUI.Box(new Rect(PositionOffset.x, PositionOffset.y, Width, 20), gameObject.name + ":", GUIStyle);
+            if (GUI.Button(new Rect(PositionOffset.x + Width - 20, PositionOffset.y, 20, MimimizedHeight), "[+]", GUIStyle))
+                Minimized = false;
         }
     }
 }
