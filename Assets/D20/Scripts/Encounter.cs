@@ -59,6 +59,8 @@ public class Encounter : MonoBehaviour
         {
             ec.AddEvent(1f, ActivateKnockback, true);
             finalKnockback = true;
+            lava.yE += 1f;
+            lava.Raise();
         }
 
         if(boss.Health < 0)
