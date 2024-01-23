@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Encounter : MonoBehaviour
 {
@@ -66,7 +67,7 @@ public class Encounter : MonoBehaviour
         if(boss.Health < 0)
         {
             lava.gameObject.SetActive(false);
-            beamSpawner.gameObject.SetActive(false);
+            beamSpawner.StopSpawner();
             drones.ForEach(drone => { drone.gameObject.SetActive(false); });
         }
     }
@@ -116,20 +117,33 @@ public class Encounter : MonoBehaviour
 
     private void ActivateBeams()
     {
-        beamSpawner.gameObject.SetActive(true);
+        beamSpawner.StartSpawner();
         ec.AddEvent(45f, DeactivateBeams, true);
     }
     private void ActivateBeamsPermamently()
     {
-        beamSpawner.gameObject.SetActive(true);
+        beamSpawner.StartSpawner();
     }
 
     private void DeactivateBeams()
     {
-        beamSpawner.gameObject.SetActive(false);
+        beamSpawner.StopSpawner();
     }
     private void ActivateKnockback()
     {
         shockWave.gameObject.SetActive(true);
+    }
+
+    public override string ToString()
+    {
+        return "> Encounter:" +
+            "\n  Plyon A:\t\t\t" + (pylonAAlive ? "Alive" : "Dead") +
+            "\n  Plyon B:\t\t\t" + (pylonB ? "Alive" : "Dead") +
+            "\n  Plyon C:\t\t\t" + (pylonC ? "Alive" : "Dead") +
+            "\n\n Lava:\t\t\t" + (lava.IsRaised() ? "Raised" : lava.IsChaningState() ? "In transit" : "Lowered") +
+            "\n Beams:\t\t\t" + (beamSpawner.IsSpawning() ? "Spawning" : "Idle") +
+            "\n Drones active:\t\t" + drones.Count.ToString() +
+            "\n\n Shield Health:\t\t" + bossShield.Health.ToString() +
+            "\n Boss Health:\t\t" + boss.Health.ToString();
     }
 }
