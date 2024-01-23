@@ -145,8 +145,8 @@ public class Encounter : MonoBehaviour
     {
         return "> Encounter:" +
             "\n  Plyon A:\t\t\t" + (pylonAAlive ? "Alive" : "Dead") +
-            "\n  Plyon B:\t\t\t" + (pylonB ? "Alive" : "Dead") +
-            "\n  Plyon C:\t\t\t" + (pylonC ? "Alive" : "Dead") +
+            "\n  Plyon B:\t\t\t" + (pylonBAlive ? "Alive" : "Dead") +
+            "\n  Plyon C:\t\t\t" + (pylonCAlive ? "Alive" : "Dead") +
             "\n\n Lava:\t\t\t" + (lava.IsRaised() ? "Raised" : lava.IsChaningState() ? "In transit" : "Lowered") +
             "\n Beams:\t\t\t" + (beamSpawner.IsSpawning() ? "Spawning" : "Idle") +
             "\n Drones active:\t\t" + drones.Count.ToString() +
