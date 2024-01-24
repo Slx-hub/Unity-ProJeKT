@@ -6,6 +6,8 @@ using UnityEngine.InputSystem.XR;
 
 public class ComboController : MonoBehaviour
 {
+    public float MaxComboStageTime = 10f;
+
     private D20FaceEmissionControl FaceEmissionControl;
     private UIValueHitControl uivhc;
     private ShowNearestEntity sne;
@@ -16,11 +18,24 @@ public class ComboController : MonoBehaviour
     private string debugState = "None";
     private List<int> RolledValues;
 
+    private float innerTimer = 0f;
+
     void Start()
     {
         FaceEmissionControl = GetComponent<D20FaceEmissionControl>();
         uivhc = GetComponent<UIValueHitControl>();
         sne = GetComponent<ShowNearestEntity>();
+    }
+
+    private void Update()
+    {
+        if(innerTimer > MaxComboStageTime)
+        {
+            innerTimer = 0f;
+            ClearState();
+        }
+
+        innerTimer += Time.deltaTime;
     }
 
     public void StartCombo(string name)
@@ -44,6 +59,7 @@ public class ComboController : MonoBehaviour
 
     private void AdvanceStage(int roll)
     {
+        innerTimer= 0f;
         RolledValues.Add(roll);
         uivhc.HitValue("<color=green>" + roll + "</color>");
         sne?.currentTarget?.Hurt(roll);
