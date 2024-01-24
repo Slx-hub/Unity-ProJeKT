@@ -317,6 +317,7 @@ MonoBehaviour:
   AimDirection: {fileID: 1550189107}
   RollingPower: 25
   Torque: 5
+  JumpPower: 1
   DashPower: 200
 --- !u!114 &404170308
 MonoBehaviour:
@@ -418,7 +419,7 @@ MonoBehaviour:
   JumpSlider: {fileID: 228922184}
   DashSlider: {fileID: 455364222}
   Label: {fileID: 92648591}
-  CooldownTime: 0.5
+  CooldownTime: 0.3
 --- !u!1 &449827669 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -616425000567321769, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}

@@ -19,10 +19,17 @@ public class D20Controller : MonoBehaviour
         get { return ObjsInContact > 0; }
     }
 
+    public bool IsContactingWall
+    {
+        get { return WallsInContact.Count > 0; }
+    }
+
     public bool IsPowered
     {
         get { return AngularVelocity > PoweredThreshold; }
     }
+
+    public Collision LastCollision { get; private set; }
 
     public float AngularVelocity { get; private set; }
 
@@ -106,6 +113,13 @@ public class D20Controller : MonoBehaviour
         ColliderPrefab.transform.position = transform.position;
     }
 
+    public Vector3 GetWallDirection()
+    {
+        var collisionPoint = WallsInContact[0].ClosestPoint(transform.position);
+        var collisionNormal = (transform.position - collisionPoint).normalized;
+        return collisionNormal;
+    }
+
     void OnCustomWallTrigger(Collider other, bool entered)
     {
 
@@ -119,6 +133,10 @@ public class D20Controller : MonoBehaviour
             WallsInContact.Remove(other);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        LastCollision = collision;
+    }
 
     void OnCustomGroundTrigger(Collider other, bool entered)
     {

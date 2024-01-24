@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
+
+public enum MoveState
+{
+    Ground, Wall, Air, Failed
+}
 
 public class JumpController : MonoBehaviour
 {
@@ -17,11 +23,13 @@ public class JumpController : MonoBehaviour
     private bool IsEnergized = true;
 
     private D20Controller D20Controller;
+    private Rigidbody Rigidbody;
 
     void Start()
     {
         D20Controller = GetComponent<D20Controller>();
         D20Controller.CollisionListener = OnCollision;
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
     void FixedUpdate()
@@ -38,20 +46,34 @@ public class JumpController : MonoBehaviour
         Label.text = ValueThreshold > 0 ? ">" + ValueThreshold : "~";
     }
 
-    public bool OnJump()
+    public bool OnJump(float jumpPower)
     {
-        if (JumpCooldown >= 1 && ValidatePreconditions())
+        if (JumpCooldown >= 1 && ValidatePreconditions() is var state && !state.Equals(MoveState.Failed))
         {
+            Vector3 jumpVector;
+            if (state.Equals(MoveState.Wall))
+            {
+                var normal = GetWallDirection();
+                jumpVector = new Vector3(normal.x, 1, normal.z);
+                Rigidbody.angularVelocity = Vector3.Reflect(Rigidbody.angularVelocity, normal);
+            }
+            else
+                jumpVector = Vector3.up;
+            Rigidbody.velocity += jumpVector * jumpPower;
+
             JumpCooldown = 0;
             PlaySound(SoundManager.GetSoundByName("boing"), true);
             return true;
         }
         return false;
     }
-    public bool OnDash()
+
+    public bool OnDash(Vector3 direction)
     {
-        if (DashCooldown >= 1 && ValidatePreconditions())
+        if (DashCooldown >= 1 && ValidatePreconditions() is var state && !state.Equals(MoveState.Failed))
         {
+            Rigidbody.AddForce(direction);
+
             DashCooldown = 0;
             PlaySound(SoundManager.GetSoundByName("woosh"), true);
             return true;
@@ -65,6 +87,12 @@ public class JumpController : MonoBehaviour
         if (ValueThreshold > 0)
             PlaySound(SoundManager.GetSoundByName("woop"), false);
         ValueThreshold = 0;
+    }
+
+    private Vector3 GetWallDirection()
+    {
+        var contactPoint = D20Controller.LastCollision.GetContact(0);
+        return new Vector3 (contactPoint.normal.x, 0, contactPoint.normal.z).normalized * -1;
     }
 
     private void PlaySound(AudioClip clip, bool changePitch)
@@ -82,24 +110,31 @@ public class JumpController : MonoBehaviour
         D20Controller.AudioSource.PlayOneShot(clip);
     }
 
-    private bool ValidatePreconditions()
+    private MoveState ValidatePreconditions()
     {
-        var result = D20Controller.IsGrounded || IsEnergized && D20Controller.IsPowered;
+        if (D20Controller.IsGrounded)
+            return MoveState.Ground;
 
-        if (result && !D20Controller.IsGrounded)
+        var isReady = IsEnergized && D20Controller.IsPowered;
+
+        if (isReady)
         {
+            if (D20Controller.IsContactingWall)
+                return MoveState.Wall;
+
             if (D20Controller.CurrentFaceValue <= ValueThreshold)
             {
                 PlaySound(SoundManager.GetSoundByName("poop"), true);
                 IsEnergized = false;
                 JumpCooldown = 0;
                 DashCooldown = 0;
+                return MoveState.Failed;
             }
             if (ValueThreshold < 16)
             {
                 ValueThreshold += 8;
             }
         }
-        return result;
+        return isReady ? MoveState.Air : MoveState.Failed;
     }
 }

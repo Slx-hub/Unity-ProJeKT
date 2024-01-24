@@ -10,6 +10,7 @@ public class D20InputController : MonoBehaviour
     public Transform AimDirection;
     public float RollingPower = 1f;
     public float Torque = 1f;
+    public float JumpPower = 1f;
     public float DashPower = 1f;
 
     private DefaultActionsWrapper Actions;
@@ -57,21 +58,20 @@ public class D20InputController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (JumpController.OnJump())
-        {
-            Rigidbody.velocity += Vector3.up * (5 + Controller.CurrentFaceValue / 3);
+        if (JumpController.OnJump(JumpPower * (5 + Controller.CurrentFaceValue / 3)))
             uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
-        }
     }
 
     private void OnDash(InputAction.CallbackContext context)
     {
-        if (!Actions.WASD.Move.ReadValue<Vector2>().Equals(Vector2.zero) && JumpController.OnDash())
+        var direction = Actions.WASD.Move.ReadValue<Vector2>();
+        if (!direction.Equals(Vector2.zero))
         {
-            Quaternion quat = Quaternion.AngleAxis(AimDirection.eulerAngles.y, Vector3.up);
-            Vector2 dashVector = Actions.WASD.Move.ReadValue<Vector2>() * DashPower * (Controller.CurrentFaceValue / 2);
-            Rigidbody.AddForce(quat * new Vector3(dashVector.x, 0, dashVector.y));
-            uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
+            var quat = Quaternion.AngleAxis(AimDirection.eulerAngles.y, Vector3.up);
+            var moveDir = Actions.WASD.Move.ReadValue<Vector2>() * DashPower * (Controller.CurrentFaceValue / 2);
+            var dashVector = quat * new Vector3(moveDir.x, 0, moveDir.y);
+            if (JumpController.OnDash(dashVector))
+                uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
         }
     }
 
