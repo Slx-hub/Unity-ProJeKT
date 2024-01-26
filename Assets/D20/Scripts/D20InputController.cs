@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 
 public class D20InputController : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class D20InputController : MonoBehaviour
         Actions.WASD.Ability1.performed += OnAbility1;
         Actions.WASD.Ability2.performed += OnAbility2;
         Actions.WASD.Ability3.performed += OnAbility3;
+
+        Actions.WASD.ReloadScene.performed += 
+            c => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void FixedUpdate()

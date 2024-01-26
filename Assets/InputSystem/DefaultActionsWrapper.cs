@@ -89,6 +89,15 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload Scene"",
+                    ""type"": ""Button"",
+                    ""id"": ""201db1a9-0505-46aa-8aa5-39759d1f3262"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,17 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
                     ""action"": ""Ability3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a232da6e-fcbf-4221-b79c-2bcf78155949"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload Scene"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -343,6 +363,7 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
         m_WASD_Ability1 = m_WASD.FindAction("Ability1", throwIfNotFound: true);
         m_WASD_Ability2 = m_WASD.FindAction("Ability2", throwIfNotFound: true);
         m_WASD_Ability3 = m_WASD.FindAction("Ability3", throwIfNotFound: true);
+        m_WASD_ReloadScene = m_WASD.FindAction("Reload Scene", throwIfNotFound: true);
         // New action map
         m_Newactionmap = asset.FindActionMap("New action map", throwIfNotFound: true);
         m_Newactionmap_Newaction = m_Newactionmap.FindAction("New action", throwIfNotFound: true);
@@ -414,6 +435,7 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
     private readonly InputAction m_WASD_Ability1;
     private readonly InputAction m_WASD_Ability2;
     private readonly InputAction m_WASD_Ability3;
+    private readonly InputAction m_WASD_ReloadScene;
     public struct WASDActions
     {
         private @DefaultActionsWrapper m_Wrapper;
@@ -425,6 +447,7 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
         public InputAction @Ability1 => m_Wrapper.m_WASD_Ability1;
         public InputAction @Ability2 => m_Wrapper.m_WASD_Ability2;
         public InputAction @Ability3 => m_Wrapper.m_WASD_Ability3;
+        public InputAction @ReloadScene => m_Wrapper.m_WASD_ReloadScene;
         public InputActionMap Get() { return m_Wrapper.m_WASD; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -455,6 +478,9 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
             @Ability3.started += instance.OnAbility3;
             @Ability3.performed += instance.OnAbility3;
             @Ability3.canceled += instance.OnAbility3;
+            @ReloadScene.started += instance.OnReloadScene;
+            @ReloadScene.performed += instance.OnReloadScene;
+            @ReloadScene.canceled += instance.OnReloadScene;
         }
 
         private void UnregisterCallbacks(IWASDActions instance)
@@ -480,6 +506,9 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
             @Ability3.started -= instance.OnAbility3;
             @Ability3.performed -= instance.OnAbility3;
             @Ability3.canceled -= instance.OnAbility3;
+            @ReloadScene.started -= instance.OnReloadScene;
+            @ReloadScene.performed -= instance.OnReloadScene;
+            @ReloadScene.canceled -= instance.OnReloadScene;
         }
 
         public void RemoveCallbacks(IWASDActions instance)
@@ -552,6 +581,7 @@ public partial class @DefaultActionsWrapper: IInputActionCollection2, IDisposabl
         void OnAbility1(InputAction.CallbackContext context);
         void OnAbility2(InputAction.CallbackContext context);
         void OnAbility3(InputAction.CallbackContext context);
+        void OnReloadScene(InputAction.CallbackContext context);
     }
     public interface INewactionmapActions
     {
