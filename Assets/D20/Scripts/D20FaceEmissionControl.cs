@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(MeshRenderer))]
@@ -19,6 +20,7 @@ public class D20FaceEmissionControl : MonoBehaviour
     public AnimationCurve IntensityCurve;
     public float TopSpeed = 5.0f;
     public Color LightColor;
+    public Image UIGlowBG;
 
     private Light PowerLight;
 
@@ -92,7 +94,9 @@ public class D20FaceEmissionControl : MonoBehaviour
         var intensity = IntensityCurve.Evaluate(angularVelocities.Average() / TopSpeed);
         LinkedMR.material.SetFloat("_BorderEmissionIntensity", intensity);
 
-        PowerLight.enabled = angularVelocities.Average() > 3;
+        var isPowered = angularVelocities.Average() > 3;
+        PowerLight.enabled = isPowered;
+        UIGlowBG.enabled = isPowered;
     }
 
     public bool IsValueActive(int val)

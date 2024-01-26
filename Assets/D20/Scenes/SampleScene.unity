@@ -266,6 +266,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   TopSpeed: 5
   LightColor: {r: 0.9772253, g: 1, b: 0, a: 0}
+  UIGlowBG: {fileID: 1096171134}
   maxTime: 0.5
   tface: 0
 --- !u!114 &404170302
@@ -302,6 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d52d5a8b4d5244f863bc53e45e774b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxComboStageTime: 10
 --- !u!114 &404170305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,6 +539,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f49b6c5d671738c44abc3a8d28b3aac5, type: 2}
     - target: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_Name
       value: D20
@@ -862,6 +872,17 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &1096171134 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 41867998065554712, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
+  m_PrefabInstance: {fileID: 6801328452234395372}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1278102942
 GameObject:
   m_ObjectHideFlags: 0
