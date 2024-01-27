@@ -77,6 +77,8 @@ public class D20Controller : MonoBehaviour
     private int ObjsInContact = 0;
     private List<Collider> WallsInContact = new List<Collider>();
 
+    public Transform groundCollider;
+
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
@@ -85,7 +87,8 @@ public class D20Controller : MonoBehaviour
 
         ColliderPrefab = Instantiate(ColliderPrefab);
         ColliderPrefab.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomWallTrigger;
-        ColliderPrefab.transform.GetChild(0).GetComponent<CollisionBroadcaster>().onTrigger = OnCustomGroundTrigger;
+        groundCollider = ColliderPrefab.transform.GetChild(0);
+        groundCollider.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomGroundTrigger;
     }
 
     void FixedUpdate()

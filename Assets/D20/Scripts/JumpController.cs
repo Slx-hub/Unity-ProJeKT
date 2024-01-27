@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.Hierarchy;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
@@ -17,6 +19,8 @@ public class JumpController : MonoBehaviour
     public TextMeshProUGUI Label;
     public float CooldownTime = 1f;
 
+    public float SphereCastRadius = 1f;
+
     private float JumpCooldown = 0;
     private float DashCooldown = 0;
     private int ValueThreshold = 0;
@@ -24,12 +28,18 @@ public class JumpController : MonoBehaviour
 
     private D20Controller D20Controller;
     private Rigidbody Rigidbody;
+    private OverlapingSphereTest olst;
+
+    //Only for debug porpuses
+    private MoveState currentMoveState;
+    private Vector3 wallJumpNormal = Vector3.zero;
 
     void Start()
     {
         D20Controller = GetComponent<D20Controller>();
         D20Controller.CollisionListener = OnCollision;
         Rigidbody = GetComponent<Rigidbody>();
+        olst = GetComponent<OverlapingSphereTest>();
     }
 
     void FixedUpdate()
@@ -53,13 +63,16 @@ public class JumpController : MonoBehaviour
             Vector3 jumpVector;
             if (state.Equals(MoveState.Wall))
             {
-                var normal = GetWallDirection();
+                //var normal = GetWallDirection();
+                var normal = wallJumpNormal;
                 jumpVector = new Vector3(normal.x, 1, normal.z);
-                Rigidbody.angularVelocity = Vector3.Reflect(Rigidbody.angularVelocity, normal);
+                //Rigidbody.angularVelocity = Vector3.Reflect(Rigidbody.angularVelocity, normal);
             }
             else
                 jumpVector = Vector3.up;
+
             Rigidbody.velocity += jumpVector * jumpPower;
+            Rigidbody.angularVelocity += new Vector3(jumpVector.z, jumpVector.y, -jumpVector.x) * jumpPower;
 
             JumpCooldown = 0;
             PlaySound(SoundManager.GetSoundByName("boing"), true);
@@ -113,14 +126,23 @@ public class JumpController : MonoBehaviour
     private MoveState ValidatePreconditions()
     {
         if (D20Controller.IsGrounded)
+        {
+            currentMoveState = MoveState.Ground;
             return MoveState.Ground;
+        }
 
         var isReady = IsEnergized && D20Controller.IsPowered;
 
         if (isReady)
         {
-            if (D20Controller.IsContactingWall)
+            if (olst.TestForCollisions(out var hit))
+            {
+                wallJumpNormal = hit.HitNormal;
+                currentMoveState = MoveState.Wall;
                 return MoveState.Wall;
+            }
+            else
+                wallJumpNormal = Vector3.zero;
 
             if (D20Controller.CurrentFaceValue <= ValueThreshold)
             {
@@ -128,6 +150,7 @@ public class JumpController : MonoBehaviour
                 IsEnergized = false;
                 JumpCooldown = 0;
                 DashCooldown = 0;
+                currentMoveState = MoveState.Failed;
                 return MoveState.Failed;
             }
             if (ValueThreshold < 16)
@@ -135,6 +158,15 @@ public class JumpController : MonoBehaviour
                 ValueThreshold += 8;
             }
         }
+
+        currentMoveState = isReady ? MoveState.Air : MoveState.Failed;
         return isReady ? MoveState.Air : MoveState.Failed;
+    }
+
+    public override string ToString()
+    {
+        return ">JumpControler:" +
+            "\n\n MoveState:\t\t" + currentMoveState.ToString() +
+            "\n Normal:\t\t" + wallJumpNormal.ToString() ;
     }
 }
