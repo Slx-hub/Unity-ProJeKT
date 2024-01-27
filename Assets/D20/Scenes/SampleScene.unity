@@ -1287,6 +1287,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 78065983417692f479aaaa02dd93115d, type: 3}
   - {fileID: 8300000, guid: 4a01c8d9f13d670428c2e911bf2babb7, type: 3}
   - {fileID: 8300000, guid: 59059c3ce6b181e42ae92f883877bc47, type: 3}
+  - {fileID: 8300000, guid: 4c0730d09d7159d4da0f64f725c7a214, type: 3}
 --- !u!1 &1538411464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1453,8 +1454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 404170285}
-  XYDampening: 1
-  ZDampening: 1
+  Lerp: 10
   MouseSensitivity: 1
   UpperAngularLimit: 80
   LowerAngularLimit: -30

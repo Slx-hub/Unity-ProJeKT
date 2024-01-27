@@ -5,8 +5,7 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour
 {
     public Transform Target;
-    public float XYDampening = 1;
-    public float ZDampening = 1;
+    public float Lerp = 10;
     public float MouseSensitivity = 1;
     public float UpperAngularLimit = 80;
     public float LowerAngularLimit = -30;
@@ -23,7 +22,8 @@ public class CameraControl : MonoBehaviour
 
     void Update()
     {
-        transform.position = Target.position + Vector3.up * ZOffset;
+        var targetPos = Target.position + Vector3.up * ZOffset;
+        transform.position = Vector3.Lerp(transform.position, targetPos, Lerp * Time.deltaTime);
         CurrentRotation.x += Input.GetAxis("Mouse X") * MouseSensitivity;
         CurrentRotation.y -= Input.GetAxis("Mouse Y") * MouseSensitivity;
         CurrentRotation.x = Mathf.Repeat(CurrentRotation.x, 360);
