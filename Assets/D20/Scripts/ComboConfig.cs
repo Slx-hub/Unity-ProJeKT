@@ -9,6 +9,7 @@ public class ComboConfig : MonoBehaviour
 
     private void Start()
     {
+        DefinitionDict.Clear();
         LoadComboDefinitions();
     }
 
