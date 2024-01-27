@@ -8,6 +8,7 @@ public class ComboController : MonoBehaviour
 {
     public float MaxComboStageTime = 10f;
 
+    private D20Controller D20Controller;
     private D20FaceEmissionControl FaceEmissionControl;
     private UIValueHitControl uivhc;
     private ShowNearestEntity sne;
@@ -22,6 +23,7 @@ public class ComboController : MonoBehaviour
 
     void Start()
     {
+        D20Controller = GetComponent<D20Controller>();
         FaceEmissionControl = GetComponent<D20FaceEmissionControl>();
         uivhc = GetComponent<UIValueHitControl>();
         sne = GetComponent<ShowNearestEntity>();
@@ -33,9 +35,13 @@ public class ComboController : MonoBehaviour
         {
             innerTimer = 0f;
             ClearState();
+            D20Controller.PlaySoundRandomPitch("cough");
         }
 
-        innerTimer += Time.deltaTime;
+        if (ActiveCombo != null)
+        {
+            innerTimer += Time.deltaTime;
+        }
     }
 
     public void StartCombo(string name)
@@ -88,6 +94,7 @@ public class ComboController : MonoBehaviour
     {
         ActiveCombo = null;
         ComboStage = 0;
+        innerTimer = 0f;
         RolledValues = new List<int>();
         FaceEmissionControl.ClearHighlight();
     }

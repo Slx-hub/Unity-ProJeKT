@@ -75,7 +75,7 @@ public class JumpController : MonoBehaviour
             Rigidbody.angularVelocity += new Vector3(jumpVector.z, jumpVector.y, -jumpVector.x) * jumpPower;
 
             JumpCooldown = 0;
-            PlaySound(SoundManager.GetSoundByName("boing"), true);
+            PlaySound("boing", true);
             return true;
         }
         return false;
@@ -88,7 +88,7 @@ public class JumpController : MonoBehaviour
             Rigidbody.AddForce(direction);
 
             DashCooldown = 0;
-            PlaySound(SoundManager.GetSoundByName("woosh"), true);
+            PlaySound("woosh", true);
             return true;
         }
         return false;
@@ -98,7 +98,7 @@ public class JumpController : MonoBehaviour
     {
         IsEnergized = true;
         if (ValueThreshold > 0)
-            PlaySound(SoundManager.GetSoundByName("woop"), false);
+            PlaySound("woop", false);
         ValueThreshold = 0;
     }
 
@@ -108,19 +108,18 @@ public class JumpController : MonoBehaviour
         return new Vector3 (contactPoint.normal.x, 0, contactPoint.normal.z).normalized * -1;
     }
 
-    private void PlaySound(AudioClip clip, bool changePitch)
+    private void PlaySound(string clip, bool changePitch)
     {
         if (changePitch)
         {
             D20Controller.AudioSource.pitch = 0.5f + (1 - D20Controller.CurrentFaceValue / 20f);
             D20Controller.AudioSource.volume = 0.25f + D20Controller.CurrentFaceValue / 30f;
+            D20Controller.AudioSource.PlayOneShot(SoundManager.GetSoundByName(clip));
         } else
         {
-            D20Controller.AudioSource.pitch = 1f;
-            D20Controller.AudioSource.volume = 1f;
+            D20Controller.PlaySoundRandomPitch(clip);
         }
-
-        D20Controller.AudioSource.PlayOneShot(clip);
+        
     }
 
     private MoveState ValidatePreconditions()
@@ -146,7 +145,7 @@ public class JumpController : MonoBehaviour
 
             if (D20Controller.CurrentFaceValue <= ValueThreshold)
             {
-                PlaySound(SoundManager.GetSoundByName("poop"), true);
+                PlaySound("poop", true);
                 IsEnergized = false;
                 JumpCooldown = 0;
                 DashCooldown = 0;

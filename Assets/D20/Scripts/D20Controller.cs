@@ -1,13 +1,8 @@
-using JetBrains.Annotations;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.DefaultInputActions;
 
 public class D20Controller : MonoBehaviour
 {
@@ -160,5 +155,12 @@ public class D20Controller : MonoBehaviour
             "\n  Health:\t\t\t" + entity?.Health.ToString() +
             "\n  Smooth angular V:\t" + AngularVelocity +
             "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
+    }
+
+    public void PlaySoundRandomPitch(string sound)
+    {
+        AudioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+        AudioSource.volume = UnityEngine.Random.Range(0.9f, 1f);
+        AudioSource.PlayOneShot(SoundManager.GetSoundByName(sound));
     }
 }
