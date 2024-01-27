@@ -25,6 +25,9 @@ public class RigidbodyDebug : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (rigidbody == null)
+            rigidbody = GetComponent<Rigidbody>();
+
         var vel = rigidbody.velocity;
         var aVel = rigidbody.angularVelocity;
 
