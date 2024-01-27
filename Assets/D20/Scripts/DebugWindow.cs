@@ -38,13 +38,16 @@ public class DebugWindow : MonoBehaviour
                     debugTextList.Add(scriptDump);
             }
 
-            GUI.Box(new Rect(PositionOffset.x, PositionOffset.y, Width, Height), gameObject.name + ":\n\n" + string.Join("\n\n", debugTextList), GUIStyle);
+            string debugText = string.Join("\n\n", debugTextList);
+            float neededHeigth = 18 * debugText.Where(c => c == '\n').Count();
+
+            GUI.Box(new Rect(PositionOffset.x, PositionOffset.y, Width, neededHeigth), gameObject.name + ":\n\n" + debugText, GUIStyle);
             if (GUI.Button(new Rect(PositionOffset.x + Width - 20, PositionOffset.y, 20, MimimizedHeight), "[-]", GUIStyle))
                 Minimized = true;
         }
         else
         {
-            GUI.Box(new Rect(PositionOffset.x, PositionOffset.y, Width, 20), gameObject.name + ":", GUIStyle);
+            GUI.Box(new Rect(PositionOffset.x, PositionOffset.y, Width, MimimizedHeight), gameObject.name + ":", GUIStyle);
             if (GUI.Button(new Rect(PositionOffset.x + Width - 20, PositionOffset.y, 20, MimimizedHeight), "[+]", GUIStyle))
                 Minimized = false;
         }
