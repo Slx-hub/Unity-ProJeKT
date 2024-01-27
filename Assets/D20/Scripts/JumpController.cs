@@ -72,7 +72,8 @@ public class JumpController : MonoBehaviour
                 jumpVector = Vector3.up;
 
             Rigidbody.velocity += jumpVector * jumpPower;
-            Rigidbody.angularVelocity += new Vector3(jumpVector.z, jumpVector.y, -jumpVector.x) * jumpPower;
+            var quat = Quaternion.FromToRotation(Vector3.up, Vector3.right);
+            Rigidbody.angularVelocity = quat * jumpVector * jumpPower;
 
             JumpCooldown = 0;
             PlaySound("boing", true);

@@ -30,7 +30,6 @@ public class DebugWindow : MonoBehaviour
 
         if (!Minimized)
         {
-
             foreach (var script in allScripts)
             {
                 var scriptDump = script.ToString();
