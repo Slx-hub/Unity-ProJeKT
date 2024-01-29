@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1828452517508964570}
   - component: {fileID: 2606957053056528367}
   - component: {fileID: 4802012014235961410}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: GroundTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
