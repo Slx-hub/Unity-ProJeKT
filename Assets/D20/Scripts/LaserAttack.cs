@@ -40,7 +40,7 @@ namespace Assets.D20.Scripts
         private List<Vector3> m_targetOffsets = new List<Vector3>();
         public override void Use(AbilityControler ac, int roll, Transform target, Canvas canvas)
         {
-            m_numsLasers = roll * 8;
+            m_numsLasers = roll / 4;
             m_ac = ac;
             m_as = GetComponent<AudioSource>();
             m_c = canvas;
