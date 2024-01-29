@@ -67,13 +67,14 @@ public class JumpController : MonoBehaviour
                 var normal = wallJumpNormal;
                 jumpVector = new Vector3(normal.x, 1, normal.z);
                 //Rigidbody.angularVelocity = Vector3.Reflect(Rigidbody.angularVelocity, normal);
+                //var quat = Quaternion.FromToRotation(transform.up, -transform.right);
+                var torqueVector = new Vector3(normal.z, 0f, -normal.x);
+                Rigidbody.angularVelocity = torqueVector * jumpPower;
             }
             else
                 jumpVector = Vector3.up;
 
             Rigidbody.velocity += jumpVector * jumpPower;
-            var quat = Quaternion.FromToRotation(Vector3.up, Vector3.right);
-            Rigidbody.angularVelocity = quat * jumpVector * jumpPower;
 
             JumpCooldown = 0;
             PlaySound("boing", true);

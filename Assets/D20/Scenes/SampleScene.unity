@@ -219,7 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ColliderPrefab: {fileID: 6245572070564826734, guid: 56a9b6002fdb0b048a586c29cb8b01f5, type: 3}
   PoweredThreshold: 3
-  wallCollider: {fileID: 0}
+  groundCollider: {fileID: 0}
 --- !u!114 &404170299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +393,7 @@ MonoBehaviour:
       m_Top: 0
       m_Bottom: 0
     m_Font: {fileID: 0}
-    m_FontSize: 0
+    m_FontSize: 12
     m_FontStyle: 0
     m_Alignment: 0
     m_WordWrap: 0
@@ -540,11 +540,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.915
+      value: 2.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.873
+      value: -5.51
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1850,10 +1850,6 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -313357782113029143, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 377835631865979511, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
