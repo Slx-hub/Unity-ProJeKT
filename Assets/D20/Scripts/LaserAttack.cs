@@ -40,7 +40,7 @@ namespace Assets.D20.Scripts
         private List<Vector3> m_targetOffsets = new List<Vector3>();
         public override void Use(AbilityControler ac, int roll, Transform target, Canvas canvas)
         {
-            m_numsLasers = roll / 4;
+            m_numsLasers = roll * 8;
             m_ac = ac;
             m_as = GetComponent<AudioSource>();
             m_c = canvas;
@@ -64,7 +64,11 @@ namespace Assets.D20.Scripts
             var uiwpc = go.GetComponent<UIWorldPosition>();
             var crt = m_c.GetComponent<RectTransform>();
 
-            uiwpc.worldPosition = m_target.transform.position + UnityEngine.Random.Range(0f, 1f) * new Vector3(0.75f, 0.75f, 0.75f);
+            uiwpc.worldPosition = m_target.transform.position +
+                new Vector3(UnityEngine.Random.Range(-1f, 1f) * 0.75f,
+                UnityEngine.Random.Range(-1f, 1f) * 0.75f,
+                UnityEngine.Random.Range(-1f, 1f) * 0.75f);
+
             uiwpc.canvasRect = crt.rect;
             uiwpc.cam = Camera.main;
 
