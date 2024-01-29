@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Intersection
-  m_Shader: {fileID: -6465566751694194690, guid: 69114a298deccef4880dbc17a9fa00f7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 1b5e564bcc98b564eae38b4971aeddfe, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -47,9 +47,11 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _CastShadows: 1
+    - _Clip: 0.25
     - _Cull: 0
     - _DstBlend: 10
     - _IntersectionDepth: 1.73
+    - _Power: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1

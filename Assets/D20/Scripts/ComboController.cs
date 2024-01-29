@@ -53,14 +53,20 @@ public class ComboController : MonoBehaviour
         debugState = "Doing " + name;
     }
 
-    public void ValidateRoll(int roll)
+    public bool ValidateRoll(int roll)
     {
-        if (ActiveCombo == null) return;
+        if (ActiveCombo == null) return false;
 
         if (GetCurrentStageValues().Contains(roll))
+        {
             AdvanceStage(roll);
+            return true;
+        }
         else
+        {
             FailCombo(roll);
+            return false;
+        }
     }
 
     private void AdvanceStage(int roll)
