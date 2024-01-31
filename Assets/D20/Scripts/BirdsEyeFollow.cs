@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class BirdsEyeFollow : MonoBehaviour
 {
-    public GameObject target;
+    public Transform target;
     public Transform CameraRotation;
     public float height;
     // Start is called before the first frame update
     void Start()
     {
-        
+        EventBroker<OnNetworkCreateEvent>.SubscribeChannel(SwitchTarget);
+    }
+
+    public void SwitchTarget(OnNetworkCreateEvent onEvent)
+    {
+        if (onEvent.cause.IsOwner)
+        {
+            target = onEvent.cause.transform;
+        }
     }
 
     // Update is called once per frame

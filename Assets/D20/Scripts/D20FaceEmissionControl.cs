@@ -96,7 +96,8 @@ public class D20FaceEmissionControl : MonoBehaviour
 
         var isPowered = angularVelocities.Average() > 3;
         PowerLight.enabled = isPowered;
-        UIGlowBG.enabled = isPowered;
+        if (UIGlowBG != null)
+            UIGlowBG.enabled = isPowered;
     }
 
     public bool IsValueActive(int val)

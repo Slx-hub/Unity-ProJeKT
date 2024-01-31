@@ -9,19 +9,25 @@ public class CameraControl : MonoBehaviour
     public float MouseSensitivity = 1;
     public float UpperAngularLimit = 80;
     public float LowerAngularLimit = -30;
+    public float VerticalOffset = 1.5f;
+    public float HorizontalOffset = 4;
 
-    private float ZOffset;
     private Vector2 CurrentRotation;
-    private Transform camera;
-    private float cameraDistance;
+    private Transform cameraTransform;
 
     void Awake()
     {
-        ZOffset = transform.position.y - Target.position.y;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        camera = transform.GetChild(0);
-        cameraDistance = camera.localPosition.z;
+        cameraTransform = transform.GetChild(0);
+
+        EventBroker<OnNetworkCreateEvent>.SubscribeChannel(SwitchTarget);
+    }
+
+    public void SwitchTarget(OnNetworkCreateEvent onEvent)
+    {
+        if ( onEvent.cause.IsOwner)
+        {
+            Target = onEvent.cause.transform;
+        }
     }
 
     void Update()
@@ -29,12 +35,11 @@ public class CameraControl : MonoBehaviour
         UpdatePosition();
         UpdateMouse();
         CollideWithScene();
-        ShowCursorOnAlt();
     }
 
     private void UpdatePosition()
     {
-        var targetPos = Target.position + Vector3.up * ZOffset;
+        var targetPos = Target.position + Vector3.up * VerticalOffset;
         transform.position = Vector3.Lerp(transform.position, targetPos, Lerp * Time.deltaTime);
     }
 
@@ -50,31 +55,13 @@ public class CameraControl : MonoBehaviour
     private void CollideWithScene()
     {
         RaycastHit hit = new RaycastHit();
-        if (Physics.Raycast(transform.position, -transform.forward, out hit, Mathf.Abs(cameraDistance)))
+        if (Physics.Raycast(transform.position, -transform.forward, out hit, HorizontalOffset))
         {
-            camera.localPosition = new Vector3(0, 0, -hit.distance);
+            cameraTransform.localPosition = new Vector3(0, 0, -hit.distance);
         }
         else
         {
-            camera.localPosition = new Vector3(0, 0, cameraDistance);
-        }
-    }
-
-    private void ShowCursorOnAlt()
-    {
-        if (!Application.isEditor)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftAlt))
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            cameraTransform.localPosition = new Vector3(0, 0, -HorizontalOffset);
         }
     }
 }

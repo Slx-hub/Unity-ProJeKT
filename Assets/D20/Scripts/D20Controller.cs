@@ -72,7 +72,7 @@ public class D20Controller : MonoBehaviour
     private int ObjsInContact = 0;
     private List<Collider> WallsInContact = new List<Collider>();
 
-    public Transform groundCollider;
+    private Transform groundCollider;
 
     void Start()
     {
@@ -80,7 +80,7 @@ public class D20Controller : MonoBehaviour
         entity = GetComponent<Entity>();
         AudioSource = this.AddComponent<AudioSource>();
 
-        ColliderPrefab = Instantiate(ColliderPrefab);
+        ColliderPrefab = Instantiate(ColliderPrefab,transform.parent);
         ColliderPrefab.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomWallTrigger;
         groundCollider = ColliderPrefab.transform.GetChild(0);
         groundCollider.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomGroundTrigger;

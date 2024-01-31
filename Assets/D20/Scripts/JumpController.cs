@@ -51,9 +51,12 @@ public class JumpController : MonoBehaviour
             if (DashCooldown < 1)
                 DashCooldown += Time.deltaTime / CooldownTime;
         }
-        JumpSlider.value = JumpCooldown;
-        DashSlider.value = DashCooldown;
-        Label.text = ValueThreshold > 0 ? ">" + ValueThreshold : "~";
+        if (JumpSlider != null)
+        {
+            JumpSlider.value = JumpCooldown;
+            DashSlider.value = DashCooldown;
+            Label.text = ValueThreshold > 0 ? ">" + ValueThreshold : "~";
+        }
     }
 
     public bool OnJump(float jumpPower)

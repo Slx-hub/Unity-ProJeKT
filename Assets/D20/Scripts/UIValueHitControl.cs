@@ -16,6 +16,11 @@ public class UIValueHitControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (parentCanvas == null)
+        {
+            this.enabled = false;
+            return;
+        }
         for (int i = 0; i < initialPoolSize; i++)
             EnlargePool();
     }
@@ -33,13 +38,14 @@ public class UIValueHitControl : MonoBehaviour
                 var rect = go.GetComponent<RectTransform>();
                 rect.position += Vector3.up * upSpeed * Time.deltaTime + Vector3.right * phasees[i % phasees.Length] * Time.deltaTime;
             }
-            else if (go.active) { go.SetActive(false); go.GetComponent<RectTransform>().SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity); }
+            else if (go.activeSelf) { go.SetActive(false); go.GetComponent<RectTransform>().SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity); }
         }
     }
 
     public void HitValue(string text)
     {
-        var go = uiTextFieldPool.FirstOrDefault(x => !x.Key.active).Key ?? EnlargePool();
+        if (!enabled) return;
+        var go = uiTextFieldPool.FirstOrDefault(x => !x.Key.activeSelf).Key ?? EnlargePool();
         go.SetActive(true);
         go.GetComponent<TextMeshProUGUI>().text= text;
         uiTextFieldPool[go] = 5f;

@@ -19,7 +19,7 @@ public class DebugWindow : MonoBehaviour
     void Start()
     {
         if (!Application.isEditor)
-            gameObject.SetActive(false);
+            this.enabled = false;
 
         allScripts = gameObject.GetComponents<MonoBehaviour>();
     }

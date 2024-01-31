@@ -30,7 +30,7 @@ public class TimerController : MonoBehaviour
         if (!ActivateTimer)
             gameObject.SetActive(false);
         DisplayText = transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        TimerNotifier.AddListener(this);
+        TimerNotifier?.AddListener(this);
     }
 
     void FixedUpdate()
