@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-
 public class EventBroker<T> where T : EventType
 {
     private static List<Action<T>> listeners = new();
