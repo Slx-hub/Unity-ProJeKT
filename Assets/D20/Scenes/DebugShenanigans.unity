@@ -316,7 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d80191415c9f049914672740bafacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AimDirection: {fileID: 1550189107}
   RollingPower: 25
   Torque: 5
   JumpPower: 1
@@ -456,6 +455,26 @@ MonoBehaviour:
     m_StretchHeight: 0
   Minimized: 0
   priority: 0
+--- !u!114 &404170321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404170280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1814697756
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &455364222 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6162985747014709909, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
@@ -552,6 +571,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 404170288}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 404170321}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 404170305}
@@ -1116,6 +1138,8 @@ MonoBehaviour:
   MouseSensitivity: 1
   UpperAngularLimit: 80
   LowerAngularLimit: -80
+  VerticalOffset: 1.5
+  HorizontalOffset: 4
 --- !u!4 &1550189107
 Transform:
   m_ObjectHideFlags: 0
@@ -1375,7 +1399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51bd9146e3d643e418ac53246e354788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 404170280}
+  target: {fileID: 404170285}
   CameraRotation: {fileID: 1550189107}
   height: 2
 --- !u!1001 &1678404382983583092
