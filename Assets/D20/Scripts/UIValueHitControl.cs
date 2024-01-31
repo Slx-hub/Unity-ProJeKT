@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class UIValueHitControl : MonoBehaviour
 {
-    public Canvas Canvas;
     public GameObject uiTextTemplate;
     public int initialPoolSize = 3;
     public float upSpeed;
     public float[] phasees = new float[] { -79f, 55.5f, -92.75f, -3.94f, 71.3f };
 
+    private Canvas Canvas;
     private Dictionary<GameObject, float> uiTextFieldPool = new();
     // Start is called before the first frame update
     void Start()
