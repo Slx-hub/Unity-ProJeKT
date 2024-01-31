@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.ShaderData;
 
 namespace Assets.D20.Scripts
 {
