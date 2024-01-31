@@ -21,6 +21,7 @@ public class D20InputController : NetworkBehaviour
     private JumpController JumpController;
     private UIValueHitControl uivhc;
     private Transform CameraTransform;
+    private AbilityControler ac;
 
     private Vector3 ForceVector;
     private Vector3 TorqueVector;
@@ -32,6 +33,7 @@ public class D20InputController : NetworkBehaviour
         ComboController = GetComponent<ComboController>();
         uivhc = GetComponent<UIValueHitControl>();
         JumpController = GetComponent<JumpController>();
+        ac = GetComponent<AbilityControler>();
         CameraTransform = Camera.main.transform;
 
         Cursor.visible = false;
@@ -98,12 +100,16 @@ public class D20InputController : NetworkBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         if (Controller.IsPowered)
-            ComboController.ValidateRoll(Controller.CurrentFaceValue);
+        {
+            if( ComboController.ValidateRoll(Controller.CurrentFaceValue))
+                ac.NextRoll(Controller.CurrentFaceValue);
+        }
     }
 
     private void OnAbility1(InputAction.CallbackContext context)
     {
         ComboController.StartCombo("TestCombo1");
+        ac.UseAbility1();
     }
 
     private void OnAbility2(InputAction.CallbackContext context)
