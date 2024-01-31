@@ -941,6 +941,7 @@ GameObject:
   - component: {fileID: 7433863766173364850}
   - component: {fileID: 1007878749258851964}
   - component: {fileID: 6827113186799293506}
+  - component: {fileID: 4209070048951015282}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -1037,6 +1038,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4209070048951015282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922321555973810760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26965d49126faea4b9b196f3ab3f7be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  JumpSlider: {fileID: 7728002729030431539}
+  DashSlider: {fileID: 6162985747014709909}
+  JumpValueLabel: {fileID: 4101104225846043718}
+  UIGlowBG: {fileID: 41867998065554712}
 --- !u!1 &6532168883166241418
 GameObject:
   m_ObjectHideFlags: 0

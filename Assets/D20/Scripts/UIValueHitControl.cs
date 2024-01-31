@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class UIValueHitControl : MonoBehaviour
 {
-    public Canvas parentCanvas;
+    public Canvas Canvas;
     public GameObject uiTextTemplate;
     public int initialPoolSize = 3;
     public float upSpeed;
@@ -16,13 +16,11 @@ public class UIValueHitControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (parentCanvas == null)
-        {
-            this.enabled = false;
-            return;
-        }
+        Canvas = GetComponent<Canvas>();
         for (int i = 0; i < initialPoolSize; i++)
             EnlargePool();
+
+        EventBroker<OnHitValueEvent>.SubscribeChannel(HitValue);
     }
 
     // Update is called once per frame
@@ -42,9 +40,14 @@ public class UIValueHitControl : MonoBehaviour
         }
     }
 
-    public void HitValue(string text)
+    public void HitValue(OnHitValueEvent @event)
     {
-        if (!enabled) return;
+        var text = "";
+        if (@event.Color != null)
+            text = $"<color={@event.Color}>{@event.HitValue}</color>";
+        else
+            text = @event.HitValue;
+
         var go = uiTextFieldPool.FirstOrDefault(x => !x.Key.activeSelf).Key ?? EnlargePool();
         go.SetActive(true);
         go.GetComponent<TextMeshProUGUI>().text= text;
@@ -53,7 +56,7 @@ public class UIValueHitControl : MonoBehaviour
 
     private GameObject EnlargePool()
     {
-        var go = GameObject.Instantiate(uiTextTemplate, parentCanvas.transform);
+        var go = GameObject.Instantiate(uiTextTemplate, Canvas.transform);
         go.SetActive(false);
         //go.transform.position = uiTextTemplate.transform.position;
         //go.transform.localScale = uiTextTemplate.transform.localScale;

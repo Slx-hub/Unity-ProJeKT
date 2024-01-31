@@ -16,10 +16,10 @@ public class SpawnManager : MonoBehaviour
 
     void SetSpawnPoint(OnNetworkCreateEvent onEvent)
     {
-        if (onEvent.cause.IsOwner)
+        if (onEvent.Root.IsOwner)
         {
             var target = respawns[Random.Range(0, respawns.Length)];
-            onEvent.cause.transform.position = target.transform.position;
+            onEvent.Root.transform.position = target.transform.position;
         }
     }
 }

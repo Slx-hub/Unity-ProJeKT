@@ -5,7 +5,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 
-public class EventBroker<T> where T : EventType
+public class EventBroker<T>
 {
     private static List<Action<T>> listeners = new();
 
@@ -25,24 +25,16 @@ public class EventBroker<T> where T : EventType
     }
 }
 
-public class EventChannel<T> where T : EventType
-{
+public record OnNetworkCreateEvent(NetworkBehaviour Root);
 
+public record OnHitValueEvent(string HitValue, string Color)
+{
+    public OnHitValueEvent(string HitValue) : this(HitValue, null) { }
 }
 
-public interface EventType
+
+
+namespace System.Runtime.CompilerServices
 {
-
-}
-
-public class OnNetworkCreateEvent : EventType
-{
-    public NetworkBehaviour cause;
-    public bool isOwner;
-
-    public OnNetworkCreateEvent(NetworkBehaviour cause, bool isOwner)
-    {
-        this.cause = cause;
-        this.isOwner = isOwner;
-    }
+    internal static class IsExternalInit { }
 }

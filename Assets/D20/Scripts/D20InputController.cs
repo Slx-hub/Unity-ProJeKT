@@ -55,7 +55,7 @@ public class D20InputController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        EventBroker<OnNetworkCreateEvent>.PublishEvent(new OnNetworkCreateEvent(this, IsOwner));
+        EventBroker<OnNetworkCreateEvent>.PublishEvent(new OnNetworkCreateEvent(this));
         if (!IsOwner)
         {
             enabled = false;
@@ -81,7 +81,7 @@ public class D20InputController : NetworkBehaviour
     private void OnJump(InputAction.CallbackContext context)
     {
         if (JumpController.OnJump(JumpPower * (5 + Controller.CurrentFaceValue / 3)))
-            uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
+            EventBroker<OnHitValueEvent>.PublishEvent(new (Controller.CurrentFaceValue.ToString(), "#555555"));
     }
 
     private void OnDash(InputAction.CallbackContext context)
@@ -93,7 +93,7 @@ public class D20InputController : NetworkBehaviour
             var moveDir = Actions.WASD.Move.ReadValue<Vector2>() * DashPower * (Controller.CurrentFaceValue / 2);
             var dashVector = quat * new Vector3(moveDir.x, 0, moveDir.y);
             if (JumpController.OnDash(dashVector))
-                uivhc.HitValue("<color=#555555>" + Controller.CurrentFaceValue.ToString() + "</color>");
+                EventBroker<OnHitValueEvent>.PublishEvent(new(Controller.CurrentFaceValue.ToString(), "#555555"));
         }
     }
 
@@ -102,14 +102,14 @@ public class D20InputController : NetworkBehaviour
         if (Controller.IsPowered)
         {
             if( ComboController.ValidateRoll(Controller.CurrentFaceValue))
-                ac.NextRoll(Controller.CurrentFaceValue);
+                ac?.NextRoll(Controller.CurrentFaceValue);
         }
     }
 
     private void OnAbility1(InputAction.CallbackContext context)
     {
         ComboController.StartCombo("TestCombo1");
-        ac.UseAbility1();
+        ac?.UseAbility1();
     }
 
     private void OnAbility2(InputAction.CallbackContext context)

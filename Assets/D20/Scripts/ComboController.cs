@@ -73,13 +73,13 @@ public class ComboController : MonoBehaviour
     {
         innerTimer= 0f;
         RolledValues.Add(roll);
-        uivhc.HitValue("<color=green>" + roll + "</color>");
+        EventBroker<OnHitValueEvent>.PublishEvent(new(roll.ToString(), "green"));
         sne?.currentTarget?.Hurt(roll);
         debugState = "Cleared Stage " + ComboStage;
 
         if (++ComboStage == ActiveCombo.GetStageCount())
         {
-            uivhc.HitValue("<color=#FFD400>Total: " + RolledValues.Sum() + "</color>");
+            EventBroker<OnHitValueEvent>.PublishEvent(new("Total: " + RolledValues.Sum(), "#FFD400"));
             sne?.currentTarget?.Hurt(RolledValues.Sum());
             debugState = "Done!";
             ClearState();
@@ -92,7 +92,7 @@ public class ComboController : MonoBehaviour
     {
         ClearState();
         if (roll > 0)
-            uivhc.HitValue("<color=red>" + roll + "</color>");
+            EventBroker<OnHitValueEvent>.PublishEvent(new(roll.ToString(), "red"));
         debugState = "Failed";
     }
 

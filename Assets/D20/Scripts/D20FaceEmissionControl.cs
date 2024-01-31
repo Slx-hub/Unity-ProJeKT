@@ -20,7 +20,6 @@ public class D20FaceEmissionControl : MonoBehaviour
     public AnimationCurve IntensityCurve;
     public float TopSpeed = 5.0f;
     public Color LightColor;
-    public Image UIGlowBG;
 
     private Light PowerLight;
 
@@ -96,8 +95,6 @@ public class D20FaceEmissionControl : MonoBehaviour
 
         var isPowered = angularVelocities.Average() > 3;
         PowerLight.enabled = isPowered;
-        if (UIGlowBG != null)
-            UIGlowBG.enabled = isPowered;
     }
 
     public bool IsValueActive(int val)

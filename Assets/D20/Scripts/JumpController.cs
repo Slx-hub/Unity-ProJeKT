@@ -14,17 +14,14 @@ public enum MoveState
 
 public class JumpController : MonoBehaviour
 {
-    public Slider JumpSlider;
-    public Slider DashSlider;
-    public TextMeshProUGUI Label;
     public float CooldownTime = 1f;
 
     public float SphereCastRadius = 1f;
 
-    private float JumpCooldown = 0;
-    private float DashCooldown = 0;
-    private int ValueThreshold = 0;
-    private bool IsEnergized = true;
+    public float JumpCooldown { get; private set; }
+    public float DashCooldown { get; private set; }
+    public int ValueThreshold { get; private set; }
+    public bool IsEnergized { get; private set; }
 
     private D20Controller D20Controller;
     private Rigidbody Rigidbody;
@@ -50,12 +47,6 @@ public class JumpController : MonoBehaviour
                 JumpCooldown += Time.deltaTime / CooldownTime;
             if (DashCooldown < 1)
                 DashCooldown += Time.deltaTime / CooldownTime;
-        }
-        if (JumpSlider != null)
-        {
-            JumpSlider.value = JumpCooldown;
-            DashSlider.value = DashCooldown;
-            Label.text = ValueThreshold > 0 ? ">" + ValueThreshold : "~";
         }
     }
 

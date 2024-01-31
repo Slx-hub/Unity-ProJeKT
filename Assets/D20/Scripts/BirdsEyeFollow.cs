@@ -15,9 +15,9 @@ public class BirdsEyeFollow : MonoBehaviour
 
     public void SwitchTarget(OnNetworkCreateEvent onEvent)
     {
-        if (onEvent.cause.IsOwner)
+        if (onEvent.Root.IsOwner)
         {
-            target = onEvent.cause.transform;
+            target = onEvent.Root.transform;
         }
     }
 

@@ -24,9 +24,9 @@ public class CameraControl : MonoBehaviour
 
     public void SwitchTarget(OnNetworkCreateEvent onEvent)
     {
-        if ( onEvent.cause.IsOwner)
+        if ( onEvent.Root.IsOwner)
         {
-            Target = onEvent.cause.transform;
+            Target = onEvent.Root.transform;
         }
     }
 
