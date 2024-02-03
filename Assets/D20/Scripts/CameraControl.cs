@@ -32,15 +32,16 @@ public class CameraControl : MonoBehaviour
 
     void Update()
     {
-        UpdatePosition();
         UpdateMouse();
+        UpdatePosition();
         CollideWithScene();
     }
 
     private void UpdatePosition()
     {
         var targetPos = Target.position + Vector3.up * VerticalOffset;
-        transform.position = Vector3.Lerp(transform.position, targetPos, Lerp * Time.deltaTime);
+        //transform.position = Vector3.Lerp(transform.position, targetPos, Lerp * Time.deltaTime);
+        transform.position = targetPos;
     }
 
     private void UpdateMouse()
