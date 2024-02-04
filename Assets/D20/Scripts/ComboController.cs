@@ -4,14 +4,20 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
+public interface ComboListener
+{
+    void OnComboStageAdvance(int roll);
+
+    void OnComboComplete(int total);
+}
+
 public class ComboController : MonoBehaviour
 {
     public float MaxComboStageTime = 10f;
+    public ComboListener ComboListener {  get; set; }
 
     private D20Controller D20Controller;
     private D20FaceEmissionControl FaceEmissionControl;
-    private UIValueHitControl uivhc;
-    private ShowNearestEntity sne;
 
     private ComboDefinition ActiveCombo;
 
@@ -25,8 +31,6 @@ public class ComboController : MonoBehaviour
     {
         D20Controller = GetComponent<D20Controller>();
         FaceEmissionControl = GetComponent<D20FaceEmissionControl>();
-        uivhc = GetComponent<UIValueHitControl>();
-        sne = GetComponent<ShowNearestEntity>();
     }
 
     private void Update()
@@ -73,14 +77,14 @@ public class ComboController : MonoBehaviour
     {
         innerTimer= 0f;
         RolledValues.Add(roll);
+        ComboListener.OnComboStageAdvance(roll);
         EventBroker<OnHitValueEvent>.PublishEvent(new(roll.ToString(), "green"));
-        sne?.currentTarget?.Hurt(roll);
         debugState = "Cleared Stage " + ComboStage;
 
         if (++ComboStage == ActiveCombo.GetStageCount())
         {
+            ComboListener.OnComboComplete(roll);
             EventBroker<OnHitValueEvent>.PublishEvent(new("Total: " + RolledValues.Sum(), "#FFD400"));
-            sne?.currentTarget?.Hurt(RolledValues.Sum());
             debugState = "Done!";
             ClearState();
             return;

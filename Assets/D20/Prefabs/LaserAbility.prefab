@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790fbb2dd0c19f948bf92f020d011338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FiresOnComboAdvance: 1
+  FiresOnComboComplete: 1
+  AttachToParent: 1
   LockOnIndicator: {fileID: 8811774981728447220, guid: d145d479520e89549a7d8fe49c9badf9, type: 3}
   LineRendererPrefab: {fileID: 5804293620711568213, guid: b3ce11c48d4a44149a7254c06032d1f2, type: 3}
   laserGradient:

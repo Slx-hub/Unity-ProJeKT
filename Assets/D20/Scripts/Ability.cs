@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
-public class Ability : MonoBehaviour
+public abstract class Ability : MonoBehaviour
 {
-    public virtual void Use(AbilityControler ac, int roll, Transform target, Canvas canvas)
-    {
+    public bool FiresOnComboAdvance;
+    public bool FiresOnComboComplete;
+    public bool AttachToParent;
 
-    }
+    public virtual void ComboAdvanced(AbilityControler ac, int roll, Transform target, Canvas canvas) { }
+    public virtual void ComboComplete(AbilityControler ac, int roll, Transform target, Canvas canvas) { }
 }

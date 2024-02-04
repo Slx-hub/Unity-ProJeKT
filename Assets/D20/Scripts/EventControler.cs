@@ -12,7 +12,8 @@ public class EventControler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        var comboController = GetComponent<ComboController>();
+
     }
 
     // Update is called once per frame

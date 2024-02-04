@@ -37,17 +37,26 @@ namespace Assets.D20.Scripts
         private List<GameObject> tidyUp = new List<GameObject>();
         private List<ParabolicTrajectory> m_pts = new List<ParabolicTrajectory>();
         private List<Vector3> m_targetOffsets = new List<Vector3>();
-        public override void Use(AbilityControler ac, int roll, Transform target, Canvas canvas)
+
+        public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Canvas canvas)
+            => Use(ac, roll, target, canvas);
+
+        public override void ComboComplete(AbilityControler ac, int total, Transform target, Canvas canvas)
+            => Use(ac, total, target, canvas);
+
+        private void Use(AbilityControler ac, int val, Transform target, Canvas canvas)
         {
-            m_numsLasers = roll / 4;
+            m_numsLasers = val / 4;
             m_ac = ac;
             m_as = GetComponent<AudioSource>();
             m_c = canvas;
             m_target= target;
 
-            for(int i = 0; i < m_numsLasers; i++)
+            m_ac.sne.currentTarget.Hurt(val);
+
+            for (int i = 0; i < m_numsLasers; i++)
             {
-                m_ac.ec.AddEvent(i*timeBetweenLasers, LockOnTargetCallback, true);
+                m_ac.GetEventControler().AddEvent(i*timeBetweenLasers, LockOnTargetCallback, true);
             }
         }
 
@@ -56,7 +65,7 @@ namespace Assets.D20.Scripts
             if (tidyUp.Count == 0)
             {
                 for(int i = 0; i < m_numsLasers; i++)
-                    m_ac.ec.AddEvent(timeBetweenFirstLockonAndFire, StartLaserCallback, true);
+                    m_ac.GetEventControler().AddEvent(timeBetweenFirstLockonAndFire, StartLaserCallback, true);
             }
 
             var go = GameObject.Instantiate(LockOnIndicator, m_c.transform);
@@ -98,7 +107,7 @@ namespace Assets.D20.Scripts
 
             if (m_pts.Count == 1)
             {
-                m_ac.ec.AddEvent(timeToAdvanceLeaser, AdvanceLaser, true);
+                m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser, AdvanceLaser, true);
                 m_as.PlayOneShot(fireLaserAudio);
             }
         }
@@ -107,13 +116,13 @@ namespace Assets.D20.Scripts
         {
             m_pts.ForEach(pt => pt.Begin());
             
-            m_ac.ec.AddEvent(laserHitTime, Hit, true);
+            m_ac.GetEventControler().AddEvent(laserHitTime, Hit, true);
         }
 
         public void Hit()
         {
             m_as.PlayOneShot(hitLaserAudio);
-            m_ac.ec.AddEvent(laserTime, TidyUpLasers, true);
+            m_ac.GetEventControler().AddEvent(laserTime, TidyUpLasers, true);
         }
 
         public void TidyUpLasers()
@@ -123,7 +132,7 @@ namespace Assets.D20.Scripts
 
             m_pts.ForEach(pt => GameObject.Destroy(pt.gameObject));
 
-            m_ac.ec.AddEvent(3f, Die, true);
+            m_ac.GetEventControler().AddEvent(3f, Die, true);
         }
 
         public void Die()
