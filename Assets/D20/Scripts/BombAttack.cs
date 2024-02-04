@@ -20,7 +20,7 @@ public class BombAttack : Ability
 
         var velocity = owner.GetComponent<Rigidbody>().velocity;
         velocity += Quaternion.AngleAxis(-30, camera.right) * camera.forward * FirePower;
-        GetComponent<Rigidbody>().velocity = velocity;
+        GetComponent<Rigidbody>().velocity += velocity;
     }
 
     private void OnCollisionEnter(Collision collision)

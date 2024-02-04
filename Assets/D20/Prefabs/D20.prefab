@@ -18,11 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.74
+      value: 1.49
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.51
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       propertyPath: m_LocalRotation.w
@@ -109,6 +109,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9112490487964832304}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8603286488907395812}
   m_SourcePrefab: {fileID: 100100000, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
 --- !u!1 &1333537093353975041 stripped
 GameObject:
@@ -176,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 148714823
+  GlobalObjectIdHash: 2202790916
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -408,3 +411,19 @@ MonoBehaviour:
   LayerMask:
     serializedVersion: 2
     m_Bits: 128
+--- !u!114 &8603286488907395812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333537093353975041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55ebe9e0e36fa7b408506e3c03cbbc39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ab1: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
+  ab2: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
+  ab3: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
+  UICanvas: {fileID: 0}

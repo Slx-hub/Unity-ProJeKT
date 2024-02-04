@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class AbilityControler : MonoBehaviour, ComboListener
+public class AbilityControler : NetworkBehaviour, ComboListener
 {
     public Ability ab1;
     public Ability ab2;
@@ -53,6 +54,7 @@ public class AbilityControler : MonoBehaviour, ComboListener
         {
             var parent = selectedAbility.AttachToParent ? transform : null;
             currentActiveAbility = GameObject.Instantiate(ab1, transform.position, Quaternion.identity, parent);
+            currentActiveAbility.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId, true);
             currentActiveAbility.ComboAdvanced(this, roll, GetTargetNullable(), UICanvas);
         }
     }
@@ -63,6 +65,7 @@ public class AbilityControler : MonoBehaviour, ComboListener
         {
             var parent = selectedAbility.AttachToParent ? transform : null;
             currentActiveAbility = GameObject.Instantiate(ab1, transform.position, Quaternion.identity, parent);
+            currentActiveAbility.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId, true);
             currentActiveAbility.ComboComplete(this, total, GetTargetNullable(), UICanvas);
         }
     }
