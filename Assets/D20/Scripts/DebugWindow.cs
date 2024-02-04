@@ -32,6 +32,8 @@ public class DebugWindow : MonoBehaviour
         {
             foreach (var script in allScripts)
             {
+                if (!script.enabled) continue;
+
                 var scriptDump = script.ToString();
                 if (scriptDump.StartsWith(">"))
                     debugTextList.Add(scriptDump);

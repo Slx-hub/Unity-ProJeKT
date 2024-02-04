@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class D20Controller : MonoBehaviour
+public class D20Controller : NetworkBehaviour
 {
     public GameObject ColliderPrefab;
     public float PoweredThreshold = 3f;
@@ -26,7 +28,8 @@ public class D20Controller : MonoBehaviour
 
     public Collision LastCollision { get; private set; }
 
-    public float AngularVelocity { get; private set; }
+    private NetworkVariable<float> m_angularVelocity = new(writePerm: NetworkVariableWritePermission.Owner);
+    public float AngularVelocity { get => m_angularVelocity.Value;}
 
     public AudioSource AudioSource { get; private set; }
 
@@ -43,6 +46,7 @@ public class D20Controller : MonoBehaviour
     public int CurrentFaceValue { get; private set; }
 
     private Rigidbody Rigidbody;
+    private NetworkRigidbody NetworkRigidbody;
     private Entity entity;
     private readonly Dictionary<Vector3, int> FaceToValueLUT = new()
     {
@@ -77,6 +81,7 @@ public class D20Controller : MonoBehaviour
     void Start()
     {
         Rigidbody = GetComponent<Rigidbody>();
+        NetworkRigidbody = GetComponent<NetworkRigidbody>();
         entity = GetComponent<Entity>();
         AudioSource = this.AddComponent<AudioSource>();
 
@@ -86,13 +91,21 @@ public class D20Controller : MonoBehaviour
         groundCollider.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomGroundTrigger;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            enabled = false;
+        }
+    }
+
     void FixedUpdate()
     {
         AngularVelocities.Add(Rigidbody.angularVelocity.magnitude);
         if (AngularVelocities.Count > 50)
             AngularVelocities.RemoveAt(0);
-        AngularVelocity = AngularVelocities.Average();
-
+        m_angularVelocity.Value = AngularVelocities.Average();
+                    
         float maxDot = 0.0f;
         Vector3 localUp = transform.InverseTransformVector(Vector3.up);
         foreach (var entry in FaceToValueLUT)
@@ -101,7 +114,7 @@ public class D20Controller : MonoBehaviour
             {
                 maxDot = Vector3.Dot(entry.Key, localUp);
                 CurrentFaceValue = entry.Value;
-            }
+            }       
         }
 
     }

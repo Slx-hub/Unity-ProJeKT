@@ -22,18 +22,14 @@ public class D20FaceEmissionControl : MonoBehaviour
     public Color LightColor;
 
     private Light PowerLight;
-
-    MeshRenderer LinkedMR;
-    Rigidbody LinkedRB;
-
-    private List<float> angularVelocities = new();
+    private MeshRenderer LinkedMR;
+    private D20Controller D20Controller;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        D20Controller = GetComponent<D20Controller>();
         LinkedMR = GetComponent<MeshRenderer>();
-        LinkedRB = GetComponent<Rigidbody>();
         PowerLight = this.AddComponent<Light>();
         PowerLight.color = LightColor;
 
@@ -86,15 +82,10 @@ public class D20FaceEmissionControl : MonoBehaviour
 
     void FixedUpdate()
     {
-        angularVelocities.Add(LinkedRB.angularVelocity.magnitude);
-        if (angularVelocities.Count > 50)
-            angularVelocities.RemoveAt(0);
-
-        var intensity = IntensityCurve.Evaluate(angularVelocities.Average() / TopSpeed);
+        var intensity = IntensityCurve.Evaluate(D20Controller.AngularVelocity / TopSpeed);
         LinkedMR.material.SetFloat("_BorderEmissionIntensity", intensity);
 
-        var isPowered = angularVelocities.Average() > 3;
-        PowerLight.enabled = isPowered;
+        PowerLight.enabled = D20Controller.IsPowered;
     }
 
     public bool IsValueActive(int val)
