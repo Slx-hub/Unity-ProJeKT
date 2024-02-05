@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 978148438751922804}
   - component: {fileID: 8698546356202793055}
   - component: {fileID: 4505978914197030830}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BombAbility
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,6 +126,7 @@ MonoBehaviour:
   FiresOnComboAdvance: 0
   FiresOnComboComplete: 1
   AttachToParent: 0
+  Explosion: {fileID: 2575864570090718150, guid: 2994e8b2578c4a1428d69420479156f6, type: 3}
   FirePower: 20
 --- !u!82 &599607757866356731
 AudioSource:
@@ -5097,7 +5098,7 @@ GameObject:
   - component: {fileID: 7121574370255728336}
   - component: {fileID: 3697382981503272079}
   - component: {fileID: 3338265113919288731}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
