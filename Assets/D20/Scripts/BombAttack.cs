@@ -9,7 +9,7 @@ public class BombAttack : Ability
 {
     public GameObject Explosion;
     public float FirePower = 20;
-    private float damage;
+    private int damage;
     private ulong ownerid;
 
     public override void ComboComplete(AbilityControler ac, int roll, Transform target, Canvas canvas, ulong ownerid)
@@ -38,6 +38,7 @@ public class BombAttack : Ability
     {
         var explosion = GameObject.Instantiate(Explosion, transform.position, Quaternion.identity);
         explosion.GetComponent<NetworkObject>().SpawnWithOwnership(ownerid, true);
+        explosion.GetComponent<Explosion>().Damage = damage;
         Destroy(gameObject);
     }
 }
