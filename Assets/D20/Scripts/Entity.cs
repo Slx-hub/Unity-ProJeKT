@@ -8,9 +8,11 @@ public class Entity : MonoBehaviour
 {
     public int Health;
     public bool invulernalbe = false;
+    public int MaxHealth { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
+        MaxHealth = Health;
     }
 
     // Update is called once per frame

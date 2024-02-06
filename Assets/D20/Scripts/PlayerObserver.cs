@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class PlayerObserver : MonoBehaviour
 {
     public GameObject Target;
+    public Slider HealthSlider;
     public Slider JumpSlider;
     public Slider DashSlider;
     public TextMeshProUGUI JumpValueLabel;
@@ -31,6 +32,9 @@ public class PlayerObserver : MonoBehaviour
         if (Target == null) return;
 
         var jumpScript = Target.GetComponent<JumpController>();
+        var entityScript = Target.GetComponent<Entity>();
+        if (entityScript is not null)
+            HealthSlider.value = (float)entityScript.Health / entityScript.MaxHealth;
         JumpSlider.value = jumpScript.JumpCooldown;
         DashSlider.value = jumpScript.DashCooldown;
         JumpValueLabel.text = jumpScript.ValueThreshold > 0 ? ">" + jumpScript.ValueThreshold : "~";

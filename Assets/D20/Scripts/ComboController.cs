@@ -83,7 +83,7 @@ public class ComboController : MonoBehaviour
 
         if (++ComboStage == ActiveCombo.GetStageCount())
         {
-            ComboListener.OnComboComplete(roll);
+            ComboListener.OnComboComplete(RolledValues.Sum());
             EventBroker<OnHitValueEvent>.PublishEvent(new("Total: " + RolledValues.Sum(), "#FFD400"));
             debugState = "Done!";
             ClearState();

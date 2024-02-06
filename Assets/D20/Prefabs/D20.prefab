@@ -112,6 +112,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8603286488907395812}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8783339068502328288}
   m_SourcePrefab: {fileID: 100100000, guid: 93d443f62cac6ef44bb3bf19d8447d68, type: 3}
 --- !u!1 &1333537093353975041 stripped
 GameObject:
@@ -179,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2202790916
+  GlobalObjectIdHash: 764029954
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -427,3 +430,17 @@ MonoBehaviour:
   ab2: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
   ab3: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
   UICanvas: {fileID: 0}
+--- !u!114 &8783339068502328288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333537093353975041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b893c07b622bfbc40bbfd5761bb19b1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 100
+  invulernalbe: 0
