@@ -7,11 +7,9 @@ using UnityEngine;
 
 public class AbilityControler : NetworkBehaviour, ComboListener
 {
-    public Ability ab1;
-    public Ability ab2;
-    public Ability ab3;
+    public List<Ability> abilities;
 
-    private Ability selectedAbility;
+    private int selectedAbility;
 
     private EventControler ec;
     public Canvas UICanvas;
@@ -19,17 +17,9 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     private Ability currentActiveAbility;
     public ShowNearestEntity sne { get; private set; }
 
-    internal void UseAbility1()
+    internal void UseAbility(int num)
     {
-        selectedAbility = ab1;
-    }
-    internal void UseAbility2()
-    {
-        selectedAbility = ab2;
-    }
-    internal void UseAbility3()
-    {
-        selectedAbility = ab3;
+        selectedAbility = num;
     }
 
     // Start is called before the first frame update
@@ -48,25 +38,46 @@ public class AbilityControler : NetworkBehaviour, ComboListener
 
     public EventControler GetEventControler() { return ec; }
 
+    private bool ValidateAbility()
+    {
+        return selectedAbility >= 0 && selectedAbility < abilities.Count;
+    }
+
     public void OnComboStageAdvance(int roll)
     {
-        if (selectedAbility is not null && selectedAbility.FiresOnComboAdvance)
+        if (ValidateAbility() && abilities[selectedAbility].FiresOnComboAdvance)
         {
-            var parent = selectedAbility.AttachToParent ? transform : null;
-            currentActiveAbility = GameObject.Instantiate(ab1, transform.position, Quaternion.identity, parent);
-            currentActiveAbility.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId, true);
-            currentActiveAbility.ComboAdvanced(this, roll, GetTargetNullable(), UICanvas);
+            if (abilities[selectedAbility].IsNetworkAbility)
+                MultiplayerCastServerRpc(selectedAbility, roll, Camera.main.transform.forward, false);
+            else
+                CastAbility(roll, false);
         }
     }
 
     public void OnComboComplete(int total)
     {
-        if (selectedAbility is not null && selectedAbility.FiresOnComboComplete)
+        if (ValidateAbility() && abilities[selectedAbility].FiresOnComboComplete)
         {
-            var parent = selectedAbility.AttachToParent ? transform : null;
-            currentActiveAbility = GameObject.Instantiate(ab1, transform.position, Quaternion.identity, parent);
-            currentActiveAbility.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId, true);
-            currentActiveAbility.ComboComplete(this, total, GetTargetNullable(), UICanvas);
+            if (abilities[selectedAbility].IsNetworkAbility)
+                MultiplayerCastServerRpc(selectedAbility, total, Camera.main.transform.forward, true);
+            else
+                CastAbility(total, true);
         }
+    }
+
+    private void CastAbility(int val, bool comboComplete)
+    {
+        var parent = abilities[selectedAbility].AttachToParent ? transform : null;
+        currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity, parent);
+        currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
+        currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), Camera.main.transform.forward, UICanvas, comboComplete);
+    }
+
+    [ServerRpc]
+    private void MultiplayerCastServerRpc(int selectedAbility, int val, Vector3 direction, bool comboComplete)
+    {
+        currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity);
+        currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
+        currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), direction, UICanvas, comboComplete);
     }
 }
