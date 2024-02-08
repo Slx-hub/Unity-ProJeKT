@@ -96,7 +96,7 @@ public class ComboController : MonoBehaviour
     {
         ClearState();
         if (roll > 0)
-            EventBroker<OnHitValueEvent>.PublishEvent(new(roll.ToString(), "red"));
+            EventBroker<OnHitValueEvent>.PublishEvent(new(roll.ToString(), "#A05C24"));
         debugState = "Failed";
     }
 

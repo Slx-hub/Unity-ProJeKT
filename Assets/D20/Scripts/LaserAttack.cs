@@ -38,11 +38,8 @@ namespace Assets.D20.Scripts
         private List<ParabolicTrajectory> m_pts = new List<ParabolicTrajectory>();
         private List<Vector3> m_targetOffsets = new List<Vector3>();
 
-        public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Canvas canvas, ulong ownerid)
+        public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
             => Use(ac, roll, target, canvas);
-
-        public override void ComboComplete(AbilityControler ac, int total, Transform target, Canvas canvas, ulong ownerid)
-            => Use(ac, total, target, canvas);
 
         private void Use(AbilityControler ac, int val, Transform target, Canvas canvas)
         {

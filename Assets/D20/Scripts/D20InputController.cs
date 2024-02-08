@@ -108,19 +108,19 @@ public class D20InputController : NetworkBehaviour
     private void OnAbility1(InputAction.CallbackContext context)
     {
         ComboController.StartCombo("TestCombo1");
-        AbilityController?.UseAbility1();
+        AbilityController?.UseAbility(0);
     }
 
     private void OnAbility2(InputAction.CallbackContext context)
     {
         ComboController.StartCombo("TestCombo2");
-        AbilityController?.UseAbility2();
+        AbilityController?.UseAbility(1);
     }
 
     private void OnAbility3(InputAction.CallbackContext context)
     {
         ComboController.StartCombo("TestCombo3");
-        AbilityController?.UseAbility3();
+        AbilityController?.UseAbility(2);
     }
 
     private void ShowCursorOnAlt()

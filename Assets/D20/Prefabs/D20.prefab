@@ -426,9 +426,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55ebe9e0e36fa7b408506e3c03cbbc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ab1: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
-  ab2: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
-  ab3: {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
+  abilities:
+  - {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
+  - {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
+  - {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
   UICanvas: {fileID: 0}
 --- !u!114 &8783339068502328288
 MonoBehaviour:

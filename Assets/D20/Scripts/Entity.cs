@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.InputSystem.XR;
 
 public class Entity : MonoBehaviour
 {
@@ -24,9 +25,10 @@ public class Entity : MonoBehaviour
     public bool IsAlive() { return Health > 0; }
     public void Hurt(int damage, bool force = false)
     {
-        if (!force && invulernalbe) return; 
-        
+        if (!force && invulernalbe) return;
         Health -= damage;
+
+        EventBroker<OnHitValueEvent>.PublishEvent(new(damage.ToString(), "red"));
 
         if (IsAlive()) return;
 

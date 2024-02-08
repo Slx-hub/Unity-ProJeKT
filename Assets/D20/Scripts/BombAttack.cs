@@ -10,34 +10,36 @@ public class BombAttack : Ability
     public GameObject Explosion;
     public float FirePower = 20;
     private int damage;
-    private ulong ownerid;
+    private Vector3 direction;
 
-    public override void ComboComplete(AbilityControler ac, int roll, Transform target, Canvas canvas, ulong ownerid)
-    {
-        this.ownerid = ownerid;
-        Fire(ac.transform, roll);
-    }
-
-    private void Fire(Transform owner, int roll)
+    public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
     {
         damage = roll;
-        var camera = Camera.main.transform;
-        transform.position += camera.forward * (owner.lossyScale.x / 2 + 0.8f);
+        Fire(ac.transform, direction);
+    }
+
+    private void Fire(Transform owner, Vector3 dir)
+    {
+        transform.position += dir * (owner.lossyScale.x / 2 + 0.8f);
+        Vector3 right = new(dir.z, 0, -dir.x);
 
         var velocity = owner.GetComponent<Rigidbody>().velocity;
-        velocity += Quaternion.AngleAxis(-30, camera.right) * camera.forward * FirePower;
+        velocity += Quaternion.AngleAxis(-30, right) * dir * FirePower;
         GetComponent<Rigidbody>().velocity += velocity;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Explode();
+        if (IsOwner)
+        {
+            Explode();
+        }
     }
 
     private void Explode()
     {
         var explosion = GameObject.Instantiate(Explosion, transform.position, Quaternion.identity);
-        explosion.GetComponent<NetworkObject>().SpawnWithOwnership(ownerid, true);
+        explosion.GetComponent<NetworkObject>().Spawn(true);
         explosion.GetComponent<Explosion>().Damage = damage;
         Destroy(gameObject);
     }
