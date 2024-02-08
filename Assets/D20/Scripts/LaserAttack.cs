@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace Assets.D20.Scripts
         public AudioClip lockOnAudio;
         public AudioClip fireLaserAudio;
         public AudioClip hitLaserAudio;
+        public AudioClip denyAudio;
 
         public float timeBetweenLasers = 0.1f;
         public float timeBetweenFirstLockonAndFire = 1f;
@@ -43,13 +45,20 @@ namespace Assets.D20.Scripts
 
         private void Use(AbilityControler ac, int val, Transform target, Canvas canvas)
         {
-            m_numsLasers = val / 4;
-            m_ac = ac;
             m_as = GetComponent<AudioSource>();
+            m_ac = ac;
+            m_numsLasers = val / 4 + 1;
             m_c = canvas;
-            m_target= target;
+            m_target = target;
 
-            m_ac.sne.currentTarget.Hurt(val);
+            if (m_target == null)
+            {
+                m_as.PlayOneShot(denyAudio);
+                m_ac.GetEventControler().AddEvent(10, Die);
+                return;
+            }
+
+            m_target.GetComponent<Entity>().Hurt(val);
 
             for (int i = 0; i < m_numsLasers; i++)
             {
@@ -86,19 +95,16 @@ namespace Assets.D20.Scripts
         public void StartLaserCallback()
         {
             var go = GameObject.Instantiate(LineRendererPrefab, transform.position, Quaternion.identity, transform);
-            var lr = go.GetComponent<LineRenderer>();
+
+            var lalr = go.GetComponent<LaserAttackLineRendererControl>();
             var pt = go.AddComponent<ParabolicTrajectory>();
 
-            lr.material = lrMaterial;
-            lr.startWidth = lrThickness;
-            lr.endWidth = lrThickness;
-            lr.colorGradient = laserGradient;
+            lalr.m_material = new(lrMaterial);
+            lalr.m_gradient = new(laserGradient);
+            lalr.Init_ServerRPC(lrThickness, lrThickness);
+            pt.Init(transform, m_target.transform.position + m_targetOffsets[m_pts.Count], 0.5f, 0.01f, 20);
 
-            pt.origin = transform.position;
-            pt.target = m_target.transform.position + m_targetOffsets[m_pts.Count];
-            pt.addRemoveDelta = 0.5f;
-            pt.addLatency = 0.01f;
-            pt.segments = 20;
+            go.GetComponent<NetworkObject>().Spawn(true);
 
             m_pts.Add(pt);
 
@@ -111,7 +117,7 @@ namespace Assets.D20.Scripts
 
         public void AdvanceLaser()
         {
-            m_pts.ForEach(pt => pt.Begin());
+            m_pts.ForEach(pt => pt.Begin_ServerRPC());
             
             m_ac.GetEventControler().AddEvent(laserHitTime, Hit, true);
         }

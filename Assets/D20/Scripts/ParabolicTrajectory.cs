@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Unity.Netcode;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ParabolicTrajectory : MonoBehaviour
+public class ParabolicTrajectory : NetworkBehaviour
 {
     // Start is called before the first frame update
-    public Vector3 origin;
-    public Vector3 target;
+    public NetworkVariable<Transform> originTransform;
+    public NetworkVariable<Vector3> target;
     public Vector3 anchor;
-    public int segments;
-    public float addLatency = 0.1f;
-    public float addRemoveDelta = 1f;
+    public NetworkVariable<int> segments;
+    public NetworkVariable<float> addLatency = new(0.1f);
+    public NetworkVariable<float> addRemoveDelta = new(1f);
 
     private LineRenderer m_lineRenderer;
     public int currentSegments;
@@ -41,18 +42,18 @@ public class ParabolicTrajectory : MonoBehaviour
 
         if (!started) return;
 
-        if(latencyTimer > addLatency)
+        if(latencyTimer > addLatency.Value)
         {
             latencyTimer = 0f;
 
-            if (currentSegments < segments)
+            if (currentSegments < segments.Value)
             {
                 if (currentSegments == 0)
                     AddPoint();
                 AddPoint();
             }
 
-            if (innerTimer > addRemoveDelta)
+            if (innerTimer > addRemoveDelta.Value)
             {
                 RemovePoint();
 
@@ -65,6 +66,28 @@ public class ParabolicTrajectory : MonoBehaviour
 
         innerTimer += Time.deltaTime;
         latencyTimer += Time.deltaTime;
+    }
+    public void Init(Transform transform, Vector3 targetLocation, float delta, float latency, int segs)
+    {
+        originTransform = new(transform);
+        target = new(targetLocation);
+        addRemoveDelta= new(delta);
+        addLatency= new(latency);
+        segments = new(segs);
+    }
+
+    [ServerRpc]
+    public void Begin_ServerRPC()
+    {
+        if (IsServer)
+            Begin_ClientRPC();
+        Begin();
+    }
+
+    [ClientRpc]
+    public void Begin_ClientRPC()
+    {
+        Begin();
     }
 
     public void Begin()
@@ -79,12 +102,12 @@ public class ParabolicTrajectory : MonoBehaviour
 
         currentSegments = 0;
 
-        var dirx = (target - origin).normalized;
+        var dirx = (target.Value - originTransform.Value.transform.position).normalized;
         var dirz = Quaternion.AngleAxis(90f, Vector3.up) * dirx;
         var diry = Vector3.Cross(dirz, dirx);
 
-        var len = 0.5f * (target - origin).magnitude;
-        var center = 0.5f * (target + origin);
+        var len = 0.5f * (target.Value - originTransform.Value.transform.position).magnitude;
+        var center = 0.5f * (target.Value + originTransform.Value.transform.position);
         var a = Random.Range(0, len*2f) - len;
         var b = Random.Range(0, len * 2f) - len;
 
@@ -105,13 +128,13 @@ public class ParabolicTrajectory : MonoBehaviour
 
     public void AddPoint()
     {
-        var t = (float)((float)currentSegments / (float)segments);
+        var t = (float)((float)currentSegments / (float)segments.Value);
 
         Vector3[] v3s = new Vector3[m_lineRenderer.positionCount];
         var c = m_lineRenderer.GetPositions(v3s);
         var poss = v3s.ToList();
 
-        poss.Add(CalculatePoint(transform.position, target, t));
+        poss.Add(CalculatePoint(transform.position, target.Value, t));
 
         m_lineRenderer.positionCount = poss.Count;
         m_lineRenderer.SetPositions(poss.ToArray());

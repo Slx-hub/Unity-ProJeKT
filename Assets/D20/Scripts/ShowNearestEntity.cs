@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class ShowNearestEntity : MonoBehaviour
+public class ShowNearestEntity : NetworkBehaviour
 {
     public TextMeshProUGUI outputText;
 
     public Entity currentTarget;
+    public Transform player;
     // Start is called before the first frame update
     void Start()
     {
-        
+        outputText = GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
@@ -25,12 +27,19 @@ public class ShowNearestEntity : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (player == null)
+        {
+            var maybePlayer = NetworkManager.LocalClient.PlayerObject;
+            if (maybePlayer == null) { return; }
+            player = maybePlayer.transform;
+        }
+
         var ents = GameObject.FindGameObjectsWithTag("Entity");
         var minDist = float.MaxValue;
 
         foreach (var entry in ents)
         {
-            var dist = Vector3.Distance(transform.position, entry.transform.position);
+            var dist = Vector3.Distance(player.position, entry.transform.position);
             var ent = entry.GetComponent<Entity>();
 
             if (ent == null)

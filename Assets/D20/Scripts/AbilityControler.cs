@@ -26,8 +26,9 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     void Start()
     {
         ec= transform.AddComponent<EventControler>();
-        sne = GetComponent<ShowNearestEntity>();
+        sne = GameObject.FindAnyObjectByType<ShowNearestEntity>();
         var comboController = GetComponent<ComboController>();
+        UICanvas = GameObject.Find("UI")?.GetComponent<Canvas>();
         comboController.ComboListener = this;
     }
 
@@ -69,7 +70,7 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         var parent = abilities[selectedAbility].AttachToParent ? transform : null;
         currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity, parent);
-        currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
+        //currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
         currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), Camera.main.transform.forward, UICanvas, comboComplete);
     }
 
