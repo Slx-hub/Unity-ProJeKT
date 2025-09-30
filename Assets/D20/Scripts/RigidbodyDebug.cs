@@ -28,7 +28,7 @@ public class RigidbodyDebug : MonoBehaviour
         if (rigidbody == null)
             rigidbody = GetComponent<Rigidbody>();
 
-        var vel = rigidbody.velocity;
+        var vel = rigidbody.linearVelocity;
         var aVel = rigidbody.angularVelocity;
 
         Gizmos.color = Color.green;

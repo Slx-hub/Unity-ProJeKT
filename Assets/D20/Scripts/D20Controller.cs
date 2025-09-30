@@ -167,7 +167,7 @@ public class D20Controller : NetworkBehaviour
             "\n  Walls in Contact:\t" + WallsInContact.Count.ToString() +
             "\n  Health:\t\t\t" + entity?.Health.ToString() +
             "\n  Smooth angular V:\t" + AngularVelocity +
-            "\n  Dice velocity:\t\t" + Rigidbody.velocity.magnitude;
+            "\n  Dice velocity:\t\t" + Rigidbody.linearVelocity.magnitude;
     }
 
     public void PlaySoundRandomPitch(string sound)

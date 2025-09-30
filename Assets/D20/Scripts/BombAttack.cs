@@ -23,9 +23,9 @@ public class BombAttack : Ability
         transform.position += dir * (owner.lossyScale.x / 2 + 0.8f);
         Vector3 right = new(dir.z, 0, -dir.x);
 
-        var velocity = owner.GetComponent<Rigidbody>().velocity;
+        var velocity = owner.GetComponent<Rigidbody>().linearVelocity;
         velocity += Quaternion.AngleAxis(-30, right) * dir * FirePower;
-        GetComponent<Rigidbody>().velocity += velocity;
+        GetComponent<Rigidbody>().linearVelocity += velocity;
     }
 
     private void OnCollisionEnter(Collision collision)

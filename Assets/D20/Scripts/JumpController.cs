@@ -68,7 +68,7 @@ public class JumpController : MonoBehaviour
             else
                 jumpVector = Vector3.up;
 
-            Rigidbody.velocity += jumpVector * jumpPower;
+            Rigidbody.linearVelocity += jumpVector * jumpPower;
 
             JumpCooldown = 0;
             PlaySound("boing", true);

@@ -7,7 +7,7 @@ public class LaserAttackLineRendererControl : NetworkBehaviour
 {
     private LineRenderer m_lr;
 
-    public NetworkVariable<Material> m_material;
+    public Material m_material;
     public NetworkVariable<Gradient> m_gradient;
 
     // Start is called before the first frame update
@@ -29,7 +29,7 @@ public class LaserAttackLineRendererControl : NetworkBehaviour
 
         m_lr = GetComponent<LineRenderer>();
 
-        m_lr.material = m_material.Value;
+        m_lr.material = m_material;
         m_lr.startWidth= sThickness;
         m_lr.endWidth= eThickness;
         m_lr.colorGradient= m_gradient.Value;
@@ -40,7 +40,7 @@ public class LaserAttackLineRendererControl : NetworkBehaviour
     {
         m_lr = GetComponent<LineRenderer>();
 
-        m_lr.material = m_material.Value;
+        m_lr.material = m_material;
         m_lr.startWidth = sThickness;
         m_lr.endWidth = eThickness;
         m_lr.colorGradient = m_gradient.Value;

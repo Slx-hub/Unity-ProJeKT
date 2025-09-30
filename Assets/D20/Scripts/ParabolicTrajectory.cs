@@ -10,12 +10,12 @@ using UnityEngine;
 public class ParabolicTrajectory : NetworkBehaviour
 {
     // Start is called before the first frame update
-    public NetworkVariable<Transform> originTransform;
-    public NetworkVariable<Vector3> target;
+    public Transform originTransform;
+    public Vector3 target;
     public Vector3 anchor;
-    public NetworkVariable<int> segments;
-    public NetworkVariable<float> addLatency = new(0.1f);
-    public NetworkVariable<float> addRemoveDelta = new(1f);
+    public int segments;
+    public float addLatency = 0.1f;
+    public float addRemoveDelta = 1f;
 
     private LineRenderer m_lineRenderer;
     public int currentSegments;
@@ -42,18 +42,18 @@ public class ParabolicTrajectory : NetworkBehaviour
 
         if (!started) return;
 
-        if(latencyTimer > addLatency.Value)
+        if(latencyTimer > addLatency)
         {
             latencyTimer = 0f;
 
-            if (currentSegments < segments.Value)
+            if (currentSegments < segments)
             {
                 if (currentSegments == 0)
                     AddPoint();
                 AddPoint();
             }
 
-            if (innerTimer > addRemoveDelta.Value)
+            if (innerTimer > addRemoveDelta)
             {
                 RemovePoint();
 
@@ -69,11 +69,11 @@ public class ParabolicTrajectory : NetworkBehaviour
     }
     public void Init(Transform transform, Vector3 targetLocation, float delta, float latency, int segs)
     {
-        originTransform = new(transform);
-        target = new(targetLocation);
-        addRemoveDelta= new(delta);
-        addLatency= new(latency);
-        segments = new(segs);
+        originTransform = transform;
+        target = targetLocation;
+        addRemoveDelta= delta;
+        addLatency= latency;
+        segments = segs;
     }
 
     [ServerRpc]
@@ -102,12 +102,12 @@ public class ParabolicTrajectory : NetworkBehaviour
 
         currentSegments = 0;
 
-        var dirx = (target.Value - originTransform.Value.transform.position).normalized;
+        var dirx = (target - originTransform.transform.position).normalized;
         var dirz = Quaternion.AngleAxis(90f, Vector3.up) * dirx;
         var diry = Vector3.Cross(dirz, dirx);
 
-        var len = 0.5f * (target.Value - originTransform.Value.transform.position).magnitude;
-        var center = 0.5f * (target.Value + originTransform.Value.transform.position);
+        var len = 0.5f * (target - originTransform.transform.position).magnitude;
+        var center = 0.5f * (target + originTransform.transform.position);
         var a = Random.Range(0, len*2f) - len;
         var b = Random.Range(0, len * 2f) - len;
 
@@ -128,13 +128,13 @@ public class ParabolicTrajectory : NetworkBehaviour
 
     public void AddPoint()
     {
-        var t = (float)((float)currentSegments / (float)segments.Value);
+        var t = (float)((float)currentSegments / (float)segments);
 
         Vector3[] v3s = new Vector3[m_lineRenderer.positionCount];
         var c = m_lineRenderer.GetPositions(v3s);
         var poss = v3s.ToList();
 
-        poss.Add(CalculatePoint(transform.position, target.Value, t));
+        poss.Add(CalculatePoint(transform.position, target, t));
 
         m_lineRenderer.positionCount = poss.Count;
         m_lineRenderer.SetPositions(poss.ToArray());
