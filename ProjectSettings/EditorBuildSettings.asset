@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/D20/Scenes/SecreteScene.unity
     guid: 1dc8d4560cc2a3d4bb155624342247ca
+  - enabled: 1
+    path: Assets/Village/Village.unity
+    guid: 09af231c628afa04b81a26858cbe713f
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: a809fc0cf827d894ea2ff35aa61b45aa, type: 2}
   m_UseUCBPForAssetBundles: 0
