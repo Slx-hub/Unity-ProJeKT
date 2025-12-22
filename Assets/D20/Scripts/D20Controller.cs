@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class D20Controller : NetworkBehaviour
 {
@@ -48,6 +49,8 @@ public class D20Controller : NetworkBehaviour
     private Rigidbody Rigidbody;
     private NetworkRigidbody NetworkRigidbody;
     private Entity entity;
+    private D20FaceEmissionControl fec;
+
     private readonly Dictionary<Vector3, int> FaceToValueLUT = new()
     {
         { new Vector3(0.15f, -0.46f, 0.63f)  , 11 },
@@ -89,6 +92,7 @@ public class D20Controller : NetworkBehaviour
         ColliderPrefab.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomWallTrigger;
         groundCollider = ColliderPrefab.transform.GetChild(0);
         groundCollider.GetComponent<CollisionBroadcaster>().onTrigger = OnCustomGroundTrigger;
+        fec = GetComponent<D20FaceEmissionControl>();
     }
 
     public override void OnNetworkSpawn()
@@ -105,18 +109,29 @@ public class D20Controller : NetworkBehaviour
         if (AngularVelocities.Count > 50)
             AngularVelocities.RemoveAt(0);
         m_angularVelocity.Value = AngularVelocities.Average();
-                    
+
         float maxDot = 0.0f;
         Vector3 localUp = transform.InverseTransformVector(Vector3.up);
-        foreach (var entry in FaceToValueLUT)
-        {
-            if (Vector3.Dot(entry.Key, localUp) > maxDot)
-            {
-                maxDot = Vector3.Dot(entry.Key, localUp);
-                CurrentFaceValue = entry.Value;
-            }       
-        }
+        Vector3 localCameraForward = fec.LinkedMR.transform.InverseTransformVector(-Camera.main.transform.forward);
+        List<int> highlightValues = new List<int>();
 
+        var bestMatch = FaceToValueLUT.OrderByDescending(e => Vector3.Dot(e.Key, localCameraForward)).ToArray()[0];
+        CurrentFaceValue = bestMatch.Value;
+        highlightValues.Add(bestMatch.Value);
+
+        /*foreach (var entry in FaceToValueLUT)
+        {
+            //Was localUp.
+            if (Vector3.Dot(entry.Key, localCameraForward) > maxDot)
+            {
+                maxDot = Vector3.Dot(entry.Key, localCameraForward);
+                CurrentFaceValue = entry.Value;
+                highlightValues.Add(entry.Value);
+
+            }
+        }*/
+        fec.ClearHighlight();
+        fec.HighlightValues(highlightValues.ToArray());
     }
 
     private void LateUpdate()

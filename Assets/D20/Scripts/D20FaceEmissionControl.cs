@@ -9,7 +9,6 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 
-[RequireComponent(typeof(MeshRenderer))]
 [RequireComponent(typeof(Rigidbody))]
 public class D20FaceEmissionControl : MonoBehaviour
 {
@@ -20,20 +19,19 @@ public class D20FaceEmissionControl : MonoBehaviour
     public AnimationCurve IntensityCurve;
     public float TopSpeed = 5.0f;
     public Color LightColor;
+    public MeshRenderer LinkedMR;
 
     private Light PowerLight;
-    private MeshRenderer LinkedMR;
     private D20Controller D20Controller;
 
     // Start is called before the first frame update
     void Start()
     {
         D20Controller = GetComponent<D20Controller>();
-        LinkedMR = GetComponent<MeshRenderer>();
         PowerLight = this.AddComponent<Light>();
         PowerLight.color = LightColor;
 
-        m_mesh = GetComponent<MeshFilter>().mesh;
+        m_mesh = LinkedMR.GetComponent<MeshFilter>().mesh;
         /*var uvList = new List<Vector2>();
         m_mesh.GetUVs(0, uvList);
         var uvs = new Vector2[uvList.Count];
