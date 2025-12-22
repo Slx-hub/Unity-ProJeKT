@@ -39,6 +39,9 @@ public class CameraControl : MonoBehaviour
 
     private void UpdatePosition()
     {
+        if (Target == null)
+            return;
+
         var targetPos = Target.position + Vector3.up * VerticalOffset;
         //transform.position = Vector3.Lerp(transform.position, targetPos, Lerp * Time.deltaTime);
         transform.position = targetPos;
