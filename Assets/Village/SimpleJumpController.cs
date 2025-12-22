@@ -42,18 +42,14 @@ public class SimpleJumpController : MonoBehaviour
 
     public bool OnJump(float jumpPower)
     {
-        if (JumpCooldown >= 1 && ValidatePreconditions() is var state && !state.Equals(MoveState.Failed))
+        if (JumpCooldown >= 1 && ValidatePreconditions() is var state)
         {
             Vector3 jumpVector;
             if (state.Equals(MoveState.Wall))
             {
-                //var normal = GetWallDirection();
                 var normal = wallJumpNormal;
                 jumpVector = new Vector3(normal.x, 1, normal.z);
-                //Rigidbody.angularVelocity = Vector3.Reflect(Rigidbody.angularVelocity, normal);
-                //var quat = Quaternion.FromToRotation(transform.up, -transform.right);
-                var torqueVector = new Vector3(normal.z, 0f, -normal.x);
-                Rigidbody.angularVelocity = torqueVector * jumpPower;
+                Rigidbody.linearVelocity = jumpVector * jumpPower;
             }
             else
                 jumpVector = Vector3.up;

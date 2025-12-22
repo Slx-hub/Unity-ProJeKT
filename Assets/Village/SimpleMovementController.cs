@@ -16,16 +16,12 @@ public class SimpleMovmentController : NetworkBehaviour
     private DefaultActionsWrapper Actions;
     private Rigidbody Rigidbody;
     private SimpleJumpController JumpController;
-    private Transform CameraTransform;
+    public Transform CameraTransform;
 
     private Vector3 ForceVector;
 
     private void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody>();
-        JumpController = GetComponent<SimpleJumpController>();
-        CameraTransform = Camera.main.transform;
-
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -34,8 +30,15 @@ public class SimpleMovmentController : NetworkBehaviour
         Actions.WASD.Jump.performed += OnJump;
         Actions.WASD.Dash.performed += OnDash;
 
-        Actions.WASD.ReloadScene.performed += 
+        Actions.WASD.ReloadScene.performed +=
             c => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void Start()
+    {
+        Rigidbody = GetComponent<Rigidbody>();
+        JumpController = GetComponent<SimpleJumpController>();
+        CameraTransform = Camera.main.transform;        
     }
 
     public override void OnNetworkSpawn()

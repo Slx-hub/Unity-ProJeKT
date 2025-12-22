@@ -20,6 +20,5 @@ public class VillageLogic : MonoBehaviour
     {
         LobbyCamera.gameObject.SetActive(false);
         PlayerCamera.gameObject.SetActive(true);
-        PlayerCamera.tag = "MainCamera";
     }
 }
