@@ -27,6 +27,9 @@ public class ShowNearestEntity : NetworkBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (NetworkManager?.LocalClient?.PlayerObject == null)
+            return;
+
         if (player == null)
         {
             var maybePlayer = NetworkManager.LocalClient.PlayerObject;
