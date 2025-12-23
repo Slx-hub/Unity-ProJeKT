@@ -64,10 +64,14 @@ public class D20InputController : NetworkBehaviour
 
     void FixedUpdate()
     {
+
         Vector2 moveVector = Actions.WASD.Move.ReadValue<Vector2>();
         Quaternion quat = Quaternion.AngleAxis(CameraTransform.eulerAngles.y, Vector3.up);
         ForceVector = quat * new Vector3(moveVector.x, 0, moveVector.y) * RollingPower;
-        TorqueVector = quat * new Vector3(moveVector.y, 0f, -moveVector.x) * Torque;
+
+        float angularVelocitySqr = Rigidbody.angularVelocity.sqrMagnitude;
+        float adjustedTorque = Torque * (angularVelocitySqr >= 25 ? 1 : 4 * (angularVelocitySqr / 26 + 1));
+        TorqueVector = quat * new Vector3(moveVector.y, 0f, -moveVector.x) * adjustedTorque;
 
         Rigidbody.AddForce(ForceVector);
         Rigidbody.AddTorque(TorqueVector);
