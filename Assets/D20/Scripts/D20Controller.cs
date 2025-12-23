@@ -116,7 +116,7 @@ public class D20Controller : NetworkBehaviour
         List<(int, float)> highlightValues = new();
 
         var bestMatches = FaceToValueLUT.Select(x => new { Value = x.Value, Normal = x.Key, Dot = Vector3.Dot(x.Key, localUp)})
-            .OrderByDescending(e => e.Dot).Take(10).ToArray();
+            .OrderByDescending(e => e.Dot).Take(20).ToArray();
 
         CurrentFaceValue = bestMatches[0].Value;
 
