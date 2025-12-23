@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f7d4b92f92c9aa4bac07a95860ef546, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlowPartenRotation
-  slowFactor: 0.2
+  slowFactor: 0.3
 --- !u!1001 &3608139518293269601
 PrefabInstance:
   m_ObjectHideFlags: 0

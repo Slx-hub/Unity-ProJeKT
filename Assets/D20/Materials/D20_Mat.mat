@@ -127,7 +127,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FaceEmissionFalloff: 4
+    - _FaceEmissionFalloff: 6
     - _FaceEmissionIntensity: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
