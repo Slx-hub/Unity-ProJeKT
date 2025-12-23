@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 492587800}
   - component: {fileID: 492587802}
   - component: {fileID: 492587801}
+  - component: {fileID: 492587804}
   - component: {fileID: 492587803}
   m_Layer: 5
   m_Name: NearestEntity
@@ -213,7 +214,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -30}
+  m_AnchoredPosition: {x: -600, y: -30}
   m_SizeDelta: {x: 535, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &492587801
@@ -331,6 +332,31 @@ MonoBehaviour:
   outputText: {fileID: 492587801}
   currentTarget: {fileID: 0}
   player: {fileID: 0}
+--- !u!114 &492587804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 492587799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1810938547
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &631385603 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5241672470044088734, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
@@ -1516,6 +1542,22 @@ PrefabInstance:
     - target: {fileID: 5922321555973810760, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312013129598657610, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 760
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312013129598657610, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 657
+      objectReference: {fileID: 0}
+    - target: {fileID: 7074709578751039546, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 7074709578751039546, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 643
       objectReference: {fileID: 0}
     - target: {fileID: 8194712294426088581, guid: 4416d145a3c211f43b2828eb68d8ea92, type: 3}
       propertyPath: m_AnchorMax.y

@@ -111,13 +111,16 @@ public class D20Controller : NetworkBehaviour
         m_angularVelocity.Value = AngularVelocities.Average();
 
         float maxDot = 0.0f;
-        Vector3 localUp = transform.InverseTransformVector(Vector3.up);
-        Vector3 localCameraForward = fec.LinkedMR.transform.InverseTransformVector(-Camera.main.transform.forward);
-        List<int> highlightValues = new List<int>();
+        Vector3 localUp = fec.LinkedMR.transform.InverseTransformVector(Vector3.up);
+        //Vector3 localCameraForward = fec.LinkedMR.transform.InverseTransformVector(-Camera.main.transform.forward);
+        List<(int, float)> highlightValues = new();
 
-        var bestMatch = FaceToValueLUT.OrderByDescending(e => Vector3.Dot(e.Key, localCameraForward)).ToArray()[0];
-        CurrentFaceValue = bestMatch.Value;
-        highlightValues.Add(bestMatch.Value);
+        var bestMatches = FaceToValueLUT.Select(x => new { Value = x.Value, Normal = x.Key, Dot = Vector3.Dot(x.Key, localUp)})
+            .OrderByDescending(e => e.Dot).Take(10).ToArray();
+
+        CurrentFaceValue = bestMatches[0].Value;
+
+        highlightValues.AddRange(bestMatches.Select(x => (x.Value, x.Dot / bestMatches[0].Dot)).ToArray());
 
         /*foreach (var entry in FaceToValueLUT)
         {
@@ -130,7 +133,7 @@ public class D20Controller : NetworkBehaviour
 
             }
         }*/
-        fec.ClearHighlight();
+        fec.ClearValueHighlight();
         fec.HighlightValues(highlightValues.ToArray());
     }
 

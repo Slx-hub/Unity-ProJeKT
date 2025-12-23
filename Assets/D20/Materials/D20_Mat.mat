@@ -116,7 +116,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
-    - _BorderEmissionIntensity: 1
+    - _BorderEmissionIntensity: 0.5
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -127,6 +127,7 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _FaceEmissionFalloff: 4
     - _FaceEmissionIntensity: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -151,10 +152,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor_Border: {r: 1.2167858, g: 1.2167858, b: 1.2167858, a: 0}
-    - _EmissionColor_Numbers: {r: 1.6245048, g: 1.6245048, b: 1.6245048, a: 0}
+    - _EmissionColor_Border: {r: 0.09917009, g: 0.2735849, b: 0.009033469, a: 0}
+    - _EmissionColor_Numbers: {r: 1.0866576, g: 1.6777831, b: 0.07122661, a: 0}
     - _FaceEmissionColor: {r: 12.01756, g: 32, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Tint: {r: 0, g: 0, b: 0, a: 0}
+    - _Tint: {r: 0, g: 0.46226418, b: 0.2790379, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

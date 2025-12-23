@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ public class D20FaceEmissionControl : MonoBehaviour
 {
     private Mesh m_mesh;
     private int[] valueToFaceLUT = new int[] { 10, 6, 1, 16, 18, 13, 9, 3, 12, 4, 15, 5, 19, 14, 8, 2, 0, 17, 11, 7 };
-    private List<int> highlightedValues = new();
+    private List<(int, float)> highlightedValues = new();
+    private List<int> highlightedFaces = new();
 
     public AnimationCurve IntensityCurve;
     public float TopSpeed = 5.0f;
@@ -50,6 +52,7 @@ public class D20FaceEmissionControl : MonoBehaviour
         var newVerticies = new Vector3[origTriangles.Length];
         var newUVs = new Vector2[origTriangles.Length];
         var newUV2s = new Vector2[origTriangles.Length];
+        var newUV3s = new Vector2[origTriangles.Length];
 
         for (int i = 0; i < origTriangles.Length; i++)
         {
@@ -57,12 +60,14 @@ public class D20FaceEmissionControl : MonoBehaviour
             newVerticies[i] = origVertices[origTriangles[i]];
             newUVs[i] = origUVs[origTriangles[i]];
             newUV2s[i] = Vector2.zero;
+            newUV3s[i] = Vector2.zero;
         }
 
 
         m_mesh.vertices = newVerticies;
         m_mesh.uv = newUVs;
         m_mesh.uv2 = newUV2s;
+        m_mesh.uv3 = newUV3s;
         m_mesh.triangles = newTriangles;
 
         m_mesh.RecalculateNormals();
@@ -88,7 +93,7 @@ public class D20FaceEmissionControl : MonoBehaviour
 
     public bool IsValueActive(int val)
     {
-        return highlightedValues.Contains(val);
+        return highlightedValues.Exists(x => x.Item1 == val);
     }
 
     public void HighlightEvenValues()
@@ -109,26 +114,56 @@ public class D20FaceEmissionControl : MonoBehaviour
         var selectedValues = Enumerable.Range(1, 20).OrderBy(x => rnd.Next()).Take(numberFaces).ToArray();
         HighlightValues(selectedValues);
     }
-
-    public void ClearHighlight()
+    public void ClearValueHighlight()
     {
         HighlightValues(new int[0]);
+    }
+    public void ClearFaceHighlight()
+    {
+        HighlightFaces(new int[0]);
     }
 
     public void HighlightValues(int[] values)
     {
+        HighlightValues(values.Select(x => (x, 1f)).ToArray());        
+    }
+
+    public void HighlightValues((int, float)[] values)
+    {
         var uvs = m_mesh.uv2;
         var triangles = m_mesh.triangles;
         Array.Fill(uvs, Vector2.zero);
-        
+
         highlightedValues.Clear();
         highlightedValues.AddRange(values);
-        foreach (var value in values)
+
+        foreach (var tuple in values)
         {
-            uvs[triangles[valueToFaceLUT[value - 1] * 3]] = Vector2.one;
-            uvs[triangles[valueToFaceLUT[value - 1] * 3 + 1]] = Vector2.one;
-            uvs[triangles[valueToFaceLUT[value - 1] * 3 + 2]] = Vector2.one;
+            var (value, intensity) = tuple;
+            uvs[triangles[valueToFaceLUT[value - 1] * 3]] = Vector2.one * intensity;
+            uvs[triangles[valueToFaceLUT[value - 1] * 3 + 1]] = Vector2.one * intensity;
+            uvs[triangles[valueToFaceLUT[value - 1] * 3 + 2]] = Vector2.one * intensity;
         }
+
         m_mesh.uv2 = uvs;
+    }
+
+    public void HighlightFaces(int[] faces)
+    {
+        var uvs = m_mesh.uv3;
+        var triangles = m_mesh.triangles;
+        Array.Fill(uvs, Vector2.zero);
+
+        highlightedFaces.Clear();
+        highlightedFaces.AddRange(faces);
+
+        foreach (var face in faces)
+        {
+            uvs[triangles[valueToFaceLUT[face - 1] * 3]] = Vector2.one;
+            uvs[triangles[valueToFaceLUT[face - 1] * 3 + 1]] = Vector2.one;
+            uvs[triangles[valueToFaceLUT[face - 1] * 3 + 2]] = Vector2.one;
+        }
+
+        m_mesh.uv3 = uvs;
     }
 }

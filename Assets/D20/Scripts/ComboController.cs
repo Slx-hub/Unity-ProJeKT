@@ -52,7 +52,7 @@ public class ComboController : MonoBehaviour
     {
         FailCombo(-1);
         ActiveCombo = ComboConfig.GetComboDefinitionByName(name);
-        FaceEmissionControl.HighlightValues(GetCurrentStageValues().ToArray());
+        FaceEmissionControl.HighlightFaces(GetCurrentStageValues().ToArray());
 
         debugState = "Doing " + name;
     }
@@ -89,7 +89,7 @@ public class ComboController : MonoBehaviour
             ClearState();
             return;
         }
-        FaceEmissionControl.HighlightValues(GetCurrentStageValues().ToArray());
+        FaceEmissionControl.HighlightFaces(GetCurrentStageValues().ToArray());
     }
 
     private void FailCombo(int roll)
@@ -106,7 +106,7 @@ public class ComboController : MonoBehaviour
         ComboStage = 0;
         innerTimer = 0f;
         RolledValues = new List<int>();
-        FaceEmissionControl.ClearHighlight();
+        FaceEmissionControl.ClearFaceHighlight();
     }
 
     private List<int> GetCurrentStageValues()
