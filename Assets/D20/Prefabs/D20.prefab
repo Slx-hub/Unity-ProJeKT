@@ -128,10 +128,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333537093353975041}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 3
-  m_Drag: 0.8
-  m_AngularDrag: 0.2
+  m_LinearDamping: 0.8
+  m_AngularDamping: 0.2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -183,6 +183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 764029954
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -190,6 +193,8 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &9087630150738878578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81244b49ea6890a459daea9925951d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   ColliderPrefab: {fileID: 6245572070564826734, guid: 56a9b6002fdb0b048a586c29cb8b01f5, type: 3}
   PoweredThreshold: 3
 --- !u!114 &4117568459332208084
@@ -216,6 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d80191415c9f049914672740bafacc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   RollingPower: 25
   Torque: 5
   JumpPower: 1
@@ -251,35 +258,28 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: -0.0029112368
-      outSlope: -0.0029112368
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.29768914
-      value: -0.0008666436
-      inSlope: -0.0029112368
-      outSlope: 0.08626283
-      tangentMode: 5
-      weightedMode: 2
-      inWeight: 0.33333334
-      outWeight: 0.54548746
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2.2584534
-      outSlope: 2.2584534
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.074562125
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   TopSpeed: 5
-  LightColor: {r: 0.9772253, g: 1, b: 0, a: 0}
+  LightColor: {r: 0.915, g: 0.74722034, b: 0.25986004, a: 1}
+  LinkedMR: {fileID: 0}
+  BaseValueIntensity: 0.6
   maxTime: 0.5
   tface: 0
 --- !u!114 &1658120939315572335
@@ -426,6 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55ebe9e0e36fa7b408506e3c03cbbc39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   abilities:
   - {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}
   - {fileID: 8065218412527533816, guid: 7a0935362857d014781f7c4632a749c2, type: 3}

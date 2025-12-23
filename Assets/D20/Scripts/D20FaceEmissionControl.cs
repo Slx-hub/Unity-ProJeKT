@@ -22,6 +22,7 @@ public class D20FaceEmissionControl : MonoBehaviour
     public float TopSpeed = 5.0f;
     public Color LightColor;
     public MeshRenderer LinkedMR;
+    public float BaseValueIntensity = 0.5f;
 
     private Light PowerLight;
     private D20Controller D20Controller;
@@ -132,7 +133,7 @@ public class D20FaceEmissionControl : MonoBehaviour
     {
         var uvs = m_mesh.uv2;
         var triangles = m_mesh.triangles;
-        Array.Fill(uvs, Vector2.zero);
+        Array.Fill(uvs, Vector2.one * BaseValueIntensity);
 
         highlightedValues.Clear();
         highlightedValues.AddRange(values);
@@ -140,6 +141,8 @@ public class D20FaceEmissionControl : MonoBehaviour
         foreach (var tuple in values)
         {
             var (value, intensity) = tuple;
+            if (intensity < BaseValueIntensity)
+                continue;
             uvs[triangles[valueToFaceLUT[value - 1] * 3]] = Vector2.one * intensity;
             uvs[triangles[valueToFaceLUT[value - 1] * 3 + 1]] = Vector2.one * intensity;
             uvs[triangles[valueToFaceLUT[value - 1] * 3 + 2]] = Vector2.one * intensity;

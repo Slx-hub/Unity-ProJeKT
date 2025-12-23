@@ -329,36 +329,28 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: -0.0029112368
-      outSlope: -0.0029112368
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.29768914
-      value: -0.0008666436
-      inSlope: -0.0029112368
-      outSlope: 0.08626283
-      tangentMode: 5
-      weightedMode: 2
-      inWeight: 0.33333334
-      outWeight: 0.54548746
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2.2584534
-      outSlope: 2.2584534
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.074562125
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   TopSpeed: 5
-  LightColor: {r: 1, g: 1, b: 1, a: 0.49019608}
+  LightColor: {r: 0.915, g: 0.74722034, b: 0.25986004, a: 1}
   LinkedMR: {fileID: 9048993171731572016}
+  BaseValueIntensity: 0.6
   maxTime: 0.5
   tface: 0
 --- !u!4 &3159507690635439066 stripped
