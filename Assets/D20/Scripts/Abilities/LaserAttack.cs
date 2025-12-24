@@ -40,10 +40,21 @@ namespace Assets.D20.Scripts
         private List<ParabolicTrajectory> m_pts = new List<ParabolicTrajectory>();
         private List<Vector3> m_targetOffsets = new List<Vector3>();
 
+        public override void ComboStart(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
+            => FirstUse(ac, roll, target, canvas);
         public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
             => Use(ac, roll, target, canvas);
 
-        private void Use(AbilityControler ac, int val, Transform target, Canvas canvas)
+        public override void ComboComplete(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
+            => Use(ac, roll, target, canvas);
+
+        public override void ComboFailed(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
+        {
+            m_as.PlayOneShot(denyAudio);
+            m_ac.GetEventControler().AddEvent(3, Die);
+        }
+
+        private void FirstUse(AbilityControler ac, int val, Transform target, Canvas canvas)
         {
             m_as = GetComponent<AudioSource>();
             m_ac = ac;
@@ -63,6 +74,15 @@ namespace Assets.D20.Scripts
             for (int i = 0; i < m_numsLasers; i++)
             {
                 m_ac.GetEventControler().AddEvent(i*timeBetweenLasers, LockOnTargetCallback, true);
+            }
+        }
+        private void Use(AbilityControler ac, int val, Transform target, Canvas canvas)
+        {
+            m_target.GetComponent<Entity>().Hurt(val);
+
+            for (int i = 0; i < m_numsLasers; i++)
+            {
+                m_ac.GetEventControler().AddEvent(i * timeBetweenLasers, LockOnTargetCallback, true);
             }
         }
 
@@ -134,8 +154,6 @@ namespace Assets.D20.Scripts
             tidyUp.Clear();
 
             m_pts.ForEach(pt => GameObject.Destroy(pt.gameObject));
-
-            m_ac.GetEventControler().AddEvent(3f, Die, true);
         }
 
         public void Die()

@@ -22,8 +22,12 @@ public class EventControler : MonoBehaviour
         if(eventList.Count > 0) 
         {
             var happeningEvents = eventList.Where(e => e.Item1 < innerTimer).ToList();
-            happeningEvents.ForEach(e => e.Item2());
-            eventList.RemoveAll(e => happeningEvents.Contains(e));
+
+            if (happeningEvents.Any(x => x.Item2 != null))
+            {
+                happeningEvents.Where(x => x.Item2 != null).ToList().ForEach(e => e.Item2());
+                eventList.RemoveAll(e => happeningEvents.Contains(e));
+            }
         }
 
         innerTimer += Time.deltaTime;

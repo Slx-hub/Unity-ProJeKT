@@ -12,10 +12,15 @@ public class BombAttack : Ability
     private int damage;
     private Vector3 direction;
 
-    public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
+    public override void ComboComplete(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
     {
         damage = roll;
         Fire(ac.transform, direction);
+    }
+
+    public override void ComboFailed(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
+    {
+        base.ComboFailed(ac, roll, target, direction, canvas, comboComplete);
     }
 
     private void Fire(Transform owner, Vector3 dir)
