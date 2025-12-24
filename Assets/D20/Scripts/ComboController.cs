@@ -6,9 +6,13 @@ using UnityEngine.InputSystem.XR;
 
 public interface ComboListener
 {
+    void OnComboStart();
+
     void OnComboStageAdvance(int roll);
 
     void OnComboComplete(int total);
+
+    void OnComboFail(int roll);
 }
 
 public class ComboController : MonoBehaviour
@@ -26,6 +30,8 @@ public class ComboController : MonoBehaviour
     private List<int> RolledValues;
 
     private float innerTimer = 0f;
+
+    private string comboName = "None";
 
     void Start()
     {
@@ -53,6 +59,9 @@ public class ComboController : MonoBehaviour
         FailCombo(-1);
         ActiveCombo = ComboConfig.GetComboDefinitionByName(name);
         FaceEmissionControl.HighlightFaces(GetCurrentStageValues().ToArray());
+        comboName = name;
+
+        ComboListener.OnComboStart();
 
         debugState = "Doing " + name;
     }
@@ -96,7 +105,10 @@ public class ComboController : MonoBehaviour
     {
         ClearState();
         if (roll > 0)
+        {
             EventBroker<OnHitValueEvent>.PublishEvent(new(roll.ToString(), "#A05C24"));
+            ComboListener.OnComboFail(roll);
+        }
         debugState = "Failed";
     }
 

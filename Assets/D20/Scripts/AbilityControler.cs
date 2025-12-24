@@ -44,6 +44,14 @@ public class AbilityControler : NetworkBehaviour, ComboListener
         return selectedAbility >= 0 && selectedAbility < abilities.Count;
     }
 
+    public void OnComboStart()
+    {
+        if (ValidateAbility() && abilities[selectedAbility].FiresOnComboStart)
+        {
+            currentActiveAbility.ComboStart(this, -1, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
+        }
+    }
+
     public void OnComboStageAdvance(int roll)
     {
         if (ValidateAbility() && abilities[selectedAbility].FiresOnComboAdvance)
@@ -52,6 +60,8 @@ public class AbilityControler : NetworkBehaviour, ComboListener
                 MultiplayerCastServerRpc(selectedAbility, roll, Camera.main.transform.forward, false);
             else
                 CastAbility(roll, false);
+
+            currentActiveAbility.ComboAdvanced(this, roll, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
         }
     }
 
@@ -59,10 +69,15 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         if (ValidateAbility() && abilities[selectedAbility].FiresOnComboComplete)
         {
-            if (abilities[selectedAbility].IsNetworkAbility)
-                MultiplayerCastServerRpc(selectedAbility, total, Camera.main.transform.forward, true);
-            else
-                CastAbility(total, true);
+            currentActiveAbility.ComboComplete(this, total, GetTargetNullable(), Camera.main.transform.forward, UICanvas, true);
+        }
+    }
+
+    public void OnComboFail(int roll)
+    {
+        if (ValidateAbility() && abilities[selectedAbility].FiresOnComboStart)
+        {
+            currentActiveAbility.ComboFailed(this, roll, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
         }
     }
 
@@ -71,7 +86,7 @@ public class AbilityControler : NetworkBehaviour, ComboListener
         var parent = abilities[selectedAbility].AttachToParent ? transform : null;
         currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity, parent);
         //currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
-        currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), Camera.main.transform.forward, UICanvas, comboComplete);
+        //currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), Camera.main.transform.forward, UICanvas, comboComplete);
     }
 
     [ServerRpc]
@@ -79,6 +94,6 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity);
         currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
-        currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), direction, UICanvas, comboComplete);
+        //currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), direction, UICanvas, comboComplete);
     }
 }
