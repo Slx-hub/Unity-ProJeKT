@@ -48,6 +48,11 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         if (ValidateAbility() && abilities[selectedAbility].FiresOnComboStart)
         {
+            if (abilities[selectedAbility].IsNetworkAbility)
+                MultiplayerCastServerRpc(selectedAbility, -1, Camera.main.transform.forward, false);
+            else
+                CastAbility(-1, false);
+
             currentActiveAbility.ComboStart(this, -1, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
         }
     }
@@ -56,11 +61,6 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         if (ValidateAbility() && abilities[selectedAbility].FiresOnComboAdvance)
         {
-            if (abilities[selectedAbility].IsNetworkAbility)
-                MultiplayerCastServerRpc(selectedAbility, roll, Camera.main.transform.forward, false);
-            else
-                CastAbility(roll, false);
-
             currentActiveAbility.ComboAdvanced(this, roll, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
         }
     }

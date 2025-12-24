@@ -17,5 +17,8 @@ public abstract class Ability : NetworkBehaviour
 
     public virtual void ComboComplete(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete) { }
 
-    public virtual void ComboFailed(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete) { }
+    public virtual void ComboFailed(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
+    {
+        GameObject.Destroy(gameObject);
+    }
 }
