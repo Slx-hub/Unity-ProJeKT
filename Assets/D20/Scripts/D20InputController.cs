@@ -55,10 +55,12 @@ public class D20InputController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        EventBroker<OnNetworkCreateEvent>.PublishEvent(new OnNetworkCreateEvent(this));
         if (!IsOwner)
         {
             enabled = false;
+        }else
+        {
+            EventBroker<OnNetworkCreateEvent>.PublishEvent(new OnNetworkCreateEvent(this));
         }
     }
 

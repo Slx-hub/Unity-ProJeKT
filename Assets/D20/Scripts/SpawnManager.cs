@@ -16,7 +16,7 @@ public class SpawnManager : MonoBehaviour
 
     void SetSpawnPoint(OnNetworkCreateEvent onEvent)
     {
-        if (onEvent.Root.IsOwner)
+        if (onEvent.Root.IsOwner && respawns.Length > 0)
         {
             var target = respawns[Random.Range(0, respawns.Length)];
             onEvent.Root.transform.position = target.transform.position;
