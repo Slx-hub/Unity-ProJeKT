@@ -134,7 +134,7 @@ public class D20Controller : NetworkBehaviour
             }
         }*/
         fec.ClearValueHighlight();
-        fec.HighlightValues(highlightValues.ToArray());
+        fec.HighlightValuesRpc(highlightValues.Select(x => x.Item1).ToArray(), highlightValues.Select(x => x.Item2).ToArray());
     }
 
     private void LateUpdate()

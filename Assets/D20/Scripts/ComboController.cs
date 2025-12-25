@@ -58,7 +58,7 @@ public class ComboController : MonoBehaviour
     {
         FailCombo(-1);
         ActiveCombo = ComboConfig.GetComboDefinitionByName(name);
-        FaceEmissionControl.HighlightFaces(GetCurrentStageValues().ToArray());
+        FaceEmissionControl.HighlightFacesRpc(GetCurrentStageValues().ToArray());
         comboName = name;
 
         ComboListener.OnComboStart();
@@ -98,7 +98,7 @@ public class ComboController : MonoBehaviour
             ClearState();
             return;
         }
-        FaceEmissionControl.HighlightFaces(GetCurrentStageValues().ToArray());
+        FaceEmissionControl.HighlightFacesRpc(GetCurrentStageValues().ToArray());
     }
 
     private void FailCombo(int roll)
