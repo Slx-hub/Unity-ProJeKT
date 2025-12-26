@@ -11,6 +11,8 @@ public abstract class Ability : NetworkBehaviour
     public bool AttachToParent;
     public bool IsNetworkAbility;
 
+    public GameObject Owner;
+
     public virtual void ComboStart(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete) { }
 
     public virtual void ComboAdvanced(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete) { }

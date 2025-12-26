@@ -121,7 +121,7 @@ MonoBehaviour:
   timeBetweenLasers: 0.05
   timeBetweenFirstLockonAndFire: 1.5
   timeToAdvanceLeaser: 0.5
-  laserHitTime: 0.2
+  laserHitTime: 1
   laserTime: 2
 --- !u!82 &3517296616357709445
 AudioSource:

@@ -85,6 +85,7 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         var parent = abilities[selectedAbility].AttachToParent ? transform : null;
         currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity, parent);
+        currentActiveAbility.GetComponent<Ability>().Owner = gameObject;
         //currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
         //currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), Camera.main.transform.forward, UICanvas, comboComplete);
     }
@@ -94,6 +95,7 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity);
         currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
+        currentActiveAbility.GetComponent<Ability>().Owner = gameObject;
         //currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), direction, UICanvas, comboComplete);
     }
 }

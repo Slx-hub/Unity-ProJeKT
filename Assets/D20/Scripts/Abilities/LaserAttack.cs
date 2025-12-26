@@ -35,32 +35,39 @@ namespace Assets.D20.Scripts
         private Canvas m_c;
         private int m_numsLasers;
         private int m_laserStep = 0;
+        private int m_accHurt = 0;
 
         private List<GameObject> tidyUp = new List<GameObject>();
         private List<ParabolicTrajectory> m_pts = new List<ParabolicTrajectory>();
         private List<Vector3> m_targetOffsets = new List<Vector3>();
 
         public override void ComboStart(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
-            => FirstUse(ac, roll, target, canvas);
+            => Initalize(ac, roll, target, canvas);
         public override void ComboAdvanced(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
-            => Use(ac, roll, target, canvas);
+            => LockOnLaser(roll);
 
         public override void ComboComplete(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
-            => Use(ac, roll, target, canvas);
+            => ShotLasers(roll);
 
         public override void ComboFailed(AbilityControler ac, int roll, Transform target, Vector3 direction, Canvas canvas, bool comboComplete)
         {
             m_as.PlayOneShot(denyAudio);
-            m_ac.GetEventControler().AddEvent(3, Die);
+            m_accHurt /= 4;
+            if(m_numsLasers > 0)
+                ShotLasers(roll);
+            else
+                m_ac.GetEventControler().AddEvent(10, Die);
         }
 
-        private void FirstUse(AbilityControler ac, int val, Transform target, Canvas canvas)
+        private void Initalize(AbilityControler ac, int val, Transform target, Canvas canvas)
         {
             m_as = GetComponent<AudioSource>();
             m_ac = ac;
-            m_numsLasers = val / 4 + 1;
             m_c = canvas;
             m_target = target;
+            m_laserStep = 1;
+            m_numsLasers = 0;
+            m_accHurt = 0;
 
             if (m_target == null)
             {
@@ -69,31 +76,34 @@ namespace Assets.D20.Scripts
                 return;
             }
 
-            m_target.GetComponent<Entity>().Hurt(val);
+            LockOnLaser(20);
 
-            for (int i = 0; i < m_numsLasers; i++)
-            {
-                m_ac.GetEventControler().AddEvent(i*timeBetweenLasers, LockOnTargetCallback, true);
-            }
+            LockOnLaser(20);
+
+            ShotLasers(20);
         }
-        private void Use(AbilityControler ac, int val, Transform target, Canvas canvas)
-        {
-            m_target.GetComponent<Entity>().Hurt(val);
 
+        private void LockOnLaser(int val)
+        {
+            m_numsLasers += val / (20 / m_laserStep) + 1;
+            m_accHurt += val * m_laserStep;
+             
             for (int i = 0; i < m_numsLasers; i++)
             {
                 m_ac.GetEventControler().AddEvent(i * timeBetweenLasers, LockOnTargetCallback, true);
             }
+
+            m_laserStep++;
         }
 
+        private void ShotLasers(int val)
+        {
+            LockOnLaser(val);
+
+            m_ac.GetEventControler().AddEvent(timeBetweenFirstLockonAndFire, StartLaserCallback, true);
+        }
         public void LockOnTargetCallback()
         {
-            if (tidyUp.Count == 0)
-            {
-                for(int i = 0; i < m_numsLasers; i++)
-                    m_ac.GetEventControler().AddEvent(timeBetweenFirstLockonAndFire, StartLaserCallback, true);
-            }
-
             var go = GameObject.Instantiate(LockOnIndicator, m_c.transform);
             var uiwpc = go.GetComponent<UIWorldPosition>();
             var crt = m_c.GetComponent<RectTransform>();
@@ -114,42 +124,52 @@ namespace Assets.D20.Scripts
 
         public void StartLaserCallback()
         {
-            var go = GameObject.Instantiate(LineRendererPrefab, transform.position, Quaternion.identity, transform);
-
-            var lalr = go.GetComponent<LaserAttackLineRendererControl>();
-            var pt = go.AddComponent<ParabolicTrajectory>();
-
-            lalr.m_material = new(lrMaterial);
-            lalr.m_gradient = new(laserGradient);
-            lalr.Init_ServerRPC(lrThickness, lrThickness);
-            pt.Init(transform, m_target.transform.position + m_targetOffsets[m_pts.Count], 0.5f, 0.01f, 20);
-
-            go.GetComponent<NetworkObject>().Spawn(true);
-
-            m_pts.Add(pt);
-
-            if (m_pts.Count == 1)
+            for (int i = 0; i < m_numsLasers; i++)
             {
-                m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser, AdvanceLaser, true);
-                m_as.PlayOneShot(fireLaserAudio);
+                var go = GameObject.Instantiate(LineRendererPrefab, transform.position, Quaternion.identity, transform);
+
+                var lalr = go.GetComponent<LaserAttackLineRendererControl>();
+                var pt = go.AddComponent<ParabolicTrajectory>();
+
+                lalr.Init(lrThickness, lrThickness);
+                pt.Init(Owner.transform, m_target.transform.position + m_targetOffsets[m_pts.Count], 0.5f, 0.01f, 20);
+
+                go.GetComponent<NetworkObject>().Spawn(true);
+
+                m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser + timeBetweenLasers * i, AdvanceLaser, true);
+
+                m_pts.Add(pt);
+            }
+
+            if (m_pts.Count > 0)
+            {
+                //m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser, AdvanceLaser, true);
+                //m_as.PlayOneShot(fireLaserAudio);
+                m_ac.GetEventControler().AddEvent(laserTime, TidyUpLasers, true);
             }
         }
 
         public void AdvanceLaser()
         {
-            m_pts.ForEach(pt => pt.Begin_ServerRPC());
-            
+            if (m_pts.Count <= 0)
+                return;
+
+            m_pts[0].Begin();
+            m_pts.RemoveAt(0);
+
+            m_as.PlayOneShot(fireLaserAudio, 0.3f);
             m_ac.GetEventControler().AddEvent(laserHitTime, Hit, true);
         }
 
         public void Hit()
         {
-            m_as.PlayOneShot(hitLaserAudio);
-            m_ac.GetEventControler().AddEvent(laserTime, TidyUpLasers, true);
+            m_as.PlayOneShot(hitLaserAudio, 0.3f);
         }
 
         public void TidyUpLasers()
         {
+            m_target.GetComponent<Entity>().Hurt(m_accHurt);
+
             tidyUp.ForEach(go => GameObject.Destroy(go));
             tidyUp.Clear();
 

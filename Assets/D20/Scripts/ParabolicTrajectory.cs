@@ -7,7 +7,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 [ExecuteInEditMode]
-public class ParabolicTrajectory : NetworkBehaviour
+public class ParabolicTrajectory : MonoBehaviour
 {
     // Start is called before the first frame update
     public Transform originTransform;
@@ -28,6 +28,8 @@ public class ParabolicTrajectory : NetworkBehaviour
     public float latencyTimer;
     public bool started = false;
     public bool begin = false;
+
+    private Vector3 originTransformPosition;
 
     void Start()
     {
@@ -64,6 +66,8 @@ public class ParabolicTrajectory : NetworkBehaviour
             }
         }
 
+        UpdatePoints();
+
         innerTimer += Time.deltaTime;
         latencyTimer += Time.deltaTime;
     }
@@ -74,20 +78,7 @@ public class ParabolicTrajectory : NetworkBehaviour
         addRemoveDelta= delta;
         addLatency= latency;
         segments = segs;
-    }
-
-    [ServerRpc]
-    public void Begin_ServerRPC()
-    {
-        if (IsServer)
-            Begin_ClientRPC();
-        Begin();
-    }
-
-    [ClientRpc]
-    public void Begin_ClientRPC()
-    {
-        Begin();
+        originTransformPosition = originTransform.position;
     }
 
     public void Begin()
@@ -152,6 +143,16 @@ public class ParabolicTrajectory : NetworkBehaviour
         m_lineRenderer.SetPositions(poss.ToArray());
     }
 
+    public void UpdatePoints()
+    {
+        for (int i = 0; i < m_lineRenderer.positionCount; i++)
+        {
+            var t = (float)((float)i / (float)segments);
+            m_lineRenderer.SetPosition(i, CalculatePoint(originTransform.position, target, t));
+        }
+
+        originTransformPosition = originTransform.position;
+    }
     private Vector3 CalculatePoint(Vector3 from, Vector3 to, float t)
     {
         return anchor + (1f - t) * (1f - t) * (from - anchor) + t * t * (to - anchor);
