@@ -168,7 +168,7 @@ namespace Assets.D20.Scripts
 
         public void TidyUpLasers()
         {
-            m_target.GetComponent<Entity>().Hurt(m_accHurt);
+            m_target.GetComponent<Entity>().HurtRpc(m_accHurt);
 
             tidyUp.ForEach(go => GameObject.Destroy(go));
             tidyUp.Clear();

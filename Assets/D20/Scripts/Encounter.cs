@@ -75,7 +75,7 @@ public class Encounter : MonoBehaviour
 
     private void PylonDestroyed()
     {
-        bossShield.Hurt(100, true);
+        bossShield.HurtRpc(100, true);
         SpawnDrone();
         ec.AddEvent(10f, SpawnDrone, true);
 

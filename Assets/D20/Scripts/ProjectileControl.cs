@@ -28,7 +28,7 @@ public class ProjectileControl : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.TryGetComponent<Entity>(out var e))
-            e.Hurt(damage);
+            e.HurtRpc(damage);
 
         GameObject.Destroy(gameObject);
     }

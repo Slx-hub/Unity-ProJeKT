@@ -22,7 +22,7 @@ public class Hurting : MonoBehaviour
         {
             if(innerTimer > interval)
             {
-                collidingTransforms.ForEach(e => e.Hurt(damage));
+                collidingTransforms.ForEach(e => e.HurtRpc(damage));
                 Debug.Log("Touch hurting collider:" + gameObject.name + " for: " + damage.ToString());
                 innerTimer = 0f;
             }

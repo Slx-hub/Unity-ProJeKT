@@ -43,7 +43,7 @@ public class Explosion : MonoBehaviour
         {
             var actualDamage = (int)(Damage * (1 - Mathf.Min(1, timePassed / timeToExpand) * damageMultiplier));
             damagedEntities.Add(entity);
-            entity.Hurt(actualDamage);
+            entity.HurtRpc(actualDamage);
             Debug.Log($"BAM! {actualDamage} damage!");
         }
     }
