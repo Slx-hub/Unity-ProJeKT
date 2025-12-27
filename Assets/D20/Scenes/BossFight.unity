@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 96803701}
   - component: {fileID: 96803700}
   - component: {fileID: 96803699}
+  - component: {fileID: 96803704}
   - component: {fileID: 96803702}
   - component: {fileID: 96803703}
   m_Layer: 0
@@ -465,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  Health: 50
+  I_Health: 50
   invulernalbe: 0
 --- !u!64 &96803703
 MeshCollider:
@@ -489,6 +490,31 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &96803704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 96803697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1270014893
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &121501128
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,7 +797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  Health: 50
+  I_Health: 50
   invulernalbe: 0
 --- !u!64 &301396534
 MeshCollider:
@@ -1887,7 +1913,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  Health: 300
+  I_Health: 300
   invulernalbe: 1
 --- !u!114 &768558417
 MonoBehaviour:
@@ -3291,14 +3317,39 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218380909}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b893c07b622bfbc40bbfd5761bb19b1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  Health: 500
+  I_Health: 500
   invulernalbe: 0
+--- !u!114 &1218380917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218380909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2616049144
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1248327684
 GameObject:
   m_ObjectHideFlags: 0
@@ -4526,6 +4577,9 @@ PrefabInstance:
       addedObject: {fileID: 403122100}
     - targetCorrespondingSourceObject: {fileID: -1087730461219628446, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1218380917}
+    - targetCorrespondingSourceObject: {fileID: -1087730461219628446, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1218380913}
     - targetCorrespondingSourceObject: {fileID: 377835631865979511, guid: 4662216d0f5b8b340bc0d49ea58d7ec1, type: 3}
       insertIndex: -1
@@ -4651,7 +4705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  Health: 50
+  I_Health: 50
   invulernalbe: 0
 --- !u!64 &1933103140
 MeshCollider:

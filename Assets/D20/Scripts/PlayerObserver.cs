@@ -34,7 +34,7 @@ public class PlayerObserver : MonoBehaviour
         var jumpScript = Target.GetComponent<JumpController>();
         var entityScript = Target.GetComponent<Entity>();
         if (entityScript is not null)
-            HealthSlider.value = (float)entityScript.Health / entityScript.MaxHealth;
+            HealthSlider.value = (float)entityScript.Health / entityScript.Health;
         JumpSlider.value = jumpScript.JumpCooldown;
         DashSlider.value = jumpScript.DashCooldown;
         JumpValueLabel.text = jumpScript.ValueThreshold > 0 ? ">" + jumpScript.ValueThreshold : "~";

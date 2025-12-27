@@ -223,6 +223,10 @@ PrefabInstance:
       propertyPath: 'abilities.Array.data[0]'
       value: 
       objectReference: {fileID: 2257808007491236758, guid: c9264666a149d1a4c8d6df49426d9555, type: 3}
+    - target: {fileID: 8783339068502328288, guid: 4dce761ff673a64499a785b855425193, type: 3}
+      propertyPath: I_Health
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7624648935883420193, guid: 4dce761ff673a64499a785b855425193, type: 3}
     - {fileID: 4191215492788691, guid: 4dce761ff673a64499a785b855425193, type: 3}
@@ -323,6 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e037e1d666a03c04999a45eeddc33c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   IntensityCurve:
     serializedVersion: 2
     m_Curve:
