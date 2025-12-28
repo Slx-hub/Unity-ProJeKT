@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 96803704}
   - component: {fileID: 96803702}
   - component: {fileID: 96803703}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PylonC
   m_TagString: Entity
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 301396535}
   - component: {fileID: 301396533}
   - component: {fileID: 301396534}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PylonA
   m_TagString: Entity
   m_Icon: {fileID: 0}
@@ -1190,7 +1190,7 @@ GameObject:
   - component: {fileID: 549842446}
   - component: {fileID: 549842445}
   - component: {fileID: 549842444}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1303,7 +1303,7 @@ GameObject:
   - component: {fileID: 612068997}
   - component: {fileID: 612068996}
   - component: {fileID: 612068995}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1979,7 +1979,7 @@ GameObject:
   - component: {fileID: 840322694}
   - component: {fileID: 840322693}
   - component: {fileID: 840322692}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2243,7 +2243,7 @@ GameObject:
   - component: {fileID: 891118965}
   - component: {fileID: 891118964}
   - component: {fileID: 891118963}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FIeld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2385,7 +2385,7 @@ GameObject:
   - component: {fileID: 935104014}
   - component: {fileID: 935104013}
   - component: {fileID: 935104012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2666,7 +2666,7 @@ GameObject:
   - component: {fileID: 975665258}
   - component: {fileID: 975665257}
   - component: {fileID: 975665256}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3084,7 +3084,7 @@ GameObject:
   - component: {fileID: 1171723977}
   - component: {fileID: 1171723976}
   - component: {fileID: 1171723975}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4090,7 +4090,7 @@ GameObject:
   - component: {fileID: 1577797185}
   - component: {fileID: 1577797184}
   - component: {fileID: 1577797183}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4611,7 +4611,7 @@ GameObject:
   - component: {fileID: 1933103141}
   - component: {fileID: 1933103139}
   - component: {fileID: 1933103140}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PylonB
   m_TagString: Entity
   m_Icon: {fileID: 0}
@@ -4766,7 +4766,7 @@ GameObject:
   - component: {fileID: 1943728809}
   - component: {fileID: 1943728808}
   - component: {fileID: 1943728807}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}

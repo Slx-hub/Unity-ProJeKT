@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using Unity.VisualScripting;
@@ -27,6 +28,7 @@ public class Entity : NetworkBehaviour
 
     //Does not need to be NetworkVariable because invulernalbe checks are done only serverside
     public bool invulernalbe = false;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -55,7 +57,7 @@ public class Entity : NetworkBehaviour
 
         if (IsAlive()) return;
 
-        UnaliveRpc();
+        ExplodeRpc();
     }
 
     //Damage should only be displayed by the client that actually did the damage
@@ -73,10 +75,8 @@ public class Entity : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    private void UnaliveRpc()
+    private void ExplodeRpc()
     {
-        //TODO for this to work it shuld interface with a network rigidbody
-
         for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
