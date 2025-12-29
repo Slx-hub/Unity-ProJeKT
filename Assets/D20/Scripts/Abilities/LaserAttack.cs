@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -119,7 +120,7 @@ namespace Assets.D20.Scripts
             m_targetOffsets.Add(uiwpc.worldPosition - m_target.transform.position);
             
             tidyUp.Add(go);
-            m_as.PlayOneShot(lockOnAudio);
+            m_as.PlayOneShot(lockOnAudio, 0.2f);
         }
 
         public void StartLaserCallback()
@@ -147,7 +148,18 @@ namespace Assets.D20.Scripts
         [Rpc(SendTo.SpecifiedInParams)]
         private void SpawnLaserDoneRpc(int i, ulong laserId, RpcParams rpcParams)
         {
+            MakeVisualLasersRpc(i, m_ac.GetComponent<NetworkObject>().NetworkObjectId, laserId, Owner.GetComponent<NetworkObject>().NetworkObjectId, m_target.transform.position + m_targetOffsets[m_pts.Count]);
+        }
+
+        [Rpc(SendTo.Everyone)]
+        private void MakeVisualLasersRpc(int i, ulong mcid, ulong laserId, ulong originId, Vector3 targetPos)
+        {
             NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(laserId, out var laserNetObj);
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(originId, out var originNetObj);
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(mcid, out var mcNetObj);
+
+            if (m_ac == null)
+                m_ac = mcNetObj.GetComponent<AbilityControler>();
 
             var go = laserNetObj.gameObject;
 
@@ -155,7 +167,7 @@ namespace Assets.D20.Scripts
             var pt = go.AddComponent<ParabolicTrajectory>();
 
             lalr.Init(lrThickness, lrThickness);
-            pt.Init(Owner.transform, m_target.transform.position + m_targetOffsets[m_pts.Count], 0.5f, 0.01f, 20);
+            pt.Init(originNetObj.transform, targetPos, 0.5f, 0.01f, 20);
 
             m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser + timeBetweenLasers * i, AdvanceLaser, true);
 
@@ -170,18 +182,21 @@ namespace Assets.D20.Scripts
             m_pts[0].Begin();
             m_pts.RemoveAt(0);
 
-            m_as.PlayOneShot(fireLaserAudio, 0.3f);
+            if(m_as != null)
+                m_as.PlayOneShot(fireLaserAudio, 0.3f);
             m_ac.GetEventControler().AddEvent(laserHitTime, Hit, true);
         }
 
         public void Hit()
         {
-            m_as.PlayOneShot(hitLaserAudio, 0.3f);
+            if (m_as != null)
+                m_as.PlayOneShot(hitLaserAudio, 0.3f);
         }
 
         public void TidyUpLasers()
         {
-            m_target.GetComponent<Entity>().HurtRpc(m_accHurt);
+            if(m_target != null)
+                m_target.GetComponent<Entity>().HurtRpc(m_accHurt);
 
             tidyUp.ForEach(go => GameObject.Destroy(go));
             tidyUp.Clear();
