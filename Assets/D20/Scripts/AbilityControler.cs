@@ -48,12 +48,7 @@ public class AbilityControler : NetworkBehaviour, ComboListener
     {
         if (ValidateAbility() && abilities[selectedAbility].FiresOnComboStart)
         {
-            if (abilities[selectedAbility].IsNetworkAbility)
-                MultiplayerCastServerRpc(selectedAbility, -1, Camera.main.transform.forward, false);
-            else
-                CastAbility(-1, false);
-
-            currentActiveAbility.ComboStart(this, -1, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
+            CastAbilityRpc(selectedAbility);
         }
     }
 
@@ -86,16 +81,24 @@ public class AbilityControler : NetworkBehaviour, ComboListener
         var parent = abilities[selectedAbility].AttachToParent ? transform : null;
         currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity, parent);
         currentActiveAbility.GetComponent<Ability>().Owner = gameObject;
-        //currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
-        //currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), Camera.main.transform.forward, UICanvas, comboComplete);
     }
 
-    [ServerRpc]
-    private void MultiplayerCastServerRpc(int selectedAbility, int val, Vector3 direction, bool comboComplete)
+    [Rpc(SendTo.Server)]
+    private void CastAbilityRpc(int selectedAbility, RpcParams rpcParams = default)
     {
-        currentActiveAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity);
-        currentActiveAbility.GetComponent<NetworkObject>().Spawn(true);
-        currentActiveAbility.GetComponent<Ability>().Owner = gameObject;
-        //currentActiveAbility.ComboAdvanced(this, val, GetTargetNullable(), direction, UICanvas, comboComplete);
+        var newAbility = GameObject.Instantiate(abilities[selectedAbility], transform.position, Quaternion.identity);
+        newAbility.GetComponent<NetworkObject>().Spawn(true);
+
+        CastAbilityCompletedRpc(newAbility.NetworkObjectId, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    private void CastAbilityCompletedRpc(ulong netObjId, RpcParams rpcParams)
+    {            
+        NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(netObjId, out var shouldBeAbility);
+
+        currentActiveAbility = shouldBeAbility.GetComponent<Ability>();
+        currentActiveAbility.Owner = gameObject;
+        currentActiveAbility.ComboStart(this, -1, GetTargetNullable(), Camera.main.transform.forward, UICanvas, false);
     }
 }

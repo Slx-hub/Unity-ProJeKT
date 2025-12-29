@@ -9,7 +9,6 @@ public abstract class Ability : NetworkBehaviour
     public bool FiresOnComboFailed;
 
     public bool AttachToParent;
-    public bool IsNetworkAbility;
 
     public GameObject Owner;
 

@@ -126,27 +126,40 @@ namespace Assets.D20.Scripts
         {
             for (int i = 0; i < m_numsLasers; i++)
             {
-                var go = GameObject.Instantiate(LineRendererPrefab, transform.position, Quaternion.identity, transform);
-
-                var lalr = go.GetComponent<LaserAttackLineRendererControl>();
-                var pt = go.AddComponent<ParabolicTrajectory>();
-
-                lalr.Init(lrThickness, lrThickness);
-                pt.Init(Owner.transform, m_target.transform.position + m_targetOffsets[m_pts.Count], 0.5f, 0.01f, 20);
-
-                go.GetComponent<NetworkObject>().Spawn(true);
-
-                m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser + timeBetweenLasers * i, AdvanceLaser, true);
-
-                m_pts.Add(pt);
+                SpawnLaserRpc(i);
             }
 
-            if (m_pts.Count > 0)
+            if (m_numsLasers > 0)
             {
-                //m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser, AdvanceLaser, true);
-                //m_as.PlayOneShot(fireLaserAudio);
                 m_ac.GetEventControler().AddEvent(laserTime, TidyUpLasers, true);
             }
+        }
+
+        [Rpc(SendTo.Server)]
+        private void SpawnLaserRpc(int i, RpcParams rpcParams = default)
+        {
+            var go = GameObject.Instantiate(LineRendererPrefab, transform.position, Quaternion.identity, transform);
+            go.GetComponent<NetworkObject>().Spawn(true);
+
+            SpawnLaserDoneRpc(i, go.GetComponent<NetworkObject>().NetworkObjectId, RpcTarget.Single(rpcParams.Receive.SenderClientId, RpcTargetUse.Temp));
+        }
+
+        [Rpc(SendTo.SpecifiedInParams)]
+        private void SpawnLaserDoneRpc(int i, ulong laserId, RpcParams rpcParams)
+        {
+            NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(laserId, out var laserNetObj);
+
+            var go = laserNetObj.gameObject;
+
+            var lalr = go.GetComponent<LaserAttackLineRendererControl>();
+            var pt = go.AddComponent<ParabolicTrajectory>();
+
+            lalr.Init(lrThickness, lrThickness);
+            pt.Init(Owner.transform, m_target.transform.position + m_targetOffsets[m_pts.Count], 0.5f, 0.01f, 20);
+
+            m_ac.GetEventControler().AddEvent(timeToAdvanceLeaser + timeBetweenLasers * i, AdvanceLaser, true);
+
+            m_pts.Add(pt);
         }
 
         public void AdvanceLaser()
