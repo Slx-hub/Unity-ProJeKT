@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "extensions": [
+    {
+      "name": "Visual Studio Tools for Unity",
+      "vsixId": "visualstudiotoolsforunity.vstuc"
+    }
+  ]
+}
